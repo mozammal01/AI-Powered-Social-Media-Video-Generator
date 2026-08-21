@@ -3,10 +3,19 @@
 
 // Note: When using the Node.JS APIs, the config file doesn't apply. Instead, pass options directly to the APIs
 
-import { Config } from "@remotion/cli/config";
+import path from 'path';
+import { Config } from '@remotion/cli/config';
 import { enableTailwind } from '@remotion/tailwind-v4';
 
 Config.setRspack(true);
-Config.setVideoImageFormat("jpeg");
+Config.setVideoImageFormat('jpeg');
 Config.setOverwriteOutput(true);
-Config.overrideBundlerConfig(enableTailwind);
+Config.overrideBundlerConfig((config) => {
+  const withTailwind = enableTailwind(config);
+  withTailwind.resolve = withTailwind.resolve ?? {};
+  withTailwind.resolve.alias = {
+    ...(withTailwind.resolve.alias as Record<string, string> | undefined),
+    '@': path.resolve(process.cwd(), 'src'),
+  };
+  return withTailwind;
+});

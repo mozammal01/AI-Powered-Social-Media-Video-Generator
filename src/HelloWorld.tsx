@@ -58,7 +58,7 @@ export const HelloWorld: React.FC<z.infer<typeof myCompSchema>> = ({
   // A <AbsoluteFill> is just a absolutely positioned <div>!
   return (
     <AbsoluteFill style={{ backgroundColor: "white" }}>
-      <AbsoluteFill style={{ opacity }}>
+      <AbsoluteFill style={{ opacity }} from={15}>
         <AbsoluteFill style={{ transform: `translateY(${logoTranslation}px)` }}>
           <Logo logoColor1={logoColor1} logoColor2={logoColor2} />
         </AbsoluteFill>
@@ -67,7 +67,7 @@ export const HelloWorld: React.FC<z.infer<typeof myCompSchema>> = ({
           <Title titleText={propOne} titleColor={propTwo} />
         </Sequence>
         {/* The subtitle will only enter on the 75th frame. */}
-        <Sequence from={75}>
+        <Sequence from={75} >
           <Subtitle />
         </Sequence>
       </AbsoluteFill>

@@ -2,12 +2,43 @@ import "./index.css";
 import { Composition } from "remotion";
 import { HelloWorld, myCompSchema } from "./HelloWorld";
 import { Logo, myCompSchema2 } from "./HelloWorld/Logo";
+import { MolecularArtComposition } from "./molecular-simulation/MolecularArtComposition";
+import { ProductAdvertisement } from "./remotion/compositions/ProductAdvertisement";
+import { productAdvertisementSchema } from "./remotion/compositions/schema";
+import {
+  demoVideoContent,
+  PRODUCT_AD_DURATION,
+  PRODUCT_AD_FPS,
+} from "./data/defaults";
+import { ASPECT_RATIO_DIMENSIONS } from "./types";
 
 // Each <Composition> is an entry in the sidebar!
 
 export const RemotionRoot: React.FC = () => {
+  const { width, height } = ASPECT_RATIO_DIMENSIONS["9:16"];
+
   return (
     <>
+      <Composition
+        id="ProductAdvertisement"
+        component={ProductAdvertisement}
+        durationInFrames={PRODUCT_AD_DURATION}
+        fps={PRODUCT_AD_FPS}
+        width={width}
+        height={height}
+        schema={productAdvertisementSchema}
+        defaultProps={demoVideoContent}
+      />
+
+      <Composition
+        id="MolecularArt"
+        component={MolecularArtComposition}
+        durationInFrames={300}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+
       <Composition
         // You can take the "id" to render a video:
         // npx remotion render HelloWorld
@@ -23,8 +54,8 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{
           titleText: "Welcome to Remotion",
           titleColor: "#000000",
-          logoColor1: "#91EAE4",
-          logoColor2: "#86A8E7",
+          logoColor1: "#009fca",
+          logoColor2: "#00a6de",
         }}
       />
 

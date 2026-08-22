@@ -107,7 +107,9 @@ export function ImageUpload({
             displayError ? "border-destructive" : "border-border"
           )}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {/* Next.js form preview (not a Remotion composition), so a native
+              <img> is intentional here. */}
+          {/* eslint-disable-next-line @remotion/warn-native-media-tag */}
           <img
             src={value}
             alt={`${label} preview`}

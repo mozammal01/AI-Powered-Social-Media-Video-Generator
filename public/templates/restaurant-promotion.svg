@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1c1208"/>
+      <stop offset="0.5" stop-color="#7c2d12"/>
+      <stop offset="0.8" stop-color="#b45309"/>
+      <stop offset="1" stop-color="#1a0f06"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F59E0B"/>
+      <stop offset="1" stop-color="#EF4444"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.7" cy="0.3" r="0.65">
+      <stop offset="0" stop-color="#F59E0B" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#F59E0B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <rect width="800" height="500" fill="url(#glow)"/>
+
+  <!-- Plate -->
+  <circle cx="580" cy="250" r="150" fill="#fdf6ec" opacity="0.96"/>
+  <circle cx="580" cy="250" r="118" fill="#f3e3cd"/>
+  <circle cx="580" cy="250" r="86" fill="url(#accent)" opacity="0.9"/>
+  <circle cx="556" cy="228" r="26" fill="#ffffff" opacity="0.35"/>
+  <!-- Steam -->
+  <path d="M545 96 q10 -18 0 -34" stroke="#ffffff" stroke-opacity="0.5" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M580 88 q10 -18 0 -34" stroke="#ffffff" stroke-opacity="0.35" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M615 96 q10 -18 0 -34" stroke="#ffffff" stroke-opacity="0.5" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+  <!-- Left copy block -->
+  <text x="70" y="150" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="4" fill="#FCD34D">RESTAURANT PROMO</text>
+  <text x="70" y="200" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="800" fill="#ffffff">Tonight's</text>
+  <text x="70" y="246" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="800" fill="#FCD34D">Signature Dish</text>
+  <rect x="72" y="272" width="150" height="4" rx="2" fill="url(#accent)"/>
+
+  <!-- Menu lines -->
+  <circle cx="80" cy="322" r="6" fill="#F59E0B"/>
+  <rect x="98" y="316" width="180" height="12" rx="6" fill="#ffffff" opacity="0.55"/>
+  <circle cx="80" cy="356" r="6" fill="#F59E0B" opacity="0.7"/>
+  <rect x="98" y="350" width="150" height="12" rx="6" fill="#ffffff" opacity="0.4"/>
+  <circle cx="80" cy="390" r="6" fill="#F59E0B" opacity="0.45"/>
+  <rect x="98" y="384" width="165" height="12" rx="6" fill="#ffffff" opacity="0.3"/>
+
+  <!-- CTA pill -->
+  <rect x="70" y="424" width="190" height="44" rx="22" fill="url(#accent)"/>
+  <text x="165" y="452" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">RESERVE A TABLE</text>
+</svg>

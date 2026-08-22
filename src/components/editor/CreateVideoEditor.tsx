@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
   Building2,
@@ -14,6 +15,8 @@ import {
   Film,
   CheckCircle2,
   AlertCircle,
+  Download,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -22,6 +25,12 @@ import { SectionCard } from "@/components/editor/SectionCard";
 import { ImageUpload } from "@/components/editor/ImageUpload";
 import { VideoPreview } from "@/components/editor/VideoPreview";
 import { OptionToggle } from "@/components/editor/OptionToggle";
+import { TemplateSelector } from "@/components/editor/TemplateSelector";
+import {
+  getTemplateDefinition,
+  isTemplateId,
+  type TemplateId,
+} from "@/remotion/templates";
 import {
   ASPECT_OPTIONS,
   DURATION_OPTIONS,
@@ -31,12 +40,37 @@ import {
   type EditorFormValues,
 } from "@/components/editor/editor-schema";
 import { toVideoContent } from "@/components/editor/toVideoContent";
+import {
+  startRender,
+  type RenderClientResult,
+} from "@/lib/render/render-client";
 
 export function CreateVideoEditor() {
-  const [values, setValues] = useState<EditorFormValues>(defaultEditorValues);
+  const searchParams = useSearchParams();
+  const queryTemplate = searchParams.get("template");
+
+  type RenderStatus = "idle" | "rendering" | "success" | "error";
+
+  const [values, setValues] = useState<EditorFormValues>(() => ({
+    ...defaultEditorValues,
+    // Deep-link support: /create-video?template=<id> preselects a template.
+    ...(queryTemplate && isTemplateId(queryTemplate)
+      ? { templateId: queryTemplate satisfies TemplateId }
+      : {}),
+  }));
   const [errors, setErrors] = useState<EditorFieldErrors>({});
-  const [status, setStatus] = useState<"idle" | "preview" | "generate">("idle");
+  const [status, setStatus] = useState<"idle" | "preview">("idle");
   const previewRef = useRef<HTMLDivElement>(null);
+
+  // ── Server render state ────────────────────────────────────────────────
+  const [renderStatus, setRenderStatus] = useState<RenderStatus>("idle");
+  const [renderProgress, setRenderProgress] = useState(0);
+  const [renderStage, setRenderStage] = useState("");
+  const [renderError, setRenderError] = useState<string | null>(null);
+  const [renderResult, setRenderResult] =
+    useState<RenderClientResult | null>(null);
+
+  const activeTemplate = getTemplateDefinition(values.templateId);
 
   const updateField = <K extends keyof EditorFormValues>(
     key: K,
@@ -64,15 +98,71 @@ export function CreateVideoEditor() {
     previewRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const handleGenerateVideo = () => {
+  /** Kicks off a server-side MP4 render and tracks streamed progress.
+   *  The UI stays interactive — this is fully asynchronous. */
+  const handleGenerateVideo = async () => {
     if (!validate()) return;
-    setStatus("generate");
+
+    setRenderStatus("rendering");
+    setRenderProgress(0);
+    setRenderStage("Starting render…");
+    setRenderError(null);
+    setRenderResult(null);
+
+    try {
+      const result = await startRender(
+        {
+          templateId: values.templateId,
+          aspectRatio: values.aspectRatio,
+          durationInFrames: durationFrames,
+          fps: 30,
+          content: inputProps,
+        },
+        {
+          onStage: setRenderStage,
+          onProgress: setRenderProgress,
+        }
+      );
+      setRenderResult(result);
+      setRenderStatus("success");
+      previewRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    } catch (error) {
+      setRenderError(
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred while rendering."
+      );
+      setRenderStatus("error");
+    }
+  };
+
+  /** Switches templates; falls back to the template's default ratio when
+   *  the current aspect ratio isn't supported by the newly selected template. */
+  const handleSelectTemplate = (templateId: TemplateId) => {
+    setValues((prev) => {
+      const template = getTemplateDefinition(templateId);
+      if (!template) return prev;
+
+      const next: EditorFormValues = { ...prev, templateId };
+      if (!template.supportedAspectRatios.includes(prev.aspectRatio)) {
+        next.aspectRatio = template.defaultAspectRatio;
+      }
+      return next;
+    });
+    setStatus("idle");
   };
 
   const handleReset = () => {
     setValues(defaultEditorValues);
     setErrors({});
     setStatus("idle");
+    setRenderStatus("idle");
+    setRenderError(null);
+    setRenderResult(null);
+    setRenderProgress(0);
   };
 
   const inputProps = useMemo(() => toVideoContent(values), [values]);
@@ -80,6 +170,9 @@ export function CreateVideoEditor() {
     DURATION_OPTIONS.find((option) => option.value === values.duration)
       ?.frames ?? 300;
   const errorCount = Object.keys(errors).length;
+  const aspectOptions = ASPECT_OPTIONS.filter((option) =>
+    activeTemplate?.supportedAspectRatios.includes(option.value)
+  );
 
   return (
     <div className="space-y-6">
@@ -130,9 +223,19 @@ export function CreateVideoEditor() {
             onClick={handleGenerateVideo}
             className="gap-1.5"
             type="button"
+            disabled={renderStatus === "rendering"}
           >
-            <Film className="w-4 h-4" />
-            Generate Video
+            {renderStatus === "rendering" ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Rendering…
+              </>
+            ) : (
+              <>
+                <Film className="w-4 h-4" />
+                Generate Video
+              </>
+            )}
           </Button>
         </div>
       </div>
@@ -159,14 +262,6 @@ export function CreateVideoEditor() {
         </div>
       )}
 
-      {status === "generate" && errorCount === 0 && (
-        <div className="flex items-center gap-2 rounded-lg border border-amber-500/30 bg-amber-500/5 p-3 text-sm text-amber-700">
-          <CheckCircle2 className="w-4 h-4 shrink-0" />
-          Configuration is valid. Video rendering is not wired up yet — this
-          button is a placeholder.
-        </div>
-      )}
-
       <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] gap-6 items-start">
         <form
           className="space-y-5"
@@ -175,15 +270,22 @@ export function CreateVideoEditor() {
             handleGeneratePreview();
           }}
         >
+          <TemplateSelector
+            value={values.templateId}
+            onChange={handleSelectTemplate}
+          />
+
           <SectionCard
             title="Video settings"
-            description="Output format for the live preview. Duration scales the five-scene composition."
+            description={`Output format for the live preview. Duration scales ${activeTemplate?.name ?? "the composition"}'s scenes.`}
             icon={<Clapperboard className="w-4 h-4" />}
           >
             <OptionToggle
               label="Aspect Ratio"
               value={values.aspectRatio}
-              options={ASPECT_OPTIONS}
+              options={
+                aspectOptions.length > 0 ? aspectOptions : ASPECT_OPTIONS
+              }
               onChange={(value) => updateField("aspectRatio", value)}
               error={errors.aspectRatio}
             />
@@ -372,7 +474,8 @@ export function CreateVideoEditor() {
                     Live preview
                   </h2>
                   <p className="text-xs text-muted-foreground">
-                    {values.aspectRatio} · {values.duration}s · 30 fps
+                    {activeTemplate?.name} · {values.aspectRatio} ·{" "}
+                    {values.duration}s · 30 fps
                   </p>
                 </div>
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 border border-emerald-500/15">
@@ -383,12 +486,109 @@ export function CreateVideoEditor() {
 
               <div className="rounded-xl overflow-hidden border border-border/60 bg-slate-950">
                 <VideoPreview
+                  templateId={values.templateId}
                   inputProps={inputProps}
                   aspectRatio={values.aspectRatio}
                   durationInFrames={durationFrames}
                   fps={30}
                 />
               </div>
+            </CardContent>
+          </Card>
+
+          {/* ── Render panel: progress / result / error ── */}
+          <Card>
+            <CardContent className="p-5 space-y-4">
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="font-semibold text-sm tracking-tight">
+                  Rendered video
+                </h2>
+                {renderStatus === "rendering" && (
+                  <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-500/10 text-blue-600 border border-blue-500/15">
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                    {Math.round(renderProgress * 100)}%
+                  </span>
+                )}
+              </div>
+
+              {renderStatus === "idle" && (
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Click <span className="font-medium">Generate Video</span> to
+                  render the current composition to an MP4 file on the server.
+                </p>
+              )}
+
+              {renderStatus === "rendering" && (
+                <div className="space-y-2">
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                    <div
+                      className="h-full rounded-full bg-primary transition-all duration-300"
+                      style={{ width: `${Math.max(4, renderProgress * 100)}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                    <Loader2 className="w-3 h-3 animate-spin shrink-0" />
+                    {renderStage || "Rendering…"} ({Math.round(renderProgress * 100)}%)
+                  </p>
+                  <p className="text-[10px] text-muted-foreground/70">
+                    The first render may take longer while the headless browser
+                    and bundle are prepared.
+                  </p>
+                </div>
+              )}
+
+              {renderStatus === "success" && renderResult && (
+                <div className="space-y-3">
+                  {/* Plain HTML5 player for the finished MP4 — this panel is
+                      not part of a Remotion composition/timeline. */}
+                  {/* eslint-disable-next-line @remotion/warn-native-media-tag */}
+                  <video
+                    key={renderResult.fileId}
+                    src={renderResult.url}
+                    controls
+                    playsInline
+                    className="w-full rounded-lg border border-border/60 bg-black"
+                    style={{ maxHeight: 420 }}
+                  />
+                  <div className="flex items-center justify-between gap-3 flex-wrap">
+                    <p className="text-xs text-muted-foreground">
+                      {(renderResult.sizeBytes / (1024 * 1024)).toFixed(1)} MB ·
+                      rendered in{" "}
+                      {Math.round(renderResult.durationMs / 1000)}s
+                    </p>
+                    <a href={renderResult.downloadUrl}>
+                      <Button size="sm" className="gap-1.5" type="button">
+                        <Download className="w-4 h-4" />
+                        Download MP4
+                      </Button>
+                    </a>
+                  </div>
+                </div>
+              )}
+
+              {renderStatus === "error" && (
+                <div className="space-y-3">
+                  <div className="flex items-start gap-2.5 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
+                    <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="font-medium">Render failed</p>
+                      <p className="text-xs mt-0.5 leading-relaxed">
+                        {renderError}
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleGenerateVideo}
+                    className="gap-1.5"
+                    type="button"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                    Try again
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

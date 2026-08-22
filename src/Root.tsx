@@ -3,33 +3,38 @@ import { Composition } from "remotion";
 import { HelloWorld, myCompSchema } from "./HelloWorld";
 import { Logo, myCompSchema2 } from "./HelloWorld/Logo";
 import { MolecularArtComposition } from "./molecular-simulation/MolecularArtComposition";
-import { ProductAdvertisement } from "./remotion/compositions/ProductAdvertisement";
-import { productAdvertisementSchema } from "./remotion/compositions/schema";
-import {
-  demoVideoContent,
-  PRODUCT_AD_DURATION,
-  PRODUCT_AD_FPS,
-} from "./data/defaults";
-import { ASPECT_RATIO_DIMENSIONS } from "./types";
+import { videoContentSchema } from "./remotion/schema";
+import { getTemplateDimensions, templateList } from "./remotion/templates";
+import { getTemplateComponent } from "./remotion/templates/components";
 
 // Each <Composition> is an entry in the sidebar!
 
 export const RemotionRoot: React.FC = () => {
-  const { width, height } = ASPECT_RATIO_DIMENSIONS["9:16"];
-
   return (
     <>
-      <Composition
-        id="ProductAdvertisement"
-        component={ProductAdvertisement}
-        durationInFrames={PRODUCT_AD_DURATION}
-        fps={PRODUCT_AD_FPS}
-        width={width}
-        height={height}
-        schema={productAdvertisementSchema}
-        defaultProps={demoVideoContent}
-      />
+      {/* ── Video templates (registered in remotion/templates/registry.ts) ── */}
+      {templateList.map((template) => {
+        const { width, height } = getTemplateDimensions(
+          template,
+          template.defaultAspectRatio
+        );
 
+        return (
+          <Composition
+            key={template.id}
+            id={template.id}
+            component={getTemplateComponent(template.id)}
+            durationInFrames={template.durationInFrames}
+            fps={template.fps}
+            width={width}
+            height={height}
+            schema={videoContentSchema}
+            defaultProps={template.defaultProps}
+          />
+        );
+      })}
+
+      {/* ── Standalone demo compositions ── */}
       <Composition
         id="MolecularArt"
         component={MolecularArtComposition}
@@ -41,7 +46,7 @@ export const RemotionRoot: React.FC = () => {
 
       <Composition
         // You can take the "id" to render a video:
-        // npx remotion render HelloWorld
+        // npx remotion render HelloWorld out/video.mp4
         id="HelloWorld"
         component={HelloWorld}
         durationInFrames={150}

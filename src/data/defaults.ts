@@ -67,52 +67,6 @@ export const demoVideoContent: VideoContent = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Product Advertisement Scenes  (10-second 9:16 @ 30fps = 300 frames)
-// ─────────────────────────────────────────────────────────────────────────────
-
-export const PRODUCT_AD_FPS = 30 as const;
-export const PRODUCT_AD_DURATION = 300 as const; // 10s
-export const PRODUCT_AD_SCENE_DURATION = 60 as const; // 2s per scene
-
-export const productAdvertisementScenes: VideoScene[] = [
-  {
-    id: 'scene-intro',
-    type: 'intro',
-    startFrame: 0,
-    durationInFrames: PRODUCT_AD_SCENE_DURATION,
-    transition: { type: 'fade', durationInFrames: 12 },
-  },
-  {
-    id: 'scene-product',
-    type: 'product',
-    startFrame: 60,
-    durationInFrames: PRODUCT_AD_SCENE_DURATION,
-    transition: { type: 'slide', durationInFrames: 15 },
-  },
-  {
-    id: 'scene-features',
-    type: 'features',
-    startFrame: 120,
-    durationInFrames: PRODUCT_AD_SCENE_DURATION,
-    transition: { type: 'fade', durationInFrames: 12 },
-  },
-  {
-    id: 'scene-pricing',
-    type: 'headline',
-    startFrame: 180,
-    durationInFrames: PRODUCT_AD_SCENE_DURATION,
-    transition: { type: 'zoom', durationInFrames: 15 },
-  },
-  {
-    id: 'scene-cta',
-    type: 'cta',
-    startFrame: 240,
-    durationInFrames: PRODUCT_AD_SCENE_DURATION,
-    transition: { type: 'slide', durationInFrames: 15 },
-  },
-];
-
-// ─────────────────────────────────────────────────────────────────────────────
 // Demo Scenes  (for a 15-second 9:16 promo @ 30fps = 450 frames)
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -204,115 +158,58 @@ export const demoScenes: VideoScene[] = [
 // ─────────────────────────────────────────────────────────────────────────────
 // Demo Templates
 // ─────────────────────────────────────────────────────────────────────────────
+// NOTE: The canonical template registry lives in `remotion/templates/registry.ts`.
+// The entries below are plain `VideoTemplate` mock records kept for the
+// project factory and future database seeding — they reference registry IDs.
 
 export const demoTemplates: VideoTemplate[] = [
   {
-    id: 'promo-vertical-v1',
-    name: 'Product Promo Story',
+    id: 'product-advertisement',
+    name: 'Product Advertisement',
     description:
-      'Bold vertical format for TikTok, Reels, and Shorts. Intro → Headline → Features → CTA.',
-    thumbnailUrl: '/templates/promo-vertical.jpg',
+      'Classic five-scene product ad: brand intro, product showcase, key features, pricing, and call-to-action.',
+    thumbnailUrl: '/templates/product-advertisement.svg',
     category: 'ads',
     aspectRatio: '9:16',
-    durationInFrames: 450, // 15s @ 30fps
+    durationInFrames: 300, // 10s @ 30fps
     fps: 30,
     width: 1080,
     height: 1920,
     scenes: demoScenes,
     requiredFields: ['brand.name', 'product.name', 'cta.text'],
-    tags: ['tiktok', 'reels', 'shorts', 'product', 'launch', 'vertical'],
+    tags: ['product', 'launch', 'saas', 'features', 'pricing'],
   },
   {
-    id: 'quote-feed-v1',
-    name: 'Minimalist Quote Reel',
+    id: 'restaurant-promotion',
+    name: 'Restaurant Promotion',
     description:
-      'Clean typography animation ideal for motivational quotes or brand statements. Square format.',
-    thumbnailUrl: '/templates/quote-feed.jpg',
+      'Warm, appetite-driven promo for restaurants and cafés: welcome, signature dish, menu highlights, dinner deal, and reservation CTA.',
+    thumbnailUrl: '/templates/restaurant-promotion.svg',
     category: 'social-media',
-    aspectRatio: '1:1',
+    aspectRatio: '9:16',
     durationInFrames: 300, // 10s @ 30fps
     fps: 30,
     width: 1080,
-    height: 1080,
-    scenes: [
-      {
-        id: 'scene-intro',
-        type: 'intro',
-        startFrame: 0,
-        durationInFrames: 30,
-        transition: { type: 'fade', durationInFrames: 10 },
-        animations: {},
-      },
-      {
-        id: 'scene-headline',
-        type: 'headline',
-        startFrame: 30,
-        durationInFrames: 210,
-        transition: { type: 'fade', durationInFrames: 15 },
-        animations: {
-          text: { startFrame: 30, endFrame: 75, easing: 'ease-out', direction: 'up' },
-        },
-      },
-      {
-        id: 'scene-outro',
-        type: 'outro',
-        startFrame: 240,
-        durationInFrames: 60,
-        transition: { type: 'fade', durationInFrames: 15 },
-        animations: {},
-      },
-    ],
-    requiredFields: ['brand.name', 'headline'],
-    tags: ['quote', 'feed', 'square', 'instagram', 'minimal'],
+    height: 1920,
+    scenes: demoScenes,
+    requiredFields: ['brand.name', 'product.name', 'cta.text'],
+    tags: ['restaurant', 'food', 'menu', 'cafe', 'reservation'],
   },
   {
-    id: 'explainer-landscape-v1',
-    name: 'Product Explainer',
+    id: 'sale-promotion',
+    name: 'Sale Promotion',
     description:
-      'Landscape format for YouTube and LinkedIn. Walks through features with a strong closing CTA.',
-    thumbnailUrl: '/templates/explainer-landscape.jpg',
-    category: 'explainer',
-    aspectRatio: '16:9',
-    durationInFrames: 900, // 30s @ 30fps
+      'High-energy flash-sale promo: giant hook headline, discount reveal, product spotlight, deal perks, and urgency CTA.',
+    thumbnailUrl: '/templates/sale-promotion.svg',
+    category: 'ads',
+    aspectRatio: '9:16',
+    durationInFrames: 300, // 10s @ 30fps
     fps: 30,
-    width: 1920,
-    height: 1080,
-    scenes: [
-      {
-        id: 'scene-intro',
-        type: 'intro',
-        startFrame: 0,
-        durationInFrames: 90,
-        transition: { type: 'fade', durationInFrames: 20 },
-        animations: {},
-      },
-      {
-        id: 'scene-headline',
-        type: 'headline',
-        startFrame: 90,
-        durationInFrames: 150,
-        transition: { type: 'slide', durationInFrames: 20 },
-        animations: {},
-      },
-      {
-        id: 'scene-features',
-        type: 'features',
-        startFrame: 240,
-        durationInFrames: 360,
-        transition: { type: 'slide', durationInFrames: 20 },
-        animations: {},
-      },
-      {
-        id: 'scene-cta',
-        type: 'cta',
-        startFrame: 600,
-        durationInFrames: 300,
-        transition: { type: 'fade', durationInFrames: 20 },
-        animations: {},
-      },
-    ],
-    requiredFields: ['brand.name', 'product.name', 'product.features', 'cta.text'],
-    tags: ['explainer', 'youtube', 'linkedin', 'features', 'landscape'],
+    width: 1080,
+    height: 1920,
+    scenes: demoScenes,
+    requiredFields: ['brand.name', 'product.name', 'product.discount', 'cta.text'],
+    tags: ['sale', 'discount', 'flash-sale', 'ecommerce', 'urgency'],
   },
 ];
 
@@ -404,8 +301,8 @@ export const demoProjects: VideoProject[] = [
     id: 'proj-demo-1',
     title: 'SaaS Launch Announcement',
     template: {
-      id: 'promo-vertical-v1',
-      name: 'Product Promo Story',
+      id: 'product-advertisement',
+      name: 'Product Advertisement',
       aspectRatio: '9:16',
       category: 'ads',
     },
@@ -429,8 +326,8 @@ export const demoProjects: VideoProject[] = [
     id: 'proj-demo-2',
     title: 'AI Product Promo Story',
     template: {
-      id: 'promo-vertical-v1',
-      name: 'Product Promo Story',
+      id: 'product-advertisement',
+      name: 'Product Advertisement',
       aspectRatio: '9:16',
       category: 'ads',
     },
@@ -449,8 +346,8 @@ export const demoProjects: VideoProject[] = [
     id: 'proj-demo-3',
     title: 'Cooking Tips YouTube Short',
     template: {
-      id: 'quote-feed-v1',
-      name: 'Minimalist Quote Reel',
+      id: 'restaurant-promotion',
+      name: 'Restaurant Promotion',
       aspectRatio: '9:16',
       category: 'social-media',
     },
@@ -482,5 +379,8 @@ export const demoProjects: VideoProject[] = [
  * Not cryptographically secure — sufficient for client-side state.
  */
 function generateProjectId(): string {
+  // Client-side ID generation only — never called inside a Remotion
+  // composition, so true randomness here is safe and intended.
+  // eslint-disable-next-line @remotion/deterministic-randomness
   return `proj-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
 }

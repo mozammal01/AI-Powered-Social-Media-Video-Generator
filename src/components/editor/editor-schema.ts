@@ -1,5 +1,10 @@
 import { z } from "zod";
 import { demoVideoContent } from "@/data/defaults";
+import {
+  DEFAULT_TEMPLATE_ID,
+  templateRegistry,
+  type TemplateId,
+} from "@/remotion/templates";
 
 const optionalUrl = z
   .string()
@@ -9,11 +14,19 @@ const optionalUrl = z
     "Enter a valid URL (e.g. https://example.com)"
   );
 
+/** Registered template IDs as a tuple, so the enum stays in sync with the registry. */
+const TEMPLATE_IDS = Object.keys(templateRegistry) as [TemplateId, ...TemplateId[]];
+
 /**
  * Zod schema for the Create Video editor form.
  * UI-only — mapped to composition input props via toVideoContent().
  */
+
 export const editorFormSchema = z.object({
+  /** Which registered Remotion template renders the preview/video. */
+  templateId: z.enum(TEMPLATE_IDS, {
+    error: "Choose a template",
+  }),
   brandName: z
     .string()
     .trim()
@@ -69,6 +82,7 @@ export const ASPECT_OPTIONS = [
 ];
 
 export const defaultEditorValues: EditorFormValues = {
+  templateId: DEFAULT_TEMPLATE_ID,
   brandName: demoVideoContent.brand.name,
   tagline: demoVideoContent.brand.tagline ?? "",
   websiteUrl: demoVideoContent.brand.websiteUrl ?? "",

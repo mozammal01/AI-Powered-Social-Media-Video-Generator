@@ -19,7 +19,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { demoProjects, demoTemplates } from "@/data/defaults";
+import { demoProjects } from "@/data/defaults";
+import { templateList } from "@/remotion/templates";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -106,9 +107,9 @@ export default function DashboardHome() {
             <Layers className="w-5 h-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{demoTemplates.length}</div>
+            <div className="text-3xl font-bold">{templateList.length}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              {new Set(demoTemplates.map((t) => t.category)).size} categories
+              {new Set(templateList.map((t) => t.category)).size} categories
             </p>
           </CardContent>
         </Card>
@@ -216,7 +217,7 @@ export default function DashboardHome() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {demoTemplates.map((template) => (
+          {templateList.map((template) => (
             <Card key={template.id} className="flex flex-col justify-between">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between mb-2">
@@ -224,7 +225,7 @@ export default function DashboardHome() {
                     {template.category}
                   </span>
                   <span className="text-xs font-medium text-muted-foreground">
-                    {template.aspectRatio}
+                    {template.supportedAspectRatios.join(" · ")}
                   </span>
                 </div>
                 <CardTitle className="text-base font-semibold">
@@ -242,7 +243,7 @@ export default function DashboardHome() {
                     {formatFramesToTime(template.durationInFrames, template.fps)}
                   </span>
                   <span>{template.fps} FPS</span>
-                  <span>{template.scenes.length} scenes</span>
+                  <span>{template.tags.slice(0, 2).join(", ")}</span>
                 </div>
               </CardContent>
 

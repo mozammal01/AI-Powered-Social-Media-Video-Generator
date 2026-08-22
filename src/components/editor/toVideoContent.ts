@@ -1,13 +1,15 @@
-import type { ProductAdvertisementProps } from "@/remotion/compositions/schema";
+import type { VideoContentProps } from "@/remotion/schema";
 import type { EditorFormValues } from "./editor-schema";
 
 /**
- * Converts the flat editor form values into the nested shape
- * required by the ProductAdvertisement Remotion composition.
+ * Converts the flat editor form values into the nested `VideoContent` shape.
+ *
+ * Every registered template consumes this exact data model, so the same
+ * mapping works regardless of which template is selected in the editor.
  */
 export function toVideoContent(
   values: EditorFormValues
-): ProductAdvertisementProps {
+): VideoContentProps {
   const features = [values.feature1, values.feature2, values.feature3]
     .map((feature) => feature.trim())
     .filter((feature) => feature.length > 0);

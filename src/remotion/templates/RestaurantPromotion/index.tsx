@@ -1,28 +1,60 @@
 import { AbsoluteFill, Sequence, useVideoConfig } from 'remotion';
-import { productAdvertisementScenes } from '@/data/defaults';
+import type { VideoContentProps } from '@/remotion/schema';
+import { scaleScenesToDuration } from '@/remotion/utils/scenes';
 import {
   useFadeIn,
   useSceneOpacity,
-  useSpringScale,
   useSpringSlideUp,
-} from '../animations';
+} from '../../animations';
 import {
   Background,
+  BodyText,
   BrandLogo,
   CTAButton,
+  DiscountBadge,
   FeatureList,
   Price,
   ProductImage,
   ProductTitle,
-} from '../components';
-import type { ProductAdvertisementProps } from './schema';
-import type { SceneType } from '@/types';
+  SectionLabel,
+} from '../../components';
+import { restaurantScenes } from './scenes';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Scene 1 — Brand intro: logo, product name, tagline
+// Template-local decoration — thin brand-colored divider line
 // ─────────────────────────────────────────────────────────────────────────────
 
-const IntroScene: React.FC<ProductAdvertisementProps> = ({ brand, product, headline }) => {
+const AccentDivider: React.FC<{ primaryColor?: string; enterFrame?: number }> = ({
+  primaryColor = '#F59E0B',
+  enterFrame = 0,
+}) => {
+  const opacity = useFadeIn({ from: enterFrame, duration: 18 });
+  const width = useSpringSlideUp({
+    from: enterFrame,
+    distance: -160,
+    damping: 18,
+    stiffness: 90,
+  });
+
+  return (
+    <div
+      style={{
+        opacity,
+        width: `${Math.max(0, Math.min(100, ((width + 160) / 320) * 100))}%`,
+        maxWidth: 320,
+        height: 4,
+        borderRadius: 999,
+        background: `linear-gradient(90deg, transparent, ${primaryColor}, transparent)`,
+      }}
+    />
+  );
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Scene 1 — Welcome: logo, restaurant name, tagline
+// ─────────────────────────────────────────────────────────────────────────────
+
+const WelcomeScene: React.FC<VideoContentProps> = ({ brand, product, headline }) => {
   const { durationInFrames } = useVideoConfig();
   const opacity = useSceneOpacity(durationInFrames);
 
@@ -34,7 +66,7 @@ const IntroScene: React.FC<ProductAdvertisementProps> = ({ brand, product, headl
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 48,
+        gap: 36,
       }}
     >
       <BrandLogo
@@ -43,24 +75,25 @@ const IntroScene: React.FC<ProductAdvertisementProps> = ({ brand, product, headl
         primaryColor={brand.primaryColor}
         accentColor={brand.accentColor}
         enterFrame={0}
-        size={140}
+        size={130}
       />
       <ProductTitle
-        title={product.name}
+        title={brand.name}
         tagline={brand.tagline}
-        headline={headline}
+        headline={headline ?? product.name}
         primaryColor={brand.primaryColor}
         enterFrame={8}
       />
+      <AccentDivider primaryColor={brand.primaryColor} enterFrame={20} />
     </AbsoluteFill>
   );
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Scene 2 — Product showcase: image + description
+// Scene 2 — Signature dish: hero image + description
 // ─────────────────────────────────────────────────────────────────────────────
 
-const ProductScene: React.FC<ProductAdvertisementProps> = ({ brand, product, bodyText }) => {
+const SignatureDishScene: React.FC<VideoContentProps> = ({ brand, product, bodyText }) => {
   const { durationInFrames } = useVideoConfig();
   const opacity = useSceneOpacity(durationInFrames);
   const description = bodyText ?? product.description;
@@ -76,64 +109,39 @@ const ProductScene: React.FC<ProductAdvertisementProps> = ({ brand, product, bod
         gap: 40,
       }}
     >
+      <SectionLabel
+        label="Signature Dish"
+        primaryColor={brand.primaryColor}
+        enterFrame={0}
+      />
       <ProductImage
         imageUrl={product.imageUrl}
         productName={product.name}
         primaryColor={brand.primaryColor}
         accentColor={brand.accentColor}
-        enterFrame={0}
+        enterFrame={6}
+        maxWidth={620}
       />
-
       {description && (
-        <DescriptionText
+        <BodyText
           text={description}
-          enterFrame={14}
           primaryColor={brand.primaryColor}
+          enterFrame={16}
+          fontSize={30}
         />
       )}
     </AbsoluteFill>
   );
 };
 
-interface DescriptionTextProps {
-  text: string;
-  enterFrame: number;
-  primaryColor?: string;
-}
-
-const DescriptionText: React.FC<DescriptionTextProps> = ({ text, enterFrame, primaryColor }) => {
-  const textOpacity = useFadeIn({ from: enterFrame, duration: 20 });
-  const textY = useSpringSlideUp({ from: enterFrame, distance: 28, damping: 16, stiffness: 100 });
-  const textScale = useSpringScale({ from: enterFrame, damping: 16, stiffness: 110 });
-
-  return (
-    <p
-      style={{
-        opacity: textOpacity,
-        transform: `translateY(${textY}px) scale(${textScale})`,
-        margin: 0,
-        padding: '0 56px',
-        fontSize: 32,
-        fontWeight: 500,
-        color: 'rgba(255, 255, 255, 0.82)',
-        lineHeight: 1.45,
-        textAlign: 'center',
-        borderLeft: primaryColor ? `4px solid ${primaryColor}` : undefined,
-      }}
-    >
-      {text}
-    </p>
-  );
-};
-
 // ─────────────────────────────────────────────────────────────────────────────
-// Scene 3 — Features: three bullet points appearing sequentially
+// Scene 3 — Menu highlights: dish list revealed sequentially
 // ─────────────────────────────────────────────────────────────────────────────
 
-const FeaturesScene: React.FC<ProductAdvertisementProps> = ({ brand, product }) => {
+const MenuHighlightsScene: React.FC<VideoContentProps> = ({ brand, product }) => {
   const { durationInFrames } = useVideoConfig();
   const opacity = useSceneOpacity(durationInFrames);
-  const features = (product.features ?? []).filter(Boolean).slice(0, 3) as string[];
+  const dishes = (product.features ?? []).filter(Boolean).slice(0, 3) as string[];
 
   return (
     <AbsoluteFill
@@ -146,9 +154,9 @@ const FeaturesScene: React.FC<ProductAdvertisementProps> = ({ brand, product }) 
         gap: 32,
       }}
     >
-      <SectionLabel label="Key Features" primaryColor={brand.primaryColor} enterFrame={0} />
+      <SectionLabel label="Today's Menu" primaryColor={brand.primaryColor} enterFrame={0} />
       <FeatureList
-        features={features}
+        features={dishes}
         primaryColor={brand.primaryColor}
         accentColor={brand.accentColor}
         enterFrame={8}
@@ -158,39 +166,11 @@ const FeaturesScene: React.FC<ProductAdvertisementProps> = ({ brand, product }) 
   );
 };
 
-interface SectionLabelProps {
-  label: string;
-  primaryColor?: string;
-  enterFrame: number;
-}
-
-const SectionLabel: React.FC<SectionLabelProps> = ({ label, primaryColor, enterFrame }) => {
-  const labelOpacity = useFadeIn({ from: enterFrame, duration: 16 });
-  const labelY = useSpringSlideUp({ from: enterFrame, distance: 22, damping: 16, stiffness: 110 });
-
-  return (
-    <p
-      style={{
-        opacity: labelOpacity,
-        transform: `translateY(${labelY}px)`,
-        margin: 0,
-        fontSize: 26,
-        fontWeight: 700,
-        color: primaryColor ?? '#6366F1',
-        letterSpacing: '0.12em',
-        textTransform: 'uppercase',
-      }}
-    >
-      {label}
-    </p>
-  );
-};
-
 // ─────────────────────────────────────────────────────────────────────────────
-// Scene 4 — Pricing: original, discount badge, final price
+// Scene 4 — Special offer: discount badge + deal price
 // ─────────────────────────────────────────────────────────────────────────────
 
-const PricingScene: React.FC<ProductAdvertisementProps> = ({ brand, product }) => {
+const OfferScene: React.FC<VideoContentProps> = ({ brand, product }) => {
   const { durationInFrames } = useVideoConfig();
   const opacity = useSceneOpacity(durationInFrames);
 
@@ -202,27 +182,34 @@ const PricingScene: React.FC<ProductAdvertisementProps> = ({ brand, product }) =
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 16,
+        gap: 24,
       }}
     >
-      <SectionLabel label="Special Offer" primaryColor={brand.primaryColor} enterFrame={0} />
+      <SectionLabel label="Dinner Deal" primaryColor={brand.primaryColor} enterFrame={0} />
+      {product.discount && (
+        <DiscountBadge
+          discount={product.discount}
+          accentColor={brand.accentColor}
+          enterFrame={8}
+          size="md"
+        />
+      )}
       <Price
         originalPrice={product.originalPrice}
         finalPrice={product.price}
-        discount={product.discount}
         primaryColor={brand.primaryColor}
         accentColor={brand.accentColor}
-        enterFrame={6}
+        enterFrame={14}
       />
     </AbsoluteFill>
   );
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Scene 5 — CTA: button, website URL, brand logo
+// Scene 5 — Reservation CTA
 // ─────────────────────────────────────────────────────────────────────────────
 
-const CTAScene: React.FC<ProductAdvertisementProps> = ({ brand, cta }) => {
+const ReservationScene: React.FC<VideoContentProps> = ({ brand, cta }) => {
   const { durationInFrames } = useVideoConfig();
   const opacity = useSceneOpacity(durationInFrames);
   const websiteUrl = cta.url ?? brand.websiteUrl;
@@ -237,7 +224,7 @@ const CTAScene: React.FC<ProductAdvertisementProps> = ({ brand, cta }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 48,
+        gap: 44,
       }}
     >
       <CTAButton
@@ -254,7 +241,7 @@ const CTAScene: React.FC<ProductAdvertisementProps> = ({ brand, cta }) => {
         primaryColor={brand.primaryColor}
         accentColor={brand.accentColor}
         enterFrame={18}
-        size={80}
+        size={72}
       />
     </AbsoluteFill>
   );
@@ -264,41 +251,29 @@ const CTAScene: React.FC<ProductAdvertisementProps> = ({ brand, cta }) => {
 // Scene registry
 // ─────────────────────────────────────────────────────────────────────────────
 
-const SCENE_COMPONENTS: Partial<
-  Record<SceneType, React.FC<ProductAdvertisementProps>>
-> = {
-  intro: IntroScene,
-  product: ProductScene,
-  features: FeaturesScene,
-  headline: PricingScene,
-  cta: CTAScene,
+const SCENE_COMPONENTS: Partial<Record<string, React.FC<VideoContentProps>>> = {
+  intro: WelcomeScene,
+  product: SignatureDishScene,
+  features: MenuHighlightsScene,
+  headline: OfferScene,
+  cta: ReservationScene,
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Main composition
 // ─────────────────────────────────────────────────────────────────────────────
 
-function scaleScenes(durationInFrames: number) {
-  const count = productAdvertisementScenes.length;
-  const sceneLength = Math.floor(durationInFrames / count);
-
-  return productAdvertisementScenes.map((scene, index) => {
-    const startFrame = index * sceneLength;
-    const length =
-      index === count - 1 ? durationInFrames - startFrame : sceneLength;
-
-    return {
-      ...scene,
-      startFrame,
-      durationInFrames: length,
-    };
-  });
-}
-
-export const ProductAdvertisement: React.FC<ProductAdvertisementProps> = (content) => {
+/**
+ * RestaurantPromotion template.
+ *
+ * A five-scene restaurant promo: welcome, signature dish, menu highlights,
+ * dinner deal, and reservation CTA. Consumes the shared `VideoContent`
+ * data model like every other template.
+ */
+export const RestaurantPromotion: React.FC<VideoContentProps> = (content) => {
   const { brand, backgroundImageUrl } = content;
   const { durationInFrames } = useVideoConfig();
-  const scenes = scaleScenes(durationInFrames);
+  const scenes = scaleScenesToDuration(restaurantScenes, durationInFrames);
 
   return (
     <AbsoluteFill>
@@ -307,6 +282,7 @@ export const ProductAdvertisement: React.FC<ProductAdvertisementProps> = (conten
         imageUrl={backgroundImageUrl}
         enterFrame={0}
         variant="dark"
+        overlayOpacity={0.78}
       />
 
       {scenes.map((scene) => {

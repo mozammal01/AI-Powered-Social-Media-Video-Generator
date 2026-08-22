@@ -169,8 +169,8 @@ export function getAlphaHelixRibbon(residues: THREE.Vector3[], progress: number)
   const helixOffsetRadius = 0.55 * progress;
   const helixFrequency = 4.8; // Number of twists
 
-  let binormal = new THREE.Vector3();
-  let normal = new THREE.Vector3();
+  const binormal = new THREE.Vector3();
+  const normal = new THREE.Vector3();
   const up = new THREE.Vector3(0, 1, 0);
 
   // 2. Generate double-sided strip vertices winding in a helix around the spline
@@ -255,8 +255,8 @@ export function getBetaSheetRibbon(residues: THREE.Vector3[], progress: number):
   const indices: number[] = [];
 
   const baseWidth = 0.5 * progress;
-  let binormal = new THREE.Vector3();
-  let normal = new THREE.Vector3();
+  const binormal = new THREE.Vector3();
+  const normal = new THREE.Vector3();
   const up = new THREE.Vector3(0, 0, 1);
 
   // Generate flat ribbon vertices

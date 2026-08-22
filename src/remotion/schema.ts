@@ -25,8 +25,15 @@ const ctaSchema = z.object({
   subtext: z.string().optional(),
 });
 
-/** Zod schema for ProductAdvertisement composition input props. */
-export const productAdvertisementSchema = z.object({
+/**
+ * Shared Zod schema for all Remotion template compositions.
+ *
+ * Every template consumes the same `VideoContent` data model:
+ *   brand, product, cta, backgroundImageUrl, headline, bodyText.
+ * Adding a new template does NOT require a new schema — just a
+ * new composition that renders this data differently.
+ */
+export const videoContentSchema = z.object({
   brand: brandInfoSchema,
   product: productInfoSchema,
   cta: ctaSchema,
@@ -35,4 +42,5 @@ export const productAdvertisementSchema = z.object({
   bodyText: z.string().optional(),
 });
 
-export type ProductAdvertisementProps = z.infer<typeof productAdvertisementSchema>;
+/** Input props type for every template composition. */
+export type VideoContentProps = z.infer<typeof videoContentSchema>;

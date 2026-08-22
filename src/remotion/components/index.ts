@@ -21,3 +21,9 @@ export type { DiscountBadgeProps } from './DiscountBadge';
 
 export { CTAButton } from './CTAButton';
 export type { CTAButtonProps } from './CTAButton';
+
+export { SectionLabel } from './SectionLabel';
+export type { SectionLabelProps } from './SectionLabel';
+
+export { BodyText } from './BodyText';
+export type { BodyTextProps } from './BodyText';

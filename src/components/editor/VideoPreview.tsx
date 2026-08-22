@@ -1,31 +1,45 @@
 "use client";
 
 import { Player } from "@remotion/player";
-import { ProductAdvertisement } from "@/remotion/compositions/ProductAdvertisement";
-import type { ProductAdvertisementProps } from "@/remotion/compositions/schema";
+import type { VideoContentProps } from "@/remotion/schema";
+import {
+  getTemplateDimensions,
+  resolveTemplateOrDefault,
+  type TemplateId,
+} from "@/remotion/templates";
+import { getTemplateComponent } from "@/remotion/templates/components";
 import type { AspectRatio } from "@/types";
-import { ASPECT_RATIO_DIMENSIONS } from "@/types";
 
 interface VideoPreviewProps {
-  inputProps: ProductAdvertisementProps;
+  /** Which registered template composition to play. */
+  templateId: TemplateId;
+  inputProps: VideoContentProps;
   aspectRatio: AspectRatio;
   durationInFrames: number;
   fps?: number;
 }
 
+/**
+ * Live Remotion preview that plays the currently selected template.
+ * The composition component and dimensions are resolved from the
+ * template registry — adding a new template requires no changes here.
+ */
 export function VideoPreview({
+  templateId,
   inputProps,
   aspectRatio,
   durationInFrames,
   fps = 30,
 }: VideoPreviewProps) {
-  const { width, height } = ASPECT_RATIO_DIMENSIONS[aspectRatio];
+  const template = resolveTemplateOrDefault(templateId);
+  const TemplateComponent = getTemplateComponent(template.id);
+  const { width, height } = getTemplateDimensions(template, aspectRatio);
 
   return (
     <div className="flex justify-center">
       <Player
-        key={`${aspectRatio}-${durationInFrames}`}
-        component={ProductAdvertisement}
+        key={`${template.id}-${aspectRatio}-${durationInFrames}`}
+        component={TemplateComponent}
         inputProps={inputProps}
         durationInFrames={durationInFrames}
         fps={fps}

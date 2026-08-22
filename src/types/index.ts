@@ -72,8 +72,10 @@ export interface ProductInfo {
   /**
    * Up to 4 bullet-point features or selling points.
    * Rendered as a list in the feature scene.
+   * Kept as a plain array so it matches the shared Remotion zod schema
+   * (`videoContentSchema`) one-to-one.
    */
-  features?: [string, string?, string?, string?];
+  features?: string[];
   /** URL or public path to the main product image. */
   imageUrl?: string;
 }

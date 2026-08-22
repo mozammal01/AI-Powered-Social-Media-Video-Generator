@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useCurrentFrame, useVideoConfig, AbsoluteFill } from "remotion";
 import * as THREE from "three";
-import { getInitialFluidState, updateFluidPhysics, getFluidBonds, FluidState } from "./FluidSimulation";
+import { getInitialFluidState, updateFluidPhysics, getFluidBonds, FluidState, FluidParticle } from "./FluidSimulation";
 import { getProteinState, getAlphaHelixRibbon, getBetaSheetRibbon, ProteinState } from "./ProteinFolding";
 import { getCollisionState, CollisionState } from "./AtomicCollision";
 
@@ -23,7 +23,7 @@ function getCachedFluidState(targetFrame: number): FluidState {
       startFrame = f;
       state = JSON.parse(JSON.stringify(fluidCache[f]));
       // Re-convert color strings to THREE.Color after JSON parsing
-      state.particles.forEach((p: any) => {
+      state.particles.forEach((p: FluidParticle) => {
         p.color = new THREE.Color(p.color.r, p.color.g, p.color.b);
       });
       break;
@@ -39,7 +39,7 @@ function getCachedFluidState(targetFrame: number): FluidState {
 
   // Ensure colors are reconstructed in the returned state
   const finalState = fluidCache[targetFrame] || state;
-  finalState.particles.forEach((p: any) => {
+  finalState.particles.forEach((p: FluidParticle) => {
     p.color = new THREE.Color(p.color.r, p.color.g, p.color.b);
   });
   return finalState;
@@ -625,8 +625,8 @@ export const MolecularArtComposition: React.FC = () => {
     // ==========================================
     // CAMERAS AND TRANSITIONS FLOW
     // ==========================================
-    let cameraPos = new THREE.Vector3(0, 0, 16);
-    let cameraLookAt = new THREE.Vector3(0, 0, 0);
+    const cameraPos = new THREE.Vector3(0, 0, 16);
+    const cameraLookAt = new THREE.Vector3(0, 0, 0);
 
     if (frame < 95) {
       // Scene 1 Camera: Orbiting and zooming in

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Clock, Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { formatDuration } from "@/utils";
 import type { TemplateId, TemplateMetadata } from "@/remotion/templates";
 
 interface TemplateCardProps {
@@ -12,10 +13,6 @@ interface TemplateCardProps {
   /** When provided, the card renders as a link instead of a button (gallery). */
   href?: string;
   className?: string;
-}
-
-function formatDuration(frames: number, fps: number): string {
-  return `${Math.round(frames / fps)}s`;
 }
 
 /**

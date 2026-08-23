@@ -57,6 +57,7 @@ export default function DashboardLayout({
               <Link
                 key={item.name}
                 href={item.href}
+                aria-current={isActive ? "page" : undefined}
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group relative",
                   isActive
@@ -90,8 +91,10 @@ export default function DashboardLayout({
 
       {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-background/80 backdrop-blur-xs md:hidden"
+        <button
+          type="button"
+          aria-label="Close navigation menu"
+          className="fixed inset-0 z-40 cursor-default bg-background/80 backdrop-blur-xs md:hidden"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
@@ -116,6 +119,7 @@ export default function DashboardLayout({
             variant="ghost"
             size="icon"
             onClick={() => setMobileMenuOpen(false)}
+            aria-label="Close navigation menu"
             className="md:hidden"
           >
             <X className="w-5 h-5" />
@@ -131,6 +135,7 @@ export default function DashboardLayout({
                 key={item.name}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
+                aria-current={isActive ? "page" : undefined}
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group relative",
                   isActive
@@ -170,6 +175,7 @@ export default function DashboardLayout({
               variant="ghost"
               size="icon"
               onClick={() => setMobileMenuOpen(true)}
+              aria-label="Open navigation menu"
               className="md:hidden"
             >
               <Menu className="w-5 h-5" />
@@ -189,7 +195,12 @@ export default function DashboardLayout({
               </Button>
             </Link>
 
-            <Button variant="ghost" size="icon" className="relative">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Notifications"
+              className="relative"
+            >
               <Bell className="w-5 h-5 text-muted-foreground" />
               <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-destructive" />
             </Button>

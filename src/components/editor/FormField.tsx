@@ -37,6 +37,7 @@ interface TextInputProps
 export function TextInput({ className, hasError, ...props }: TextInputProps) {
   return (
     <input
+      aria-invalid={hasError || undefined}
       className={cn(
         "flex h-10 w-full rounded-lg border bg-background px-3 py-2 text-sm",
         "placeholder:text-muted-foreground/60",
@@ -60,6 +61,7 @@ interface TextAreaProps
 export function TextArea({ className, hasError, ...props }: TextAreaProps) {
   return (
     <textarea
+      aria-invalid={hasError || undefined}
       className={cn(
         "flex w-full rounded-lg border bg-background px-3 py-2 text-sm",
         "placeholder:text-muted-foreground/60 resize-none",

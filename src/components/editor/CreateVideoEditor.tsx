@@ -26,6 +26,8 @@ import { ImageUpload } from "@/components/editor/ImageUpload";
 import { VideoPreview } from "@/components/editor/VideoPreview";
 import { OptionToggle } from "@/components/editor/OptionToggle";
 import { TemplateSelector } from "@/components/editor/TemplateSelector";
+import { AiCopyPanel } from "@/components/editor/AiCopyPanel";
+import type { GeneratedCopy } from "@/lib/ai/copy-schema";
 import {
   getTemplateDefinition,
   isTemplateId,
@@ -137,6 +139,22 @@ export function CreateVideoEditor() {
       );
       setRenderStatus("error");
     }
+  };
+
+  /** Fills the existing editor fields with AI-generated copy.
+   *  All fields remain fully editable afterwards — AI is only a helper. */
+  const handleApplyAiCopy = (copy: GeneratedCopy) => {
+    setValues((prev) => ({
+      ...prev,
+      tagline: copy.tagline,
+      description: copy.shortDescription,
+      feature1: copy.features[0] ?? "",
+      feature2: copy.features[1] ?? "",
+      feature3: copy.features[2] ?? "",
+      discount: copy.discountText,
+      ctaText: copy.ctaText,
+    }));
+    setStatus("idle");
   };
 
   /** Switches templates; falls back to the template's default ratio when
@@ -273,6 +291,12 @@ export function CreateVideoEditor() {
           <TemplateSelector
             value={values.templateId}
             onChange={handleSelectTemplate}
+          />
+
+          <AiCopyPanel
+            initialProductName={values.productName}
+            initialProductDescription={values.description}
+            onApply={handleApplyAiCopy}
           />
 
           <SectionCard
@@ -520,7 +544,14 @@ export function CreateVideoEditor() {
 
               {renderStatus === "rendering" && (
                 <div className="space-y-2">
-                  <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                  <div
+                    role="progressbar"
+                    aria-label="Render progress"
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={Math.round(renderProgress * 100)}
+                    className="h-2 w-full overflow-hidden rounded-full bg-muted"
+                  >
                     <div
                       className="h-full rounded-full bg-primary transition-all duration-300"
                       style={{ width: `${Math.max(4, renderProgress * 100)}%` }}

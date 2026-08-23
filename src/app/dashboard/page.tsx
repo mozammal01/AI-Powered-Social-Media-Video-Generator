@@ -21,20 +21,7 @@ import {
 } from "@/components/ui/card";
 import { demoProjects } from "@/data/defaults";
 import { templateList } from "@/remotion/templates";
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-function formatFramesToTime(frames: number, fps: number): string {
-  const seconds = Math.round(frames / fps);
-  const m = Math.floor(seconds / 60);
-  const s = seconds % 60;
-  return `${m}:${s.toString().padStart(2, "0")}`;
-}
-
-function formatDateStr(isoStr: string): string {
-  const d = new Date(isoStr);
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-}
+import { formatDate, formatDuration } from "@/utils";
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
@@ -154,7 +141,7 @@ export default function DashboardHome() {
                 {/* Duration chip */}
                 <div className="absolute bottom-2.5 right-2.5 px-2 py-1 rounded bg-black/75 text-[10px] font-medium text-white flex items-center gap-1">
                   <Clock className="w-3 h-3" />
-                  {formatFramesToTime(project.durationInFrames, project.fps)}
+                  {formatDuration(project.durationInFrames, project.fps)}
                 </div>
 
                 {/* Status badge */}
@@ -179,7 +166,7 @@ export default function DashboardHome() {
                 </CardTitle>
                 <CardDescription className="flex items-center gap-1.5 text-xs">
                   <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
-                  Created {formatDateStr(project.createdAt)}
+                  Created {formatDate(project.createdAt)}
                 </CardDescription>
               </CardHeader>
 
@@ -240,7 +227,7 @@ export default function DashboardHome() {
                 <div className="flex items-center gap-4 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Clock className="w-3.5 h-3.5" />
-                    {formatFramesToTime(template.durationInFrames, template.fps)}
+                    {formatDuration(template.durationInFrames, template.fps)}
                   </span>
                   <span>{template.fps} FPS</span>
                   <span>{template.tags.slice(0, 2).join(", ")}</span>

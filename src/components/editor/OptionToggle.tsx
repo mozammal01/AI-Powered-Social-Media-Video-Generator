@@ -37,6 +37,7 @@ export function OptionToggle<T extends string>({
             key={option.value}
             type="button"
             onClick={() => onChange(option.value)}
+            aria-pressed={value === option.value}
             className={cn(
               "flex flex-col items-center gap-0.5 rounded-lg border px-2 py-2 text-xs font-medium transition-colors",
               value === option.value

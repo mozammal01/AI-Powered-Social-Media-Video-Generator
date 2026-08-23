@@ -20,7 +20,7 @@ export default function CreateVideoLayout({
             </span>
           </Link>
           <p className="hidden text-xs text-muted-foreground sm:block">
-            Product advertisement editor
+            AI-powered video editor
           </p>
         </div>
       </header>

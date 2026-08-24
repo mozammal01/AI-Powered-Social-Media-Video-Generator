@@ -42,7 +42,7 @@ export const WorkflowScene: React.FC = () => {
 
       {/* UI Panels */}
       <UIPanel title="server.py" delay={45} style={{ position: 'absolute', left: 100, top: 600, width: 450, height: 250 }}>
-        <TypingEffect text="import torch\nimport numpy as np\n\ndef process_data(tensor):\n    return tensor.to('cuda')" delay={60} charsPerFrame={1} />
+        <TypingEffect text="import torch\nimport numpy as np\n\ndef process_data(tensor):\n    return tensor.to('cuda')" delay={60} charsPerSecond={30} />
       </UIPanel>
 
       <UIPanel title="Training Metrics" delay={100} style={{ position: 'absolute', left: 1400, top: 600, width: 400, height: 300 }}>

@@ -5,14 +5,14 @@ export const NewsTicker: React.FC<{
   headlines: string[];
 }> = ({ headlines }) => {
   const frame = useCurrentFrame();
-  const { width } = useVideoConfig();
+  const { width, fps } = useVideoConfig();
 
   // Combine into one long string separated by bullet points
   const tickerText = headlines.join('   •   ') + '   •   ' + headlines.join('   •   ');
   
-  // Continuous scroll
-  const scrollSpeed = 4; // pixels per frame
-  const translateX = -((frame * scrollSpeed) % 3000); // arbitrary large modulo to loop
+  // Continuous scroll (120 pixels per second)
+  const scrollSpeedPerSecond = 120;
+  const translateX = -(((frame / fps) * scrollSpeedPerSecond) % 3000); // arbitrary large modulo to loop
 
   return (
     <div className="absolute bottom-0 left-0 w-full h-12 bg-black z-50 flex items-center border-t border-neutral-800 overflow-hidden">

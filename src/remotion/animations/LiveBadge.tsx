@@ -1,12 +1,15 @@
 import React from 'react';
-import { interpolate, useCurrentFrame } from 'remotion';
+import { interpolate, useCurrentFrame, useVideoConfig } from 'remotion';
 
 export const LiveBadge: React.FC = () => {
   const frame = useCurrentFrame();
 
-  // Pulse effect based on frames
+  const { fps } = useVideoConfig();
+
+  // Pulse effect based on time (frame / fps)
+  const time = frame / fps;
   const opacity = interpolate(
-    Math.sin(frame / 10),
+    Math.sin(time * 3), // 3 radians per second
     [-1, 1],
     [0.4, 1]
   );

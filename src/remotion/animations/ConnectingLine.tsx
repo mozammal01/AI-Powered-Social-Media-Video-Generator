@@ -1,5 +1,5 @@
 import React from 'react';
-import { interpolate, useCurrentFrame } from 'remotion';
+import { interpolate, useCurrentFrame, useVideoConfig } from 'remotion';
 
 export const ConnectingLine: React.FC<{
   startX: number;
@@ -9,17 +9,21 @@ export const ConnectingLine: React.FC<{
   delay?: number;
 }> = ({ startX, startY, endX, endY, delay = 0 }) => {
   const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
   
   const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
   
-  const progress = interpolate(frame - delay, [0, 20], [0, length], {
+  // Draw line over ~0.66 seconds
+  const drawFrames = Math.floor(fps * (20 / 30));
+  const progress = interpolate(frame - delay, [0, drawFrames], [0, length], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
+  // 1 packet per second
   const dataPacketProgress = interpolate(
-    (frame - delay) % 30,
-    [0, 30],
+    (frame - delay) % fps,
+    [0, fps],
     [0, 1],
     { extrapolateLeft: 'clamp' }
   );
@@ -51,7 +55,7 @@ export const ConnectingLine: React.FC<{
           strokeDashoffset={length - progress}
         />
       </svg>
-      {frame > delay + 20 && (
+      {frame > delay + drawFrames && (
         <div 
           className="absolute w-4 h-4 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.8)]"
           style={{

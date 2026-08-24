@@ -1,18 +1,20 @@
 import React from 'react';
-import { useCurrentFrame } from 'remotion';
+import { useCurrentFrame, useVideoConfig } from 'remotion';
 
 export const TypingEffect: React.FC<{
   text: string;
   delay?: number;
   className?: string;
-  charsPerFrame?: number;
-}> = ({ text, delay = 0, className = 'font-mono text-green-400', charsPerFrame = 0.5 }) => {
+  charsPerSecond?: number;
+}> = ({ text, delay = 0, className = 'font-mono text-green-400', charsPerSecond = 15 }) => {
   const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
 
-  const charsToShow = Math.max(0, Math.floor((frame - delay) * charsPerFrame));
+  const time = (frame - delay) / fps;
+  const charsToShow = Math.max(0, Math.floor(time * charsPerSecond));
   const visibleText = text.substring(0, charsToShow);
 
-  const showCursor = frame % 30 < 15;
+  const showCursor = (frame % fps) < (fps / 2);
 
   return (
     <div className={className}>

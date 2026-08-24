@@ -13,8 +13,14 @@ export const CinematicCamera: React.FC<{
   });
 
   // Extremely subtle pan to give it life
-  const translateX = interpolate(frame, [0, durationInFrames], [0, 20]);
-  const translateY = interpolate(frame, [0, durationInFrames], [0, -10]);
+  const translateX = interpolate(frame, [0, durationInFrames], [0, 20], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const translateY = interpolate(frame, [0, durationInFrames], [0, -10], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
 
   return (
     <div

@@ -33,6 +33,7 @@ export const CameraMovement: React.FC<{
       // We only interpolate if we haven't reached the next stop's start frame
       // Actually, spring naturally settles. We just map progress (0 to 1) to the delta.
       const mappedProgress = interpolate(progress, [0, 1], [0, 1], {
+        extrapolateLeft: 'clamp',
         extrapolateRight: 'clamp'
       });
 

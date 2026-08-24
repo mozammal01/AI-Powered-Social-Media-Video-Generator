@@ -1,10 +1,11 @@
 import React from 'react';
-import { interpolate, useCurrentFrame } from 'remotion';
+import { interpolate, useCurrentFrame, useVideoConfig } from 'remotion';
 
 export const AnimatedWorldMap: React.FC<{
   pointsOfInterest?: { x: number; y: number }[];
 }> = ({ pointsOfInterest = [{ x: 300, y: 150 }, { x: 700, y: 250 }, { x: 500, y: 100 }] }) => {
   const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
 
   return (
     <div className="relative w-full h-full opacity-30">
@@ -18,9 +19,10 @@ export const AnimatedWorldMap: React.FC<{
 
       {/* Radar blips */}
       {pointsOfInterest.map((point, i) => {
-        const ringProgress = (frame + i * 40) % 90;
-        const scale = interpolate(ringProgress, [0, 90], [0, 3]);
-        const opacity = interpolate(ringProgress, [0, 90], [1, 0]);
+        // One pulse every 3 seconds, offset by 1.3 seconds per point
+        const ringProgress = (frame + i * (fps * 1.3)) % (fps * 3);
+        const scale = interpolate(ringProgress, [0, fps * 3], [0, 3]);
+        const opacity = interpolate(ringProgress, [0, fps * 3], [1, 0]);
 
         return (
           <div key={i} style={{ position: 'absolute', left: point.x, top: point.y }}>

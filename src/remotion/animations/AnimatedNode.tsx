@@ -24,11 +24,12 @@ export const AnimatedNode: React.FC<{
     config: { damping: 12, stiffness: 150 },
   });
 
+  const time = (frame - delay) / fps;
   const pulse = interpolate(
-    Math.sin((frame - delay) / 10),
+    Math.sin(time * 3), // 3 radians per second
     [-1, 1],
     [0.5, 1],
-    { extrapolateLeft: 'clamp' }
+    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
   );
 
   const Icon = ICONS[iconName];

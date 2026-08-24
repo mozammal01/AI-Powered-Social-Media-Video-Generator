@@ -27,3 +27,29 @@ export type { SectionLabelProps } from './SectionLabel';
 
 export { BodyText } from './BodyText';
 export type { BodyTextProps } from './BodyText';
+
+// ── Cinematic effects & data-viz primitives ──
+
+export { FilmGrain } from './FilmGrain';
+export type { FilmGrainProps } from './FilmGrain';
+
+export { LightSweep } from './LightSweep';
+export type { LightSweepProps } from './LightSweep';
+
+export { MaskReveal } from './MaskReveal';
+export type { MaskRevealProps } from './MaskReveal';
+
+export { BlurFocus } from './BlurFocus';
+export type { BlurFocusProps } from './BlurFocus';
+
+export { ParallaxLayers } from './ParallaxLayers';
+export type { ParallaxLayersProps, ParallaxLayerConfig } from './ParallaxLayers';
+
+export { MapZoom } from './MapZoom';
+export type { MapZoomProps } from './MapZoom';
+
+export { DateCounter } from './DateCounter';
+export type { DateCounterProps } from './DateCounter';
+
+export { KineticTypography } from './KineticTypography';
+export type { KineticTypographyProps } from './KineticTypography';

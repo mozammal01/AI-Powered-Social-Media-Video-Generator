@@ -6,7 +6,8 @@ import type { VideoContentProps } from '@/remotion/schema';
 export type TemplateId =
   | 'product-advertisement'
   | 'restaurant-promotion'
-  | 'sale-promotion';
+  | 'sale-promotion'
+  | 'documentary-intro';
 
 /**
  * Serializable template metadata — everything the app needs to know about a

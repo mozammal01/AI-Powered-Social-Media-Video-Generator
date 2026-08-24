@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0f1a"/>
+      <stop offset="0.5" stop-color="#101826"/>
+      <stop offset="1" stop-color="#06060b"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.42" r="0.55">
+      <stop offset="0" stop-color="#C9A24B" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#C9A24B" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8f6f2a"/>
+      <stop offset="0.5" stop-color="#C9A24B"/>
+      <stop offset="1" stop-color="#e6c87a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sea -->
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <rect width="800" height="500" fill="url(#glow)"/>
+
+  <!-- Graticule -->
+  <g stroke="#C9A24B" stroke-opacity="0.14" stroke-width="1">
+    <line x1="100" y1="0" x2="100" y2="500"/>
+    <line x1="200" y1="0" x2="200" y2="500"/>
+    <line x1="300" y1="0" x2="300" y2="500"/>
+    <line x1="400" y1="0" x2="400" y2="500"/>
+    <line x1="500" y1="0" x2="500" y2="500"/>
+    <line x1="600" y1="0" x2="600" y2="500"/>
+    <line x1="700" y1="0" x2="700" y2="500"/>
+    <line x1="0" y1="125" x2="800" y2="125"/>
+    <line x1="0" y1="250" x2="800" y2="250"/>
+    <line x1="0" y1="375" x2="800" y2="375"/>
+  </g>
+
+  <!-- Stylized landmasses -->
+  <g fill="#223047" stroke="#C9A24B" stroke-opacity="0.35" stroke-width="1.5">
+    <path d="M95,88 L150,68 L215,72 L245,92 L258,118 L246,148 L256,168 L238,200 L218,222 L198,214 L178,232 L162,246 L152,236 L142,212 L116,186 L94,150 L84,116 Z"/>
+    <path d="M168,258 L198,252 L218,272 L224,304 L208,344 L192,384 L182,412 L172,396 L166,352 L156,310 L154,280 Z"/>
+    <path d="M452,108 L488,94 L522,100 L534,122 L516,138 L494,132 L480,148 L464,142 L450,126 Z"/>
+    <path d="M468,162 L506,154 L538,172 L552,204 L546,244 L526,278 L506,308 L490,332 L478,316 L472,282 L458,242 L454,202 Z"/>
+    <path d="M544,84 L604,64 L684,58 L754,68 L806,90 L824,116 L792,136 L762,130 L742,152 L702,164 L672,152 L652,174 L622,168 L600,142 L570,136 L546,116 Z"/>
+    <path d="M788,302 L832,294 L862,316 L850,346 L814,352 L794,330 Z"/>
+  </g>
+
+  <!-- Target marker -->
+  <circle cx="512" cy="196" r="34" fill="none" stroke="#C9A24B" stroke-opacity="0.7" stroke-width="2"/>
+  <circle cx="512" cy="196" r="20" fill="none" stroke="#C9A24B" stroke-opacity="0.45" stroke-width="1.5"/>
+  <line x1="482" y1="196" x2="542" y2="196" stroke="#C9A24B" stroke-width="2"/>
+  <line x1="512" y1="166" x2="512" y2="226" stroke="#C9A24B" stroke-width="2"/>
+  <circle cx="512" cy="196" r="5" fill="#C9A24B"/>
+
+  <!-- Letterbox bars -->
+  <rect x="0" y="0" width="800" height="30" fill="#000000"/>
+  <rect x="0" y="470" width="800" height="30" fill="#000000"/>
+
+  <!-- Copy block -->
+  <text x="64" y="120" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="6" fill="#EAE3D2">DOCUMENTARY INTRO</text>
+  <text x="62" y="205" font-family="Georgia, 'Times New Roman', serif" font-size="58" fill="#EAE3D2">The Long</text>
+  <text x="62" y="272" font-family="Georgia, 'Times New Roman', serif" font-size="58" fill="#EAE3D2">Shadow.</text>
+  <rect x="64" y="298" width="180" height="3" fill="url(#gold)"/>
+  <text x="64" y="340" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="4" fill="#C9A24B">MAP ZOOM · MASK REVEAL · PARALLAX</text>
+  <text x="64" y="364" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="4" fill="#C9A24B">FILM GRAIN · KINETIC TYPE · LIGHT SWEEP</text>
+
+  <!-- Rolling year counter -->
+  <text x="64" y="440" font-family="Georgia, 'Times New Roman', serif" font-size="44" fill="#EAE3D2">1914 — 1918</text>
+
+  <!-- Film grain speckle -->
+  <g fill="#ffffff">
+    <circle cx="700" cy="80" r="1.2" opacity="0.25"/>
+    <circle cx="730" cy="140" r="1" opacity="0.18"/>
+    <circle cx="690" cy="210" r="1.4" opacity="0.22"/>
+    <circle cx="745" cy="260" r="1" opacity="0.16"/>
+    <circle cx="710" cy="330" r="1.2" opacity="0.2"/>
+    <circle cx="760" cy="400" r="1" opacity="0.15"/>
+    <circle cx="680" cy="430" r="1.3" opacity="0.18"/>
+  </g>
+</svg>

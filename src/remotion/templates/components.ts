@@ -5,6 +5,7 @@ import type { TemplateId } from './types';
 import { ProductAdvertisement } from './ProductAdvertisement';
 import { RestaurantPromotion } from './RestaurantPromotion';
 import { SalePromotion } from './SalePromotion';
+import { DocumentaryIntro } from './DocumentaryIntro';
 
 /**
  * Maps template IDs to their Remotion composition components.
@@ -23,6 +24,7 @@ export const templateComponents: Record<
   'product-advertisement': ProductAdvertisement,
   'restaurant-promotion': RestaurantPromotion,
   'sale-promotion': SalePromotion,
+  'documentary-intro': DocumentaryIntro,
 };
 
 /** Returns the Remotion composition component for a registered template ID. */

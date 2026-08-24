@@ -6,6 +6,7 @@ import type { TemplateId, TemplateMetadata } from './types';
 import { productAdDefaultContent } from './ProductAdvertisement/defaults';
 import { restaurantDefaultContent } from './RestaurantPromotion/defaults';
 import { saleDefaultContent } from './SalePromotion/defaults';
+import { documentaryDefaultContent } from './DocumentaryIntro/defaults';
 
 /**
  * Template Registry
@@ -66,6 +67,21 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     fps: 30,
     durationInFrames: 300, // 10s default
     defaultProps: saleDefaultContent,
+  },
+
+  'documentary-intro': {
+    id: 'documentary-intro',
+    name: 'Documentary Intro',
+    description:
+      'Cinematic 20-second documentary opening: map push-in with a rolling year counter, masked title reveal with lens focus rack, parallax chapter card, kinetic typography, light sweeps, and film grain under letterbox bars.',
+    category: 'intro',
+    tags: ['documentary', 'cinematic', 'intro', 'title', 'map', 'history'],
+    thumbnailUrl: '/templates/documentary-intro.svg',
+    supportedAspectRatios: ['16:9', '9:16', '1:1'],
+    defaultAspectRatio: '16:9',
+    fps: 24,
+    durationInFrames: 480, // 20s @ 24fps (cinematic)
+    defaultProps: documentaryDefaultContent,
   },
 };
 

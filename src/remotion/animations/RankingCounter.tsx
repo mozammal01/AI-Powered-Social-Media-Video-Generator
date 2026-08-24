@@ -3,10 +3,9 @@ import { interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 
 export const RankingCounter: React.FC<{
   rank: number;
-  total: number;
   color?: string;
   size?: number;
-}> = ({ rank, total, color = 'text-white', size = 120 }) => {
+}> = ({ rank, color = 'text-white', size = 120 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 

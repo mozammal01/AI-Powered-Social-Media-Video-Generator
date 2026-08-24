@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, Sequence, useVideoConfig } from 'remotion';
+import { AbsoluteFill, Sequence } from 'remotion';
 import { ListItem, ListItemData } from './ListItem';
 import { ProgressBar } from '../../animations/ProgressBar';
 
@@ -7,8 +7,6 @@ export const Top10Listicle: React.FC<{
   items: ListItemData[];
   itemDurationInFrames?: number;
 }> = ({ items, itemDurationInFrames = 90 }) => {
-  const { durationInFrames } = useVideoConfig();
-
   return (
     <AbsoluteFill className="bg-neutral-900">
       {items.map((item, index) => {
@@ -22,7 +20,6 @@ export const Top10Listicle: React.FC<{
           >
             <ListItem
               item={item}
-              total={items.length}
               durationInFrames={itemDurationInFrames + 10}
             />
           </Sequence>

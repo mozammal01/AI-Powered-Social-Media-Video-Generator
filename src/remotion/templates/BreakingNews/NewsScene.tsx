@@ -10,7 +10,7 @@ import { ChartAnimation } from '../../animations/ChartAnimation';
 export const NewsScene: React.FC = () => {
   return (
     <AbsoluteFill className="bg-neutral-900">
-      <Sequence from={0} durationInFrames={120}>
+      <Sequence durationInFrames={120}>
         <AbsoluteFill className="items-center justify-center bg-blue-950">
           <AnimatedWorldMap />
           <HeadlineReveal text="GLOBAL CRISIS" delay={15} />

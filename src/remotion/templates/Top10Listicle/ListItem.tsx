@@ -13,12 +13,11 @@ export interface ListItemData {
 
 export const ListItem: React.FC<{
   item: ListItemData;
-  total: number;
   durationInFrames: number;
-}> = ({ item, total, durationInFrames }) => {
+}> = ({ item, durationInFrames }) => {
   return (
     <AbsoluteFill className="bg-black">
-      <Sequence from={0} durationInFrames={durationInFrames}>
+      <Sequence durationInFrames={durationInFrames}>
         <SwipeTransition type="in" direction="left">
           <AbsoluteFill>
             <SplitImageReveal src={item.imageSrc} />
@@ -26,7 +25,7 @@ export const ListItem: React.FC<{
             
             <AbsoluteFill className="flex flex-col justify-end p-10 pb-20">
               <div className="mb-4">
-                <RankingCounter rank={item.rank} total={total} />
+                <RankingCounter rank={item.rank} />
               </div>
               <KineticText 
                 text={item.title} 

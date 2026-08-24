@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useCurrentFrame, useVideoConfig } from 'remotion';
+import { random, useCurrentFrame, useVideoConfig } from 'remotion';
 
 export const FloatingParticles: React.FC<{ count?: number; color?: string }> = ({ 
   count = 50, 
@@ -8,16 +8,18 @@ export const FloatingParticles: React.FC<{ count?: number; color?: string }> = (
   const frame = useCurrentFrame();
   const { width, height, fps } = useVideoConfig();
 
-  // Pre-calculate stable random values for each particle so they don't jitter
+  // Pre-calculate stable pseudorandom values for each particle.
+  // Remotion's seeded random() keeps values identical across every frame,
+  // which is required for deterministic server-side rendering.
   const particles = useMemo(() => {
-    return Array.from({ length: count }).map(() => ({
-      startX: Math.random() * width,
-      startY: Math.random() * height,
-      size: Math.random() * 4 + 1,
-      speedX: (Math.random() - 0.5) * 45, // pixels per second
-      speedY: (Math.random() - 0.5) * 45 - 15, // slightly upwards
-      wobbleSpeed: Math.random() * 1.5 + 0.3, // cycles per second
-      wobbleAmount: Math.random() * 20 + 5,
+    return Array.from({ length: count }).map((_, i) => ({
+      startX: random(`startX-${i}`) * width,
+      startY: random(`startY-${i}`) * height,
+      size: random(`size-${i}`) * 4 + 1,
+      speedX: (random(`speedX-${i}`) - 0.5) * 45, // pixels per second
+      speedY: (random(`speedY-${i}`) - 0.5) * 45 - 15, // slightly upwards
+      wobbleSpeed: random(`wobbleSpeed-${i}`) * 1.5 + 0.3, // cycles per second
+      wobbleAmount: random(`wobbleAmount-${i}`) * 20 + 5,
     }));
   }, [count, width, height]);
 

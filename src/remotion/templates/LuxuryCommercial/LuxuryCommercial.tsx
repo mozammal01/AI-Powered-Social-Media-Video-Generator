@@ -23,7 +23,7 @@ export const LuxuryCommercial: React.FC = () => {
         <FloatingParticles count={80} color="rgba(255, 230, 150, 0.3)" />
         
         {/* SCENE 1: The Tease (0 - 3s) */}
-        <Sequence from={0} durationInFrames={90}>
+        <Sequence durationInFrames={90}>
           <AbsoluteFill className="items-center justify-center">
             <ElegantTypography text="E L E V A T E" delay={10} className="text-6xl text-amber-100/80 font-light" />
             <ElegantTypography text="Y O U R   S E N S E S" type="subtitle" delay={45} className="text-xl text-neutral-400 mt-4 tracking-[0.5em]" />

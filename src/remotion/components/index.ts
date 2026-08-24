@@ -53,3 +53,23 @@ export type { DateCounterProps } from './DateCounter';
 
 export { KineticTypography } from './KineticTypography';
 export type { KineticTypographyProps } from './KineticTypography';
+
+// ── Listicle & countdown primitives ──
+
+export { MotionBlur } from './MotionBlur';
+export type { MotionBlurProps } from './MotionBlur';
+
+export { RankingCounter } from './RankingCounter';
+export type { RankingCounterProps } from './RankingCounter';
+
+export { NumberSwap } from './NumberSwap';
+export type { NumberSwapProps } from './NumberSwap';
+
+export { SplitImageReveal } from './SplitImageReveal';
+export type { SplitImageRevealProps } from './SplitImageReveal';
+
+export { ProgressBar } from './ProgressBar';
+export type { ProgressBarProps } from './ProgressBar';
+
+export { SwipeTransition } from './SwipeTransition';
+export type { SwipeTransitionProps } from './SwipeTransition';

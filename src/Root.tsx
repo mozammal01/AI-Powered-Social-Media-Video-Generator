@@ -9,6 +9,7 @@ import { getTemplateComponent } from "./remotion/templates/components";
 import { Top10Listicle } from "./remotion/templates/Top10Listicle/Top10Listicle";
 import { TechExplainer } from "./remotion/templates/TechExplainer/TechExplainer";
 import { LuxuryCommercial } from "./remotion/templates/LuxuryCommercial/LuxuryCommercial";
+import { BreakingNews } from "./remotion/templates/BreakingNews/BreakingNews";
 
 const sampleListicleData = [
   { rank: 10, title: "Astonishing Facts", imageSrc: "https://images.unsplash.com/photo-1502481851512-e9e2529bfbf9?auto=format&fit=crop&w=1080&q=80" },
@@ -121,6 +122,15 @@ export const RemotionRoot: React.FC = () => {
         id="LuxuryCommercial"
         component={LuxuryCommercial}
         durationInFrames={600} // 20 seconds at 30 fps
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+
+      <Composition
+        id="BreakingNews"
+        component={BreakingNews}
+        durationInFrames={360}
         fps={30}
         width={1920}
         height={1080}

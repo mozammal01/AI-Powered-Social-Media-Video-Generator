@@ -1,5 +1,8 @@
-import { PenLine, Rocket, WandSparkles } from "lucide-react";
+"use client";
+
+import { Download, Layers, MonitorPlay, PenLine } from "lucide-react";
 import type { ComponentType } from "react";
+import { motion, type Variants } from "framer-motion";
 import { GradientText, SectionHeading } from "./SectionHeading";
 
 interface Step {
@@ -13,25 +16,50 @@ const steps: Step[] = [
   {
     number: "01",
     icon: PenLine,
-    title: "Describe your product",
+    title: "Enter Content",
     description:
-      "Paste a link, drop in product details, or type a rough idea. The AI turns it into a structured video brief in seconds.",
+      "Paste a link or drop in product details — name, features, pricing, and your call-to-action.",
   },
   {
     number: "02",
-    icon: WandSparkles,
-    title: "Let AI build the scenes",
+    icon: Layers,
+    title: "Choose Template",
     description:
-      "VividAI writes the script, picks a template, and choreographs spring animations, captions, and CTAs automatically.",
+      "Pick a proven format sized for stories, feed posts, or landscape placements.",
   },
   {
     number: "03",
-    icon: Rocket,
-    title: "Render & share everywhere",
+    icon: MonitorPlay,
+    title: "Live Preview",
     description:
-      "Export a crisp MP4 sized for TikTok, Reels, Shorts, and feeds — then download it or publish straight away.",
+      "Watch AI copy and spring animations assemble every scene in real time before you commit.",
+  },
+  {
+    number: "04",
+    icon: Download,
+    title: "Export Video",
+    description:
+      "Render a crisp MP4 in seconds and download it ready to publish anywhere.",
   },
 ];
+
+/* ─── Scroll-reveal choreography ────────────────────────────────────────── */
+
+const EASE_OUT: [number, number, number, number] = [0.21, 0.47, 0.32, 0.98];
+
+const container: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.14 } },
+};
+
+const cardReveal: Variants = {
+  hidden: { opacity: 0, y: 32 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: EASE_OUT },
+  },
+};
 
 export function HowItWorks() {
   return (
@@ -41,28 +69,36 @@ export function HowItWorks() {
           eyebrow="How It Works"
           title={
             <>
-              From prompt to post in <GradientText>three steps</GradientText>
+              From prompt to post in{" "}
+              <GradientText>four steps</GradientText>
             </>
           }
-          description="A complete video pipeline without a single timeline. Describe, generate, ship."
+          description="A complete video pipeline without a single timeline. Enter, choose, preview, export."
         />
 
-        <div className="relative mt-16">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          className="relative mt-16"
+        >
           {/* Connector line (desktop only) */}
           <div
             aria-hidden
-            className="absolute inset-x-24 top-14 hidden border-t-2 border-dashed border-border/60 lg:block"
+            className="absolute inset-x-16 top-14 hidden border-t-2 border-dashed border-border/60 lg:block"
           />
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((step) => {
               const Icon = step.icon;
               return (
-                <div
+                <motion.div
                   key={step.number}
-                  className="group relative rounded-2xl border border-border/70 bg-card/50 p-8 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl hover:shadow-black/20"
+                  variants={cardReveal}
+                  className="group relative rounded-2xl border border-border/70 bg-card/50 p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl hover:shadow-black/20"
                 >
-                  <span className="absolute right-6 top-6 font-mono text-sm font-semibold text-muted-foreground/40 transition-colors group-hover:text-primary/50">
+                  <span className="absolute right-5 top-5 font-mono text-sm font-semibold text-muted-foreground/40 transition-colors group-hover:text-primary/50">
                     {step.number}
                   </span>
 
@@ -76,11 +112,11 @@ export function HowItWorks() {
                   <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">
                     {step.description}
                   </p>
-                </div>
+                </motion.div>
               );
             })}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

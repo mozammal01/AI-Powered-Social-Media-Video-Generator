@@ -7,6 +7,7 @@ import { videoContentSchema } from "./remotion/schema";
 import { getTemplateDimensions, templateList } from "./remotion/templates";
 import { getTemplateComponent } from "./remotion/templates/components";
 import { Top10Listicle } from "./remotion/templates/Top10Listicle/Top10Listicle";
+import { TechExplainer } from "./remotion/templates/TechExplainer/TechExplainer";
 
 const sampleListicleData = [
   { rank: 10, title: "Astonishing Facts", imageSrc: "https://images.unsplash.com/photo-1502481851512-e9e2529bfbf9?auto=format&fit=crop&w=1080&q=80" },
@@ -104,6 +105,15 @@ export const RemotionRoot: React.FC = () => {
           items: sampleListicleData,
           itemDurationInFrames: 90
         }}
+      />
+
+      <Composition
+        id="TechExplainer"
+        component={TechExplainer}
+        durationInFrames={300}
+        fps={30}
+        width={1920}
+        height={1080}
       />
     </>
   );

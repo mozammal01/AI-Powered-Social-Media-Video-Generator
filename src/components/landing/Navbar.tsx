@@ -51,7 +51,7 @@ export function Navbar() {
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         {/* Brand */}
-        <Link href="/landing" className="flex items-center gap-2.5">
+        <Link href="/" className="flex items-center gap-2.5">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 via-purple-500 to-fuchsia-500 text-white shadow-md shadow-purple-500/25">
             <Sparkles className="h-4 w-4" />
           </span>
@@ -78,7 +78,7 @@ export function Navbar() {
         <div className="hidden items-center gap-2 md:flex">
           <Link href="/dashboard">
             <Button variant="ghost" size="sm">
-              Sign In
+              Dashboard
             </Button>
           </Link>
           <Link href="/create-video">
@@ -117,7 +117,7 @@ export function Navbar() {
             <div className="mt-3 flex gap-2 border-t border-border/60 pt-4">
               <Link href="/dashboard" className="flex-1">
                 <Button variant="outline" className="w-full">
-                  Sign In
+                  Dashboard
                 </Button>
               </Link>
               <Link href="/create-video" className="flex-1">

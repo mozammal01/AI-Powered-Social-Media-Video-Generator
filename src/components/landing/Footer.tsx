@@ -5,16 +5,16 @@ const footerColumns = [
   {
     heading: "Product",
     links: [
-      { label: "How It Works", href: "/landing#how-it-works" },
+      { label: "How It Works", href: "/#how-it-works" },
       { label: "Templates", href: "/dashboard/templates" },
-      { label: "Features", href: "/landing#features" },
+      { label: "Features", href: "/#features" },
       { label: "Start Creating", href: "/create-video" },
     ],
   },
   {
     heading: "Resources",
     links: [
-      { label: "FAQ", href: "/landing#faq" },
+      { label: "FAQ", href: "/#faq" },
       { label: "Dashboard", href: "/dashboard" },
       { label: "My Videos", href: "/dashboard/my-videos" },
       { label: "Settings", href: "/dashboard/settings" },
@@ -44,7 +44,7 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
           {/* Brand */}
           <div className="max-w-sm">
-            <Link href="/landing" className="flex items-center gap-2.5">
+            <Link href="/" className="flex items-center gap-2.5">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 via-purple-500 to-fuchsia-500 text-white shadow-md shadow-purple-500/25">
                 <Sparkles className="h-4 w-4" />
               </span>

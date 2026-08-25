@@ -5,6 +5,7 @@ import { ProductAdvertisement } from './ProductAdvertisement';
 import { RestaurantPromotion } from './RestaurantPromotion';
 import { SalePromotion } from './SalePromotion';
 import { DocumentaryIntro } from './DocumentaryIntro';
+import { CinematicDocumentary } from './CinematicDocumentary';
 import { Top10Listicle } from './Top10Listicle/Top10Listicle';
 import { TechExplainer } from './TechExplainer/TechExplainer';
 import { LuxuryCommercial } from './LuxuryCommercial/LuxuryCommercial';
@@ -28,6 +29,7 @@ export const templateComponents: Record<
   'restaurant-promotion': RestaurantPromotion,
   'sale-promotion': SalePromotion,
   'documentary-intro': DocumentaryIntro,
+  'cinematic-documentary': CinematicDocumentary,
   'top-10-listicle': Top10Listicle,
   'tech-explainer': TechExplainer,
   'luxury-commercial': LuxuryCommercial,

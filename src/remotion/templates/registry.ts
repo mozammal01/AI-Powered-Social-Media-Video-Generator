@@ -11,6 +11,7 @@ import { top10ListicleDefaultContent } from './Top10Listicle/defaults';
 import { techExplainerDefaultContent } from './TechExplainer/defaults';
 import { luxuryCommercialDefaultContent } from './LuxuryCommercial/defaults';
 import { breakingNewsDefaultContent } from './BreakingNews/defaults';
+import { cinematicDocumentaryDefaultContent } from './CinematicDocumentary/defaults';
 
 /**
  * Template Registry
@@ -64,7 +65,7 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     defaultProps: techExplainerDefaultContent,
   },
 
-  'documentary-intro': {
+   'documentary-intro': {
     id: 'documentary-intro',
     name: 'Cinematic Documentary',
     description:
@@ -78,6 +79,21 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     durationInFrames: 480, // 20s @ 24fps (cinematic)
     featured: true,
     defaultProps: documentaryDefaultContent,
+  },
+
+  'cinematic-documentary': {
+    id: 'cinematic-documentary',
+    name: 'Cinematic Documentary',
+    description:
+      'Premium 30-second documentary sequence: cinematic opening, archival parallax, kinetic statement, map movement, broadcast timeline, and finale lockup with film grain, light sweeps, and cinematic letterbox bars.',
+    category: 'intro',
+    tags: ['documentary', 'cinematic', 'parallax', 'kinetic', 'timeline', 'premium'],
+    thumbnailUrl: '/templates/cinematic-documentary.svg',
+    supportedAspectRatios: ['16:9', '9:16', '1:1'],
+    defaultAspectRatio: '16:9',
+    fps: 30,
+    durationInFrames: 900, // 30s @ 30fps
+    defaultProps: cinematicDocumentaryDefaultContent,
   },
 
   'breaking-news': {

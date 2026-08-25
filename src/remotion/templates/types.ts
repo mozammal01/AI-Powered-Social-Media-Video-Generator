@@ -8,6 +8,7 @@ export type TemplateId =
   | 'restaurant-promotion'
   | 'sale-promotion'
   | 'documentary-intro'
+  | 'cinematic-documentary'
   | 'top-10-listicle'
   | 'tech-explainer'
   | 'luxury-commercial'

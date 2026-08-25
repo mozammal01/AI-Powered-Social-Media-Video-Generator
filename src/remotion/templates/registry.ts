@@ -14,6 +14,7 @@ import { breakingNewsDefaultContent } from './BreakingNews/defaults';
 import { cinematicDocumentaryDefaultContent } from './CinematicDocumentary/defaults';
 import { top10CountdownDefaultContent } from './Top10Countdown/defaults';
 import { techBusinessExplainerDefaultContent } from './TechBusinessExplainer/defaults';
+import { financeMarketBreakdownDefaultContent } from './FinanceMarketBreakdown/defaults';
 
 /**
  * Template Registry
@@ -81,6 +82,22 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     durationInFrames: 900, // 30s
     featured: true,
     defaultProps: techBusinessExplainerDefaultContent,
+  },
+
+  'finance-market-breakdown': {
+    id: 'finance-market-breakdown',
+    name: 'Finance / Market Breakdown',
+    description:
+      'Premium 30-second financial explainer with animated stock charts, company comparisons, market cards, scrolling ticker, counters, and cinematic camera movement — built for finance, market news, and economic breakdowns.',
+    category: 'explainer',
+    tags: ['finance', 'market', 'stocks', 'news', 'business', 'economics'],
+    thumbnailUrl: '/templates/finance-market-breakdown.svg',
+    supportedAspectRatios: ['16:9', '9:16', '1:1'],
+    defaultAspectRatio: '16:9',
+    fps: 30,
+    durationInFrames: 900, // 30s
+    featured: true,
+    defaultProps: financeMarketBreakdownDefaultContent,
   },
 
    'documentary-intro': {

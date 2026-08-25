@@ -334,5 +334,11 @@ export type { AnimatedArrowProps } from './AnimatedArrow';
 export { AnimatedCard } from './AnimatedCard';
 export type { AnimatedCardProps } from './AnimatedCard';
 
+export { AnimatedStockChart } from './AnimatedStockChart';
+export type { StockPoint, AnimatedStockChartProps } from './AnimatedStockChart';
+
+export { NumberCounter } from './NumberCounter';
+export type { NumberCounterProps } from './NumberCounter';
+
 export { Timeline } from './Timeline';
 export type { TimelineStep, TimelineProps } from './Timeline';

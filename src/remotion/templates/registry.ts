@@ -12,6 +12,7 @@ import { techExplainerDefaultContent } from './TechExplainer/defaults';
 import { luxuryCommercialDefaultContent } from './LuxuryCommercial/defaults';
 import { breakingNewsDefaultContent } from './BreakingNews/defaults';
 import { cinematicDocumentaryDefaultContent } from './CinematicDocumentary/defaults';
+import { top10CountdownDefaultContent } from './Top10Countdown/defaults';
 
 /**
  * Template Registry
@@ -155,6 +156,21 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     fps: 30,
     durationInFrames: 300, // 10s default
     defaultProps: saleDefaultContent,
+  },
+
+  'top-10-countdown': {
+    id: 'top-10-countdown',
+    name: 'Top 10 Countdown',
+    description:
+      'High-retention YouTube listicle with animated rank counters, image reveals, progress bar, statistics, and fast item-to-item transitions.',
+    category: 'social-media',
+    tags: ['countdown', 'ranking', 'listicle', 'youtube', 'top-10', 'viral'],
+    thumbnailUrl: '/templates/top-10-countdown.svg',
+    supportedAspectRatios: ['16:9', '9:16', '1:1'],
+    defaultAspectRatio: '16:9',
+    fps: 30,
+    durationInFrames: 900, // 30s
+    defaultProps: top10CountdownDefaultContent,
   },
 
   'luxury-commercial': {

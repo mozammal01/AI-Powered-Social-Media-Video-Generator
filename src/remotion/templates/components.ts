@@ -7,6 +7,7 @@ import { SalePromotion } from './SalePromotion';
 import { DocumentaryIntro } from './DocumentaryIntro';
 import { CinematicDocumentary } from './CinematicDocumentary';
 import { Top10Listicle } from './Top10Listicle/Top10Listicle';
+import { Top10Countdown } from './Top10Countdown';
 import { TechExplainer } from './TechExplainer/TechExplainer';
 import { LuxuryCommercial } from './LuxuryCommercial/LuxuryCommercial';
 import { BreakingNews } from './BreakingNews/BreakingNews';
@@ -31,6 +32,7 @@ export const templateComponents: Record<
   'documentary-intro': DocumentaryIntro,
   'cinematic-documentary': CinematicDocumentary,
   'top-10-listicle': Top10Listicle,
+  'top-10-countdown': Top10Countdown,
   'tech-explainer': TechExplainer,
   'luxury-commercial': LuxuryCommercial,
   'breaking-news': BreakingNews,

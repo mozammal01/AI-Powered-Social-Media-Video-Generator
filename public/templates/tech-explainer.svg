@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <rect width="400" height="250" fill="#0f172a"/>
+  <text x="200" y="105" text-anchor="middle" fill="#f8fafc" font-family="system-ui" font-size="16" font-weight="700">TECH / BUSINESS EXPLAINER</text>
+  <text x="200" y="130" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="12">Animated workflow walkthrough</text>
+  <rect x="140" y="150" width="40" height="30" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <rect x="180" y="140" width="40" height="30" rx="4" fill="#6366f1" opacity="0.8"/>
+  <rect x="220" y="160" width="40" height="30" rx="4" fill="#8b5cf6" opacity="0.8"/>
+  <line x1="180" y1="155" x2="220" y2="155" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 2"/>
+</svg>

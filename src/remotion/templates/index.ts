@@ -5,6 +5,8 @@ export type { TemplateDefinition, TemplateMetadata, TemplateId } from './types';
 export {
   templateRegistry,
   templateList,
+  featuredTemplates,
+  otherTemplates,
   DEFAULT_TEMPLATE_ID,
   isTemplateId,
   getTemplateDefinition,

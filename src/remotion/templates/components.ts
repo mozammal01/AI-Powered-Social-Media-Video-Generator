@@ -1,11 +1,14 @@
 import type React from 'react';
-import type { VideoContentProps } from '@/remotion/schema';
 import type { TemplateId } from './types';
 
 import { ProductAdvertisement } from './ProductAdvertisement';
 import { RestaurantPromotion } from './RestaurantPromotion';
 import { SalePromotion } from './SalePromotion';
 import { DocumentaryIntro } from './DocumentaryIntro';
+import { Top10Listicle } from './Top10Listicle/Top10Listicle';
+import { TechExplainer } from './TechExplainer/TechExplainer';
+import { LuxuryCommercial } from './LuxuryCommercial/LuxuryCommercial';
+import { BreakingNews } from './BreakingNews/BreakingNews';
 
 /**
  * Maps template IDs to their Remotion composition components.
@@ -19,17 +22,21 @@ import { DocumentaryIntro } from './DocumentaryIntro';
  */
 export const templateComponents: Record<
   TemplateId,
-  React.FC<VideoContentProps>
+  React.ComponentType<any> // eslint-disable-line @typescript-eslint/no-explicit-any
 > = {
   'product-advertisement': ProductAdvertisement,
   'restaurant-promotion': RestaurantPromotion,
   'sale-promotion': SalePromotion,
   'documentary-intro': DocumentaryIntro,
+  'top-10-listicle': Top10Listicle,
+  'tech-explainer': TechExplainer,
+  'luxury-commercial': LuxuryCommercial,
+  'breaking-news': BreakingNews,
 };
 
 /** Returns the Remotion composition component for a registered template ID. */
 export function getTemplateComponent(
   id: TemplateId,
-): React.FC<VideoContentProps> {
+): React.ComponentType<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
   return templateComponents[id];
 }

@@ -9,6 +9,7 @@ import {
   CheckCircle2,
   Loader2,
   Sparkles,
+  Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +21,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { demoProjects } from "@/data/defaults";
-import { templateList } from "@/remotion/templates";
+import {
+  featuredTemplates,
+  otherTemplates,
+  templateList,
+} from "@/remotion/templates";
 import { formatDate, formatDuration } from "@/utils";
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -181,7 +186,7 @@ export default function DashboardHome() {
       </section>
 
       {/* Available Templates */}
-      <section className="space-y-4">
+      <section className="space-y-6">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <h2 className="text-xl font-bold tracking-tight">
@@ -203,55 +208,121 @@ export default function DashboardHome() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {templateList.map((template) => (
-            <Card key={template.id} className="flex flex-col justify-between">
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-bold tracking-wider uppercase text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                    {template.category}
-                  </span>
-                  <span className="text-xs font-medium text-muted-foreground">
-                    {template.supportedAspectRatios.join(" · ")}
-                  </span>
-                </div>
-                <CardTitle className="text-base font-semibold">
-                  {template.name}
-                </CardTitle>
-                <CardDescription className="text-xs line-clamp-2 mt-1">
-                  {template.description}
-                </CardDescription>
-              </CardHeader>
+        {featuredTemplates.length > 0 && (
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold text-primary flex items-center gap-1.5">
+              <Star className="w-3.5 h-3.5" />
+              Featured Templates
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredTemplates.map((template) => (
+                <Card key={template.id} className="flex flex-col justify-between">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[10px] font-bold tracking-wider uppercase text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                        {template.category}
+                      </span>
+                      <span className="text-xs font-medium text-muted-foreground">
+                        {template.supportedAspectRatios.join(" · ")}
+                      </span>
+                    </div>
+                    <CardTitle className="text-base font-semibold">
+                      {template.name}
+                    </CardTitle>
+                    <CardDescription className="text-xs line-clamp-2 mt-1">
+                      {template.description}
+                    </CardDescription>
+                  </CardHeader>
 
-              <CardContent className="pb-3">
-                <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5" />
-                    {formatDuration(template.durationInFrames, template.fps)}
-                  </span>
-                  <span>{template.fps} FPS</span>
-                  <span>{template.tags.slice(0, 2).join(", ")}</span>
-                </div>
-              </CardContent>
+                  <CardContent className="pb-3">
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3.5 h-3.5" />
+                        {formatDuration(template.durationInFrames, template.fps)}
+                      </span>
+                      <span>{template.fps} FPS</span>
+                      <span>{template.tags.slice(0, 2).join(", ")}</span>
+                    </div>
+                  </CardContent>
 
-              <CardFooter className="pt-2">
-                <Link
-                  href={`/create-video?template=${template.id}`}
-                  className="w-full"
-                >
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full gap-1.5 text-xs"
-                  >
-                    Use Template
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Button>
-                </Link>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+                  <CardFooter className="pt-2">
+                    <Link
+                      href={`/create-video?template=${template.id}`}
+                      className="w-full"
+                    >
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full gap-1.5 text-xs"
+                      >
+                        Use Template
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Button>
+                    </Link>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {otherTemplates.length > 0 && (
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold text-muted-foreground flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5" />
+              Other Templates
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {otherTemplates.map((template) => (
+                <Card key={template.id} className="flex flex-col justify-between">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[10px] font-bold tracking-wider uppercase text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                        {template.category}
+                      </span>
+                      <span className="text-xs font-medium text-muted-foreground">
+                        {template.supportedAspectRatios.join(" · ")}
+                      </span>
+                    </div>
+                    <CardTitle className="text-base font-semibold">
+                      {template.name}
+                    </CardTitle>
+                    <CardDescription className="text-xs line-clamp-2 mt-1">
+                      {template.description}
+                    </CardDescription>
+                  </CardHeader>
+
+                  <CardContent className="pb-3">
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3.5 h-3.5" />
+                        {formatDuration(template.durationInFrames, template.fps)}
+                      </span>
+                      <span>{template.fps} FPS</span>
+                      <span>{template.tags.slice(0, 2).join(", ")}</span>
+                    </div>
+                  </CardContent>
+
+                  <CardFooter className="pt-2">
+                    <Link
+                      href={`/create-video?template=${template.id}`}
+                      className="w-full"
+                    >
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full gap-1.5 text-xs"
+                      >
+                        Use Template
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Button>
+                    </Link>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );

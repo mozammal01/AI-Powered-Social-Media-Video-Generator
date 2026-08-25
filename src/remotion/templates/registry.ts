@@ -7,6 +7,10 @@ import { productAdDefaultContent } from './ProductAdvertisement/defaults';
 import { restaurantDefaultContent } from './RestaurantPromotion/defaults';
 import { saleDefaultContent } from './SalePromotion/defaults';
 import { documentaryDefaultContent } from './DocumentaryIntro/defaults';
+import { top10ListicleDefaultContent } from './Top10Listicle/defaults';
+import { techExplainerDefaultContent } from './TechExplainer/defaults';
+import { luxuryCommercialDefaultContent } from './LuxuryCommercial/defaults';
+import { breakingNewsDefaultContent } from './BreakingNews/defaults';
 
 /**
  * Template Registry
@@ -22,8 +26,76 @@ import { documentaryDefaultContent } from './DocumentaryIntro/defaults';
  * The Remotion Root, the editor's template selector, the live preview,
  * and the dashboard gallery all read from this object — adding a new
  * template here automatically makes it available everywhere.
+ *
+ * Templates are listed in display order: featured templates first,
+ * followed by other templates. Set `featured: true` to promote a
+ * template to the Featured section in the UI.
  */
 export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
+  'top-10-listicle': {
+    id: 'top-10-listicle',
+    name: 'Top 10 Countdown',
+    description:
+      'Countdown-style listicle with ranked items, swipe transitions, and a progress bar — perfect for viral social ranking videos.',
+    category: 'social-media',
+    tags: ['countdown', 'ranking', 'listicle', 'viral', 'top-10'],
+    thumbnailUrl: '/templates/top-10-listicle.svg',
+    supportedAspectRatios: ['9:16', '1:1', '16:9'],
+    defaultAspectRatio: '9:16',
+    fps: 30,
+    durationInFrames: 900, // 10 items × 3s each
+    featured: true,
+    defaultProps: top10ListicleDefaultContent,
+  },
+
+  'tech-explainer': {
+    id: 'tech-explainer',
+    name: 'Tech / Business Explainer',
+    description:
+      'Animated workflow walkthrough with cinematic camera moves — ideal for SaaS, product demos, and business concept explainers.',
+    category: 'explainer',
+    tags: ['tech', 'workflow', 'saas', 'business', 'explainer'],
+    thumbnailUrl: '/templates/tech-explainer.svg',
+    supportedAspectRatios: ['16:9', '9:16', '1:1'],
+    defaultAspectRatio: '16:9',
+    fps: 30,
+    durationInFrames: 300, // 10s
+    featured: true,
+    defaultProps: techExplainerDefaultContent,
+  },
+
+  'documentary-intro': {
+    id: 'documentary-intro',
+    name: 'Cinematic Documentary',
+    description:
+      'Cinematic 20-second documentary opening: map push-in with a rolling year counter, masked title reveal with lens focus rack, parallax chapter card, kinetic typography, light sweeps, and film grain under letterbox bars.',
+    category: 'intro',
+    tags: ['documentary', 'cinematic', 'intro', 'title', 'map', 'history'],
+    thumbnailUrl: '/templates/documentary-intro.svg',
+    supportedAspectRatios: ['16:9', '9:16', '1:1'],
+    defaultAspectRatio: '16:9',
+    fps: 24,
+    durationInFrames: 480, // 20s @ 24fps (cinematic)
+    featured: true,
+    defaultProps: documentaryDefaultContent,
+  },
+
+  'breaking-news': {
+    id: 'breaking-news',
+    name: 'News / Geopolitical Explainer',
+    description:
+      'Broadcast-style news package with live badge, scrolling ticker, and dramatic scene reveals — built for news recaps, geopolitical summaries, and current-events shorts.',
+    category: 'explainer',
+    tags: ['news', 'broadcast', 'breaking', 'geopolitical', 'ticker'],
+    thumbnailUrl: '/templates/breaking-news.svg',
+    supportedAspectRatios: ['16:9', '9:16', '1:1'],
+    defaultAspectRatio: '16:9',
+    fps: 30,
+    durationInFrames: 360, // 12s
+    featured: true,
+    defaultProps: breakingNewsDefaultContent,
+  },
+
   'product-advertisement': {
     id: 'product-advertisement',
     name: 'Product Advertisement',
@@ -69,19 +141,19 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     defaultProps: saleDefaultContent,
   },
 
-  'documentary-intro': {
-    id: 'documentary-intro',
-    name: 'Documentary Intro',
+  'luxury-commercial': {
+    id: 'luxury-commercial',
+    name: 'Luxury Commercial',
     description:
-      'Cinematic 20-second documentary opening: map push-in with a rolling year counter, masked title reveal with lens focus rack, parallax chapter card, kinetic typography, light sweeps, and film grain under letterbox bars.',
-    category: 'intro',
-    tags: ['documentary', 'cinematic', 'intro', 'title', 'map', 'history'],
-    thumbnailUrl: '/templates/documentary-intro.svg',
+      'Premium brand film with cinematic camera moves, floating particles, and glassmorphism — built for high-end product launches and luxury storytelling.',
+    category: 'ads',
+    tags: ['luxury', 'premium', 'cinematic', 'brand', 'product'],
+    thumbnailUrl: '/templates/luxury-commercial.svg',
     supportedAspectRatios: ['16:9', '9:16', '1:1'],
     defaultAspectRatio: '16:9',
-    fps: 24,
-    durationInFrames: 480, // 20s @ 24fps (cinematic)
-    defaultProps: documentaryDefaultContent,
+    fps: 30,
+    durationInFrames: 600, // 20s
+    defaultProps: luxuryCommercialDefaultContent,
   },
 };
 
@@ -90,6 +162,16 @@ export const DEFAULT_TEMPLATE_ID: TemplateId = 'product-advertisement';
 
 /** All registered templates in registration order (for UI lists). */
 export const templateList: TemplateMetadata[] = Object.values(templateRegistry);
+
+/** Featured templates in registry order. */
+export const featuredTemplates: TemplateMetadata[] = templateList.filter(
+  (t) => t.featured,
+);
+
+/** Non-featured (other) templates in registry order. */
+export const otherTemplates: TemplateMetadata[] = templateList.filter(
+  (t) => !t.featured,
+);
 
 /** Type guard — narrows an arbitrary string to a registered TemplateId. */
 export function isTemplateId(value: string): value is TemplateId {

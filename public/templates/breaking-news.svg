@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <rect width="400" height="250" fill="#0f172a"/>
+  <text x="200" y="100" text-anchor="middle" fill="#f8fafc" font-family="system-ui" font-size="16" font-weight="700">NEWS / GEOPOLITICAL EXPLAINER</text>
+  <text x="200" y="125" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="12">Broadcast-style news package</text>
+  <rect x="60" y="145" width="280" height="50" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <rect x="60" y="145" width="8" height="50" rx="4" fill="#ef4444"/>
+  <text x="80" y="165" fill="#f8fafc" font-family="system-ui" font-size="11" font-weight="600">BREAKING NEWS</text>
+  <text x="80" y="182" fill="#94a3b8" font-family="system-ui" font-size="10">Global leaders convene emergency session</text>
+</svg>

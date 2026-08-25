@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <rect width="400" height="250" fill="#0c0a09"/>
+  <text x="200" y="105" text-anchor="middle" fill="#fafaf9" font-family="system-ui" font-size="16" font-weight="300" letter-spacing="4">LUXURY</text>
+  <text x="200" y="130" text-anchor="middle" fill="#fbbf24" font-family="system-ui" font-size="12" font-weight="600" letter-spacing="2">COMMERCIAL</text>
+  <circle cx="200" cy="170" r="28" fill="none" stroke="#fbbf24" stroke-width="0.5" opacity="0.5"/>
+  <circle cx="200" cy="170" r="18" fill="none" stroke="#fbbf24" stroke-width="0.5" opacity="0.3"/>
+</svg>

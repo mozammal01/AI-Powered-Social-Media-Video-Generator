@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250">
+  <rect width="400" height="250" fill="#0f172a"/>
+  <text x="200" y="110" text-anchor="middle" fill="#f8fafc" font-family="system-ui" font-size="18" font-weight="700">TOP 10 COUNTDOWN</text>
+  <text x="200" y="135" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="12">Ranked listicle with transitions</text>
+  <circle cx="200" cy="170" r="20" fill="none" stroke="#ef4444" stroke-width="3"/>
+  <text x="200" y="176" text-anchor="middle" fill="#ef4444" font-family="system-ui" font-size="14" font-weight="700">10</text>
+</svg>

@@ -7,7 +7,11 @@ export type TemplateId =
   | 'product-advertisement'
   | 'restaurant-promotion'
   | 'sale-promotion'
-  | 'documentary-intro';
+  | 'documentary-intro'
+  | 'top-10-listicle'
+  | 'tech-explainer'
+  | 'luxury-commercial'
+  | 'breaking-news';
 
 /**
  * Serializable template metadata — everything the app needs to know about a
@@ -36,8 +40,10 @@ export interface TemplateMetadata {
   fps: SupportedFps;
   /** Default composition duration in frames (at `fps`). */
   durationInFrames: number;
-  /** Default input props (`VideoContent`) used for previews and new projects. */
-  defaultProps: VideoContentProps;
+  /** Whether this template appears in the Featured section. */
+  featured?: boolean;
+  /** Default input props used for previews and new projects. */
+  defaultProps: VideoContentProps | Record<string, unknown>;
 }
 
 /**
@@ -56,5 +62,5 @@ export interface TemplateMetadata {
  */
 export interface TemplateDefinition extends TemplateMetadata {
   /** The Remotion composition component. */
-  component: React.FC<VideoContentProps>;
+  component: React.ComponentType<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 }

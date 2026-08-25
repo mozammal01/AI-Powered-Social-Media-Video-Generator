@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
-import { Layers } from "lucide-react";
+import { Layers, Star } from "lucide-react";
 import { TemplateCard } from "@/components/video/TemplateCard";
-import { templateList } from "@/remotion/templates";
+import {
+  featuredTemplates,
+  otherTemplates,
+  templateList,
+} from "@/remotion/templates";
 
 export const metadata: Metadata = {
   title: "Video Templates | VividAI",
@@ -9,9 +13,37 @@ export const metadata: Metadata = {
     "Browse the registered Remotion video templates and start a new project from any of them.",
 };
 
+function TemplateGrid({
+  templates,
+  href,
+}: {
+  templates: typeof templateList;
+  href: (id: string) => string;
+}) {
+  if (templates.length === 0) {
+    return (
+      <div className="border border-dashed border-border rounded-xl p-12 text-center bg-card/30 space-y-3">
+        <p className="text-sm text-muted-foreground">No templates in this section.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {templates.map((template) => (
+        <TemplateCard
+          key={template.id}
+          template={template}
+          href={href(template.id)}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function TemplatesPage() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       <div className="space-y-1">
         <h1 className="text-2xl font-bold tracking-tight">Video Templates</h1>
         <p className="text-muted-foreground text-sm">
@@ -35,14 +67,36 @@ export default function TemplatesPage() {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {templateList.map((template) => (
-            <TemplateCard
-              key={template.id}
-              template={template}
-              href={`/create-video?template=${template.id}`}
-            />
-          ))}
+        <div className="space-y-10">
+          {featuredTemplates.length > 0 && (
+            <section className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Star className="w-4 h-4 text-primary" />
+                <h2 className="text-lg font-semibold tracking-tight">
+                  Featured Templates
+                </h2>
+              </div>
+              <TemplateGrid
+                templates={featuredTemplates}
+                href={(id) => `/create-video?template=${id}`}
+              />
+            </section>
+          )}
+
+          {otherTemplates.length > 0 && (
+            <section className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Layers className="w-4 h-4 text-muted-foreground" />
+                <h2 className="text-lg font-semibold tracking-tight">
+                  Other Templates
+                </h2>
+              </div>
+              <TemplateGrid
+                templates={otherTemplates}
+                href={(id) => `/create-video?template=${id}`}
+              />
+            </section>
+          )}
         </div>
       )}
     </div>

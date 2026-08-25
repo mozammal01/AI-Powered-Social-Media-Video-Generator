@@ -11,6 +11,7 @@ import { Top10Countdown } from './Top10Countdown';
 import { TechExplainer } from './TechExplainer/TechExplainer';
 import { LuxuryCommercial } from './LuxuryCommercial/LuxuryCommercial';
 import { BreakingNews } from './BreakingNews/BreakingNews';
+import { TechBusinessExplainer } from './TechBusinessExplainer/TechBusinessExplainer';
 
 /**
  * Maps template IDs to their Remotion composition components.
@@ -36,6 +37,7 @@ export const templateComponents: Record<
   'tech-explainer': TechExplainer,
   'luxury-commercial': LuxuryCommercial,
   'breaking-news': BreakingNews,
+  'tech-business-explainer': TechBusinessExplainer,
 };
 
 /** Returns the Remotion composition component for a registered template ID. */

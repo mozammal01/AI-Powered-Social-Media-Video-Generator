@@ -13,6 +13,7 @@ import { luxuryCommercialDefaultContent } from './LuxuryCommercial/defaults';
 import { breakingNewsDefaultContent } from './BreakingNews/defaults';
 import { cinematicDocumentaryDefaultContent } from './CinematicDocumentary/defaults';
 import { top10CountdownDefaultContent } from './Top10Countdown/defaults';
+import { techBusinessExplainerDefaultContent } from './TechBusinessExplainer/defaults';
 
 /**
  * Template Registry
@@ -64,6 +65,22 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     durationInFrames: 300, // 10s
     featured: true,
     defaultProps: techExplainerDefaultContent,
+  },
+
+  'tech-business-explainer': {
+    id: 'tech-business-explainer',
+    name: 'Tech / Business Explainer',
+    description:
+      'Premium 30-second YouTube explainer with animated diagrams, data flow, revenue cards, counters, timeline, and cinematic camera movement — perfect for AI, SaaS, and business deep-dives.',
+    category: 'explainer',
+    tags: ['tech', 'business', 'explainer', 'youtube', 'ai', 'data', 'revenue'],
+    thumbnailUrl: '/templates/tech-business-explainer.svg',
+    supportedAspectRatios: ['16:9', '9:16', '1:1'],
+    defaultAspectRatio: '16:9',
+    fps: 30,
+    durationInFrames: 900, // 30s
+    featured: true,
+    defaultProps: techBusinessExplainerDefaultContent,
   },
 
    'documentary-intro': {

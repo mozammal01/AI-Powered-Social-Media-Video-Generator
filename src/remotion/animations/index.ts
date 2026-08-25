@@ -312,3 +312,27 @@ export function useSceneOpacity(
   );
   return Math.min(fadeIn, fadeOut);
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Reusable animation primitives
+// ─────────────────────────────────────────────────────────────────────────────
+
+export { CameraMovement } from './CameraMovement';
+export type { CameraStop } from './CameraMovement';
+
+export { ConnectingLine } from './ConnectingLine';
+
+export { DataFlowAnimation } from './DataFlowAnimation';
+export type { FlowNode, DataFlowAnimationProps } from './DataFlowAnimation';
+
+export { PercentageAnimation } from './PercentageAnimation';
+export type { PercentageAnimationProps } from './PercentageAnimation';
+
+export { AnimatedArrow } from './AnimatedArrow';
+export type { AnimatedArrowProps } from './AnimatedArrow';
+
+export { AnimatedCard } from './AnimatedCard';
+export type { AnimatedCardProps } from './AnimatedCard';
+
+export { Timeline } from './Timeline';
+export type { TimelineStep, TimelineProps } from './Timeline';

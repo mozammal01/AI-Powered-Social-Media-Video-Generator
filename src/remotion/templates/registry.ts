@@ -37,36 +37,36 @@ import { newsGeopoliticalExplainerDefaultContent } from './NewsGeopoliticalExpla
  * template to the Featured section in the UI.
  */
 export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
-  'top-10-listicle': {
-    id: 'top-10-listicle',
-    name: 'Top 10 Countdown',
+  'cinematic-documentary': {
+    id: 'cinematic-documentary',
+    name: 'Cinematic Documentary',
     description:
-      'Countdown-style listicle with ranked items, swipe transitions, and a progress bar — perfect for viral social ranking videos.',
-    category: 'social-media',
-    tags: ['countdown', 'ranking', 'listicle', 'viral', 'top-10'],
-    thumbnailUrl: '/templates/top-10-listicle.svg',
-    supportedAspectRatios: ['9:16', '1:1', '16:9'],
-    defaultAspectRatio: '9:16',
-    fps: 30,
-    durationInFrames: 900, // 10 items × 3s each
-    featured: true,
-    defaultProps: top10ListicleDefaultContent,
-  },
-
-  'tech-explainer': {
-    id: 'tech-explainer',
-    name: 'Tech / Business Explainer',
-    description:
-      'Animated workflow walkthrough with cinematic camera moves — ideal for SaaS, product demos, and business concept explainers.',
-    category: 'explainer',
-    tags: ['tech', 'workflow', 'saas', 'business', 'explainer'],
-    thumbnailUrl: '/templates/tech-explainer.svg',
+      'Premium 30-second documentary sequence: cinematic opening, archival parallax, kinetic statement, map movement, broadcast timeline, and finale lockup with film grain, light sweeps, and cinematic letterbox bars.',
+    category: 'intro',
+    tags: ['documentary', 'cinematic', 'parallax', 'kinetic', 'timeline', 'premium'],
+    thumbnailUrl: '/templates/cinematic-documentary.svg',
     supportedAspectRatios: ['16:9', '9:16', '1:1'],
     defaultAspectRatio: '16:9',
     fps: 30,
-    durationInFrames: 300, // 10s
+    durationInFrames: 900, // 30s @ 30fps
     featured: true,
-    defaultProps: techExplainerDefaultContent,
+    defaultProps: cinematicDocumentaryDefaultContent,
+  },
+
+  'top-10-countdown': {
+    id: 'top-10-countdown',
+    name: 'Top 10 Countdown',
+    description:
+      'High-retention YouTube listicle with animated rank counters, image reveals, progress bar, statistics, and fast item-to-item transitions.',
+    category: 'social-media',
+    tags: ['countdown', 'ranking', 'listicle', 'youtube', 'top-10', 'viral'],
+    thumbnailUrl: '/templates/top-10-countdown.svg',
+    supportedAspectRatios: ['16:9', '9:16', '1:1'],
+    defaultAspectRatio: '16:9',
+    fps: 30,
+    durationInFrames: 900, // 30s
+    featured: true,
+    defaultProps: top10CountdownDefaultContent,
   },
 
   'tech-business-explainer': {
@@ -117,7 +117,37 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     defaultProps: newsGeopoliticalExplainerDefaultContent,
   },
 
-   'documentary-intro': {
+  'top-10-listicle': {
+    id: 'top-10-listicle',
+    name: 'Top 10 Countdown',
+    description:
+      'Countdown-style listicle with ranked items, swipe transitions, and a progress bar — perfect for viral social ranking videos.',
+    category: 'social-media',
+    tags: ['countdown', 'ranking', 'listicle', 'viral', 'top-10'],
+    thumbnailUrl: '/templates/top-10-listicle.svg',
+    supportedAspectRatios: ['9:16', '1:1', '16:9'],
+    defaultAspectRatio: '9:16',
+    fps: 30,
+    durationInFrames: 900, // 10 items × 3s each
+    defaultProps: top10ListicleDefaultContent,
+  },
+
+  'tech-explainer': {
+    id: 'tech-explainer',
+    name: 'Tech / Business Explainer',
+    description:
+      'Animated workflow walkthrough with cinematic camera moves — ideal for SaaS, product demos, and business concept explainers.',
+    category: 'explainer',
+    tags: ['tech', 'workflow', 'saas', 'business', 'explainer'],
+    thumbnailUrl: '/templates/tech-explainer.svg',
+    supportedAspectRatios: ['16:9', '9:16', '1:1'],
+    defaultAspectRatio: '16:9',
+    fps: 30,
+    durationInFrames: 300, // 10s
+    defaultProps: techExplainerDefaultContent,
+  },
+
+  'documentary-intro': {
     id: 'documentary-intro',
     name: 'Cinematic Documentary',
     description:
@@ -129,23 +159,7 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     defaultAspectRatio: '16:9',
     fps: 24,
     durationInFrames: 480, // 20s @ 24fps (cinematic)
-    featured: true,
     defaultProps: documentaryDefaultContent,
-  },
-
-  'cinematic-documentary': {
-    id: 'cinematic-documentary',
-    name: 'Cinematic Documentary',
-    description:
-      'Premium 30-second documentary sequence: cinematic opening, archival parallax, kinetic statement, map movement, broadcast timeline, and finale lockup with film grain, light sweeps, and cinematic letterbox bars.',
-    category: 'intro',
-    tags: ['documentary', 'cinematic', 'parallax', 'kinetic', 'timeline', 'premium'],
-    thumbnailUrl: '/templates/cinematic-documentary.svg',
-    supportedAspectRatios: ['16:9', '9:16', '1:1'],
-    defaultAspectRatio: '16:9',
-    fps: 30,
-    durationInFrames: 900, // 30s @ 30fps
-    defaultProps: cinematicDocumentaryDefaultContent,
   },
 
   'breaking-news': {
@@ -160,7 +174,6 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     defaultAspectRatio: '16:9',
     fps: 30,
     durationInFrames: 360, // 12s
-    featured: true,
     defaultProps: breakingNewsDefaultContent,
   },
 
@@ -207,21 +220,6 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     fps: 30,
     durationInFrames: 300, // 10s default
     defaultProps: saleDefaultContent,
-  },
-
-  'top-10-countdown': {
-    id: 'top-10-countdown',
-    name: 'Top 10 Countdown',
-    description:
-      'High-retention YouTube listicle with animated rank counters, image reveals, progress bar, statistics, and fast item-to-item transitions.',
-    category: 'social-media',
-    tags: ['countdown', 'ranking', 'listicle', 'youtube', 'top-10', 'viral'],
-    thumbnailUrl: '/templates/top-10-countdown.svg',
-    supportedAspectRatios: ['16:9', '9:16', '1:1'],
-    defaultAspectRatio: '16:9',
-    fps: 30,
-    durationInFrames: 900, // 30s
-    defaultProps: top10CountdownDefaultContent,
   },
 
   'luxury-commercial': {

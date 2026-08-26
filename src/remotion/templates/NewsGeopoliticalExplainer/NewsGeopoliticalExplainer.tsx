@@ -1,6 +1,7 @@
 import React from 'react';
-import { AbsoluteFill, Sequence, useCurrentFrame, interpolate } from 'remotion';
+import { AbsoluteFill, Sequence, useCurrentFrame, useVideoConfig, interpolate, Easing } from 'remotion';
 import type { VideoContentProps } from '@/remotion/schema';
+import type { VideoScene } from '@/types';
 import { scaleScenesToDuration } from '@/remotion/utils/scenes';
 import { CameraMovement, CameraStop } from '../../animations/CameraMovement';
 import { HeadlineReveal } from '../../animations/HeadlineReveal';
@@ -67,6 +68,7 @@ const MapScene: React.FC<{
   highlights: readonly { x: number; y: number; label?: string }[];
 }> = ({ events, routes, highlights }) => {
   const frame = useCurrentFrame();
+  const { width, height } = useVideoConfig();
   const opacity = interpolate(frame, [0, 12], [0, 1], {
     extrapolateRight: 'clamp',
   });
@@ -93,6 +95,8 @@ const MapScene: React.FC<{
           highlights={highlights}
           routes={routes}
           delay={15}
+          width={width}
+          height={height}
         />
       </div>
 
@@ -183,7 +187,7 @@ const StatsScene: React.FC<{
       </div>
 
       <div style={{ position: 'absolute', left: 80, top: 420, width: 800 }}>
-        <ChartAnimation data={[...chartData]} delay={40} color="bg-red-500" />
+        <ChartAnimation data={[...chartData]} delay={40} color="#EF4444" />
       </div>
     </AbsoluteFill>
   );
@@ -340,25 +344,26 @@ const SummaryScene: React.FC<{ headline: string; body: string }> = ({ headline, 
  * Visual language: dark broadcast palette, clean motion design.
  */
 export const NewsGeopoliticalExplainer: React.FC<VideoContentProps> = (props) => {
+  const { width, height } = useVideoConfig();
   const content = props as unknown as NewsGeopoliticalExplainerDefaultContent;
 
   const scenes = scaleScenesToDuration(newsGeopoliticalExplainerScenes, 900);
 
   const cameraStops: CameraStop[] = [
-    { frame: 0, x: 960, y: 540, scale: 1 },
-    { frame: 180, x: 960, y: 540, scale: 1.05 },
-    { frame: 360, x: 960, y: 540, scale: 1.1 },
-    { frame: 540, x: 960, y: 540, scale: 1.05 },
-    { frame: 720, x: 960, y: 540, scale: 1 },
+    { frame: 0, x: width * 0.5, y: height * 0.5, scale: 1 },
+    { frame: 180, x: width * 0.5, y: height * 0.5, scale: 1.05 },
+    { frame: 360, x: width * 0.5, y: height * 0.5, scale: 1.1 },
+    { frame: 540, x: width * 0.5, y: height * 0.5, scale: 1.05 },
+    { frame: 720, x: width * 0.5, y: height * 0.5, scale: 1 },
   ];
 
   const defaultContent = newsGeopoliticalExplainerDefaultContent;
+  const c = {
+    ...defaultContent,
+    ...content,
+  };
 
   const renderScene = (sceneId: string) => {
-    const c = {
-      ...defaultContent,
-      ...content,
-    };
 
     switch (sceneId) {
       case 'scene-headline':
@@ -391,6 +396,105 @@ export const NewsGeopoliticalExplainer: React.FC<VideoContentProps> = (props) =>
     }
   };
 
+  const renderTransition = (scene: VideoScene) => {
+    if (!scene.transition) return null;
+    const enterFrame = scene.durationInFrames - scene.transition.durationInFrames;
+    switch (scene.transition.type) {
+      case 'fade':
+        return (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'rgba(0,0,0,0.4)',
+              opacity: interpolate(
+                useCurrentFrame() - scene.startFrame - enterFrame,
+                [0, scene.transition.durationInFrames],
+                [0, 1],
+                { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
+              ),
+              pointerEvents: 'none',
+              zIndex: 40,
+            }}
+          />
+        );
+      case 'slide':
+        return (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: `linear-gradient(90deg, transparent 0%, ${INDIGO}15 40%, ${INDIGO}40 50%, ${INDIGO}15 60%, transparent 100%)`,
+              transform: `translateX(${interpolate(
+                useCurrentFrame() - scene.startFrame - enterFrame,
+                [0, scene.transition.durationInFrames],
+                [-100, 0],
+                { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic) }
+              )}%)`,
+              opacity: interpolate(
+                useCurrentFrame() - scene.startFrame - enterFrame,
+                [0, scene.transition.durationInFrames],
+                [0, 1],
+                { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
+              ),
+              pointerEvents: 'none',
+              zIndex: 40,
+            }}
+          />
+        );
+      case 'zoom':
+        return (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: `radial-gradient(circle at 50% 50%, ${INDIGO}18 0%, transparent 70%)`,
+              transform: `scale(${interpolate(
+                useCurrentFrame() - scene.startFrame - enterFrame,
+                [0, scene.transition.durationInFrames],
+                [1.15, 1],
+                { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic) }
+              )})`,
+              opacity: interpolate(
+                useCurrentFrame() - scene.startFrame - enterFrame,
+                [0, scene.transition.durationInFrames],
+                [0, 1],
+                { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
+              ),
+              pointerEvents: 'none',
+              zIndex: 40,
+            }}
+          />
+        );
+      case 'wipe':
+        return (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: `linear-gradient(90deg, transparent 0%, ${INDIGO}22 30%, ${INDIGO}55 50%, ${INDIGO}22 70%, transparent 100%)`,
+              transform: `translateX(${interpolate(
+                useCurrentFrame() - scene.startFrame - enterFrame,
+                [0, scene.transition.durationInFrames],
+                [-60, 110],
+                { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic) }
+              )}%)`,
+              opacity: interpolate(
+                useCurrentFrame() - scene.startFrame - enterFrame,
+                [0, scene.transition.durationInFrames],
+                [0, 1],
+                { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
+              ),
+              pointerEvents: 'none',
+              zIndex: 40,
+            }}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <AbsoluteFill style={{ backgroundColor: DARK }}>
       <CameraMovement stops={cameraStops}>
@@ -401,13 +505,14 @@ export const NewsGeopoliticalExplainer: React.FC<VideoContentProps> = (props) =>
             durationInFrames={scene.durationInFrames}
           >
             {renderScene(scene.id)}
+            {renderTransition(scene)}
           </Sequence>
         ))}
       </CameraMovement>
 
       {/* Persistent overlays */}
       <LiveBadge />
-      <NewsTicker headlines={[...defaultContent.tickerHeadlines]} />
+      <NewsTicker headlines={[...c.tickerHeadlines]} />
     </AbsoluteFill>
   );
 };

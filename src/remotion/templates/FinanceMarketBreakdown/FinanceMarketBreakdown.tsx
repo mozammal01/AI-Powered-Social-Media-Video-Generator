@@ -1,6 +1,7 @@
 import React from 'react';
-import { AbsoluteFill, Sequence, useCurrentFrame, interpolate } from 'remotion';
+import { AbsoluteFill, Sequence, useCurrentFrame, useVideoConfig, interpolate, Easing } from 'remotion';
 import type { VideoContentProps } from '@/remotion/schema';
+import type { VideoScene } from '@/types';
 import { scaleScenesToDuration } from '@/remotion/utils/scenes';
 import { CameraMovement, CameraStop } from '../../animations/CameraMovement';
 import { KineticTypography } from '../../components/KineticTypography';
@@ -8,7 +9,7 @@ import { AnimatedStockChart } from '../../animations/AnimatedStockChart';
 import { NumberCounter } from '../../animations/NumberCounter';
 import { PercentageAnimation } from '../../animations/PercentageAnimation';
 import { Timeline } from '../../animations/Timeline';
-import { LowerThird } from './components/LowerThird';
+import { LowerThird } from '../../animations/LowerThird';
 import { MarketCard } from './components/MarketCard';
 import { Ticker } from './components/Ticker';
 import { CompanyComparison } from './components/CompanyComparison';
@@ -89,8 +90,8 @@ const HookScene: React.FC<{ headline: string; subheadline: string }> = ({
 
       <LowerThird
         headline={subheadline}
+        subheadline="Live coverage from the scene"
         delay={40}
-        accentColor={INDIGO}
       />
     </AbsoluteFill>
   );
@@ -366,7 +367,6 @@ const TimelineScene: React.FC<{ steps: readonly { label: string; color: string }
         headline="Markets rally on strong earnings"
         subheadline="Tech and healthcare lead S&P 500 higher"
         delay={100}
-        accentColor={GREEN}
       />
     </AbsoluteFill>
   );
@@ -402,16 +402,17 @@ const TimelineScene: React.FC<{ steps: readonly { label: string; color: string }
  * Visual language: dark premium palette, high-contrast typography.
  */
 export const FinanceMarketBreakdown: React.FC<VideoContentProps> = (props) => {
+  const { width, height } = useVideoConfig();
   const content = props as unknown as FinanceMarketBreakdownDefaultContent;
 
   const scenes = scaleScenesToDuration(financeMarketBreakdownScenes, 900);
 
   const cameraStops: CameraStop[] = [
-    { frame: 0, x: 960, y: 540, scale: 1 },
-    { frame: 180, x: 960, y: 540, scale: 1.05 },
-    { frame: 360, x: 960, y: 540, scale: 1.1 },
-    { frame: 540, x: 960, y: 540, scale: 1.05 },
-    { frame: 720, x: 960, y: 540, scale: 1 },
+    { frame: 0, x: width * 0.5, y: height * 0.5, scale: 1 },
+    { frame: 180, x: width * 0.5, y: height * 0.5, scale: 1.05 },
+    { frame: 360, x: width * 0.5, y: height * 0.5, scale: 1.1 },
+    { frame: 540, x: width * 0.5, y: height * 0.5, scale: 1.05 },
+    { frame: 720, x: width * 0.5, y: height * 0.5, scale: 1 },
   ];
 
   const defaultContent = financeMarketBreakdownDefaultContent;
@@ -444,6 +445,105 @@ export const FinanceMarketBreakdown: React.FC<VideoContentProps> = (props) => {
     }
   };
 
+  const renderTransition = (scene: VideoScene) => {
+    if (!scene.transition) return null;
+    const enterFrame = scene.durationInFrames - scene.transition.durationInFrames;
+    switch (scene.transition.type) {
+      case 'fade':
+        return (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'rgba(0,0,0,0.4)',
+              opacity: interpolate(
+                useCurrentFrame() - scene.startFrame - enterFrame,
+                [0, scene.transition.durationInFrames],
+                [0, 1],
+                { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
+              ),
+              pointerEvents: 'none',
+              zIndex: 40,
+            }}
+          />
+        );
+      case 'slide':
+        return (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: `linear-gradient(90deg, transparent 0%, ${INDIGO}15 40%, ${INDIGO}40 50%, ${INDIGO}15 60%, transparent 100%)`,
+              transform: `translateX(${interpolate(
+                useCurrentFrame() - scene.startFrame - enterFrame,
+                [0, scene.transition.durationInFrames],
+                [-100, 0],
+                { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic) }
+              )}%)`,
+              opacity: interpolate(
+                useCurrentFrame() - scene.startFrame - enterFrame,
+                [0, scene.transition.durationInFrames],
+                [0, 1],
+                { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
+              ),
+              pointerEvents: 'none',
+              zIndex: 40,
+            }}
+          />
+        );
+      case 'zoom':
+        return (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: `radial-gradient(circle at 50% 50%, ${INDIGO}18 0%, transparent 70%)`,
+              transform: `scale(${interpolate(
+                useCurrentFrame() - scene.startFrame - enterFrame,
+                [0, scene.transition.durationInFrames],
+                [1.15, 1],
+                { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic) }
+              )})`,
+              opacity: interpolate(
+                useCurrentFrame() - scene.startFrame - enterFrame,
+                [0, scene.transition.durationInFrames],
+                [0, 1],
+                { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
+              ),
+              pointerEvents: 'none',
+              zIndex: 40,
+            }}
+          />
+        );
+      case 'wipe':
+        return (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: `linear-gradient(90deg, transparent 0%, ${INDIGO}22 30%, ${INDIGO}55 50%, ${INDIGO}22 70%, transparent 100%)`,
+              transform: `translateX(${interpolate(
+                useCurrentFrame() - scene.startFrame - enterFrame,
+                [0, scene.transition.durationInFrames],
+                [-60, 110],
+                { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic) }
+              )}%)`,
+              opacity: interpolate(
+                useCurrentFrame() - scene.startFrame - enterFrame,
+                [0, scene.transition.durationInFrames],
+                [0, 1],
+                { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
+              ),
+              pointerEvents: 'none',
+              zIndex: 40,
+            }}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <AbsoluteFill style={{ backgroundColor: DARK }}>
       <CameraMovement stops={cameraStops}>
@@ -454,6 +554,7 @@ export const FinanceMarketBreakdown: React.FC<VideoContentProps> = (props) => {
             durationInFrames={scene.durationInFrames}
           >
             {renderScene(scene.id)}
+            {renderTransition(scene)}
           </Sequence>
         ))}
       </CameraMovement>

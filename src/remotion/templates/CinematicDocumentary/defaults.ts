@@ -1,4 +1,4 @@
-import type { VideoContent } from '@/types';
+import type { VideoContent, ProductInfo } from '@/types';
 
 export const cinematicDocumentaryDefaultContent: VideoContent = {
   brand: {
@@ -16,7 +16,10 @@ export const cinematicDocumentaryDefaultContent: VideoContent = {
       'Episode Two — The Aftermath',
       'Episode Three — The Legacy',
     ],
-  },
+    location: 'Sarajevo, Bosnia',
+    dateFrom: 1914,
+    dateTo: 1918,
+  } as ProductInfo & { location: string; dateFrom: number; dateTo: number },
   cta: {
     text: 'Stream Now',
     url: 'https://aetherfilms.example/the-turning-point',

@@ -10,6 +10,7 @@ export interface ListItemData {
 }
 
 export const top10CountdownDefaultContent = {
+  title: "Nature's Greatest Wonders",
   items: [
     {
       rank: 10,

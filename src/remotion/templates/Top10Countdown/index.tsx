@@ -30,9 +30,8 @@ const DARK = '#0A0A0F';
 // Intro hook: countdown from 10 → 1 with fast cuts, then title reveal
 // ─────────────────────────────────────────────────────────────────────────────
 
-const IntroScene: React.FC = () => {
+const IntroScene: React.FC<{ title?: string; durationInFrames: number }> = ({ title, durationInFrames }) => {
   const frame = useCurrentFrame();
-  const { durationInFrames } = useVideoConfig();
   const opacity = useSceneOpacity(durationInFrames);
 
   const countdownDuration = 48;
@@ -45,6 +44,7 @@ const IntroScene: React.FC = () => {
 
   const titleY = useSpringSlideUp({ from: countdownDuration + 8, distance: 50, damping: 18, stiffness: 100 });
   const titleOpacity = useFadeIn({ from: countdownDuration + 8, duration: 18 });
+  const displayTitle = title ?? "Top 10 Countdown";
 
   return (
     <AbsoluteFill style={{ opacity }}>
@@ -119,7 +119,7 @@ const IntroScene: React.FC = () => {
                 textShadow: '0 6px 36px rgba(0,0,0,0.7)',
               }}
             >
-              Nature's Greatest Wonders
+              {displayTitle}
             </h1>
           </MaskReveal>
 
@@ -154,7 +154,7 @@ const IntroScene: React.FC = () => {
             <div
               style={{
                 height: '100%',
-                width: `${interpolate(frame, [0, countdownDuration + 20], [0, 8], { extrapolateRight: 'clamp' })}%`,
+                width: `${interpolate(frame, [0, countdownDuration + 20], [0, 100], { extrapolateRight: 'clamp' })}%`,
                 background: RED,
                 borderRadius: 2,
                 boxShadow: `0 0 12px ${RED}66`,
@@ -173,8 +173,7 @@ const IntroScene: React.FC = () => {
 // Item scene: renders a single ranked entry with image, text, stat
 // ─────────────────────────────────────────────────────────────────────────────
 
-const ItemScene: React.FC<{ item: ListItemData; rank: number }> = ({ item, rank }) => {
-  const { durationInFrames } = useVideoConfig();
+const ItemScene: React.FC<{ item: ListItemData; rank: number; durationInFrames: number }> = ({ item, rank, durationInFrames }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
 
@@ -228,8 +227,7 @@ const ItemScene: React.FC<{ item: ListItemData; rank: number }> = ({ item, rank 
 // Finale: #1 reveal with full cinematic treatment
 // ─────────────────────────────────────────────────────────────────────────────
 
-const FinaleScene: React.FC<{ item: ListItemData }> = ({ item }) => {
-  const { durationInFrames } = useVideoConfig();
+const FinaleScene: React.FC<{ item: ListItemData; durationInFrames: number }> = ({ item, durationInFrames }) => {
   const frame = useCurrentFrame();
   const opacity = useSceneOpacity(durationInFrames);
 
@@ -364,6 +362,103 @@ const FinaleScene: React.FC<{ item: ListItemData }> = ({ item }) => {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Outro: recap and CTA after #1 reveal
+// ─────────────────────────────────────────────────────────────────────────────
+
+const OutroScene: React.FC<{ items: ListItemData[]; durationInFrames: number }> = ({ items, durationInFrames }) => {
+  const opacity = useSceneOpacity(durationInFrames);
+
+  const topItem = items[items.length - 1];
+
+  return (
+    <AbsoluteFill style={{ opacity, background: DARK }}>
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 'clamp(10px, 1.6vh, 24px)',
+        }}
+      >
+        <MaskReveal direction="up" enterFrame={4} duration={20}>
+          <div
+            style={{
+              fontFamily: SANS,
+              fontSize: 'clamp(12px, 1.2vw, 18px)',
+              fontWeight: 700,
+              letterSpacing: '0.5em',
+              textTransform: 'uppercase',
+              color: RED,
+            }}
+          >
+            The #1 Pick
+          </div>
+        </MaskReveal>
+
+        <MaskReveal direction="right" enterFrame={14} duration={24}>
+          <h2
+            style={{
+              margin: 0,
+              fontFamily: SERIF,
+              fontSize: 'clamp(28px, 4vw, 64px)',
+              fontWeight: 400,
+              letterSpacing: '0.04em',
+              color: WHITE,
+              textAlign: 'center',
+              textShadow: '0 4px 24px rgba(0,0,0,0.6)',
+              maxWidth: '80%',
+              lineHeight: 1.2,
+            }}
+          >
+            {topItem?.title ?? 'Number One'}
+          </h2>
+        </MaskReveal>
+
+        <p
+          style={{
+            fontFamily: SANS,
+            fontSize: 'clamp(14px, 1.3vw, 20px)',
+            color: 'rgba(255,255,255,0.75)',
+            textAlign: 'center',
+            maxWidth: '65%',
+            lineHeight: 1.5,
+            opacity: useFadeIn({ from: 30, duration: 14 }),
+          }}
+        >
+          {topItem?.description ?? ''}
+        </p>
+
+        <div
+          style={{
+            marginTop: 'clamp(8px, 1.6vh, 20px)',
+            padding: 'clamp(10px, 1.2vh, 14px) clamp(28px, 3vw, 48px)',
+            border: `2px solid ${RED}`,
+            borderRadius: 999,
+            fontFamily: SANS,
+            fontSize: 'clamp(12px, 1vw, 16px)',
+            fontWeight: 700,
+            letterSpacing: '0.3em',
+            textTransform: 'uppercase',
+            color: WHITE,
+            opacity: useFadeIn({ from: 44, duration: 14 }),
+            transform: `translateY(${useSpringSlideUp({ from: 44, distance: 20, damping: 18, stiffness: 110 })}px)`,
+            boxShadow: `0 0 24px ${RED}33`,
+          }}
+        >
+          Watch The Full Story
+        </div>
+      </div>
+
+      <LightSweep enterFrame={20} duration={32} angle={-14} intensity={0.35} color="#FFFFFF" />
+      <FilmGrain opacity={0.4} blendMode="overlay" vignette vignetteStrength={0.5} flicker={0.03} />
+    </AbsoluteFill>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Scene registry
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -375,12 +470,12 @@ type ListItemData = {
   statistic?: { value: string; label: string };
 };
 
-const SCENE_COMPONENTS: Record<string, React.FC<{ items: ListItemData[]; item?: ListItemData; rank?: number }>> = {
-  intro: () => <IntroScene />,
-  product: ({ item, rank }) => item ? <ItemScene item={item} rank={rank ?? item.rank} /> : null,
-  features: ({ item, rank }) => item ? <ItemScene item={item} rank={rank ?? item.rank} /> : null,
-  headline: ({ item }) => item ? <FinaleScene item={item} /> : null,
-  outro: () => null,
+const SCENE_COMPONENTS: Record<string, React.FC<{ items: ListItemData[]; item?: ListItemData; rank?: number; durationInFrames: number; title?: string }>> = {
+  intro: ({ title, durationInFrames }) => <IntroScene title={title} durationInFrames={durationInFrames} />,
+  product: ({ item, rank, durationInFrames }) => item ? <ItemScene item={item} rank={rank ?? item.rank} durationInFrames={durationInFrames} /> : null,
+  features: ({ item, rank, durationInFrames }) => item ? <ItemScene item={item} rank={rank ?? item.rank} durationInFrames={durationInFrames} /> : null,
+  headline: ({ item, durationInFrames }) => item ? <FinaleScene item={item} durationInFrames={durationInFrames} /> : null,
+  outro: ({ items, durationInFrames }) => <OutroScene items={items} durationInFrames={durationInFrames} />,
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -407,6 +502,7 @@ const SCENE_COMPONENTS: Record<string, React.FC<{ items: ListItemData[]; item?: 
 export const Top10Countdown: React.FC<VideoContentProps> = (content) => {
   const { durationInFrames } = useVideoConfig();
   const items = (content as unknown as { items?: ListItemData[] }).items ?? [];
+  const title = (content as unknown as { title?: string }).title;
   const scenes = scaleScenesToDuration(top10CountdownScenes, durationInFrames);
 
   return (
@@ -432,6 +528,8 @@ export const Top10Countdown: React.FC<VideoContentProps> = (content) => {
               items={items}
               item={item}
               rank={rank}
+              durationInFrames={scene.durationInFrames}
+              title={title}
             />
             <Transition
               type={scene.transition?.type === 'zoom' ? 'zoom' : scene.transition?.type === 'wipe' ? 'wipe' : 'slide'}

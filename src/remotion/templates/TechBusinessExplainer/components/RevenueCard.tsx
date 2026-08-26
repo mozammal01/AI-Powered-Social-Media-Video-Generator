@@ -29,7 +29,7 @@ export const RevenueCard: React.FC<RevenueCardProps> = ({
   arrowTargetX = 0,
   arrowTargetY = 0,
 }) => {
-  const delay = baseDelay + index * 10;
+  const delay = baseDelay;
   const opacity = useFadeIn({ from: delay, duration: 18 });
 
   const cardX = index % 2 === 0 ? 160 : 980;

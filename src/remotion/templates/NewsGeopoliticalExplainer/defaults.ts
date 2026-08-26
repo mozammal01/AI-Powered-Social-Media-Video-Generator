@@ -39,7 +39,7 @@ export const newsGeopoliticalExplainerDefaultContent = {
       time: '06:00',
       headline: 'Initial Reports',
       location: 'Border Region',
-      coordinates: { x: 520, y: 130 },
+      coordinates: { x: 27, y: 12 },
       impact: 'medium' as const,
     },
     {
@@ -47,7 +47,7 @@ export const newsGeopoliticalExplainerDefaultContent = {
       time: '08:30',
       headline: 'Emergency Declared',
       location: 'Capital City',
-      coordinates: { x: 540, y: 140 },
+      coordinates: { x: 28, y: 13 },
       impact: 'high' as const,
     },
     {
@@ -55,7 +55,7 @@ export const newsGeopoliticalExplainerDefaultContent = {
       time: '10:00',
       headline: 'International Response',
       location: 'Allied Nations',
-      coordinates: { x: 480, y: 120 },
+      coordinates: { x: 25, y: 11 },
       impact: 'high' as const,
     },
     {
@@ -63,7 +63,7 @@ export const newsGeopoliticalExplainerDefaultContent = {
       time: '12:30',
       headline: 'Humanitarian Corridor',
       location: 'Safe Zone',
-      coordinates: { x: 560, y: 150 },
+      coordinates: { x: 29, y: 14 },
       impact: 'medium' as const,
     },
   ] as GeopoliticalEvent[],
@@ -90,14 +90,14 @@ export const newsGeopoliticalExplainerDefaultContent = {
   routes: [
     {
       id: 'route-1',
-      from: { x: 520, y: 130 },
-      to: { x: 540, y: 140 },
+      from: { x: 27, y: 12 },
+      to: { x: 28, y: 13 },
       label: ' troop movement',
     },
     {
       id: 'route-2',
-      from: { x: 540, y: 140 },
-      to: { x: 480, y: 120 },
+      from: { x: 28, y: 13 },
+      to: { x: 25, y: 11 },
       label: 'diplomatic channel',
     },
   ] as RouteData[],

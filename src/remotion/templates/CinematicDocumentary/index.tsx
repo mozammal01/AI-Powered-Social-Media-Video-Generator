@@ -178,8 +178,7 @@ const CinematicWipe: React.FC<{ enterFrame?: number; duration?: number; color?: 
 // Slow camera push, masked title reveal, light sweep transition
 // ─────────────────────────────────────────────────────────────────────────────
 
-const OpeningScene: React.FC<VideoContentProps> = ({ brand, headline }) => {
-  const { durationInFrames } = useVideoConfig();
+const OpeningScene: React.FC<VideoContentProps & { durationInFrames: number }> = ({ brand, headline, durationInFrames }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const scale = useSlowCameraPush({ duration: 120, targetScale: 1.05 });
   const title = (headline ?? brand.name ?? 'DOCUMENTARY').toUpperCase();
@@ -300,11 +299,13 @@ const OpeningScene: React.FC<VideoContentProps> = ({ brand, headline }) => {
 // Parallax depth, blur-to-focus, animated date/location
 // ─────────────────────────────────────────────────────────────────────────────
 
-const ParallaxScene: React.FC<VideoContentProps> = ({ brand, product }) => {
-  const { durationInFrames } = useVideoConfig();
+const ParallaxScene: React.FC<VideoContentProps & { durationInFrames: number }> = ({ brand, product, durationInFrames }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const episode = product.features?.[0] ?? 'Chapter One';
   const scale = useSlowCameraPush({ enterFrame: 30, duration: 90, targetScale: 1.03 });
+  const extendedProduct = product as Record<string, unknown>;
+  const location = (extendedProduct.location as string) ?? 'Unknown Location';
+  const dateFrom = (extendedProduct.dateFrom as number) ?? 1900;
 
   return (
     <AbsoluteFill style={{ opacity }}>
@@ -428,11 +429,11 @@ const ParallaxScene: React.FC<VideoContentProps> = ({ brand, product }) => {
               opacity: useSpringSlideUp({ from: 44, distance: 20, damping: 20, stiffness: 120 }),
             }}
           >
-            Sarajevo, Bosnia
+            {location}
           </div>
           <DateCounter
-            from={1914}
-            to={1914}
+            from={dateFrom}
+            to={dateFrom}
             startFrame={60}
             durationInFrames={40}
             style={{
@@ -455,8 +456,7 @@ const ParallaxScene: React.FC<VideoContentProps> = ({ brand, product }) => {
 // Kinetic typography, lower third, light sweep
 // ─────────────────────────────────────────────────────────────────────────────
 
-const StatementScene: React.FC<VideoContentProps> = ({ brand, bodyText }) => {
-  const { durationInFrames } = useVideoConfig();
+const StatementScene: React.FC<VideoContentProps & { durationInFrames: number }> = ({ brand, bodyText, durationInFrames }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const statement = bodyText ?? '';
 
@@ -538,9 +538,11 @@ const StatementScene: React.FC<VideoContentProps> = ({ brand, bodyText }) => {
 // Map zoom, depth/scale, date/location, coordinate readout
 // ─────────────────────────────────────────────────────────────────────────────
 
-const MapScene: React.FC<VideoContentProps> = ({ brand }) => {
-  const { durationInFrames } = useVideoConfig();
+const MapScene: React.FC<VideoContentProps & { durationInFrames: number }> = ({ brand, product, durationInFrames }) => {
   const opacity = useSceneOpacity(durationInFrames);
+  const extendedProduct = product as Record<string, unknown>;
+  const dateFrom = (extendedProduct.dateFrom as number) ?? 1900;
+  const dateTo = (extendedProduct.dateTo as number) ?? 2000;
 
   return (
     <AbsoluteFill style={{ opacity }}>
@@ -595,9 +597,9 @@ const MapScene: React.FC<VideoContentProps> = ({ brand }) => {
           color: brand.primaryColor ?? GOLD,
         }}
       >
-        <DateCounter from={1914} to={1914} startFrame={24} durationInFrames={28} />
+        <DateCounter from={dateFrom} to={dateFrom} startFrame={24} durationInFrames={28} />
         <span style={{ opacity: 0.6 }}>—</span>
-        <DateCounter from={1914} to={1918} startFrame={38} durationInFrames={28} />
+        <DateCounter from={dateFrom} to={dateTo} startFrame={38} durationInFrames={28} />
       </div>
     </AbsoluteFill>
   );
@@ -608,8 +610,7 @@ const MapScene: React.FC<VideoContentProps> = ({ brand }) => {
 // Broadcast timeline with staggered events, parallax depth
 // ─────────────────────────────────────────────────────────────────────────────
 
-const TimelineScene: React.FC<VideoContentProps> = ({ brand, product }) => {
-  const { durationInFrames } = useVideoConfig();
+const TimelineScene: React.FC<VideoContentProps & { durationInFrames: number }> = ({ brand, product, durationInFrames }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
   const events = product.features?.map((feature, i) => ({
@@ -769,8 +770,7 @@ const TimelineScene: React.FC<VideoContentProps> = ({ brand, product }) => {
 // Final title, blur focus, light sweep, film grain, letterbox bars
 // ─────────────────────────────────────────────────────────────────────────────
 
-const FinaleScene: React.FC<VideoContentProps> = ({ brand, product, headline, cta }) => {
-  const { durationInFrames } = useVideoConfig();
+const FinaleScene: React.FC<VideoContentProps & { durationInFrames: number }> = ({ brand, product, headline, cta, durationInFrames }) => {
   const frame = useCurrentFrame();
   const opacity = useSceneOpacity(durationInFrames);
   const title = (headline ?? product.name ?? 'DOCUMENTARY').toUpperCase();
@@ -916,7 +916,7 @@ const FinaleScene: React.FC<VideoContentProps> = ({ brand, product, headline, ct
 // Scene registry
 // ─────────────────────────────────────────────────────────────────────────────
 
-const SCENE_COMPONENTS: Partial<Record<string, React.FC<VideoContentProps>>> = {
+const SCENE_COMPONENTS: Partial<Record<string, React.FC<VideoContentProps & { durationInFrames: number }>>> = {
   intro: OpeningScene,
   product: ParallaxScene,
   features: StatementScene,
@@ -960,7 +960,7 @@ export const CinematicDocumentary: React.FC<VideoContentProps> = (content) => {
             from={scene.startFrame}
             durationInFrames={scene.durationInFrames}
           >
-            <SceneComponent {...content} />
+            <SceneComponent {...content} durationInFrames={scene.durationInFrames} />
             {/* Cinematic wipe transition overlay */}
             {scene.transition?.type === 'wipe' && (
               <CinematicWipe

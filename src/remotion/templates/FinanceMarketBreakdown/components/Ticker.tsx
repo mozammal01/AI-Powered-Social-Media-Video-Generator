@@ -18,7 +18,7 @@ export interface TickerProps {
 export const Ticker: React.FC<TickerProps> = ({
   items,
   delay = 0,
-  speed = 60,
+  speed = 80,
   height = 48,
 }) => {
   const frame = useCurrentFrame();
@@ -28,12 +28,14 @@ export const Ticker: React.FC<TickerProps> = ({
   const totalWidth = items.length * itemWidth;
   const scrollDuration = totalWidth / speed;
 
-  const scrollX = interpolate(frame - delay, [0, fps * scrollDuration], [0, -totalWidth], {
+  const loopFrame = frame - delay;
+  const loopedFrame = ((loopFrame % Math.ceil(fps * scrollDuration)) + Math.ceil(fps * scrollDuration)) % Math.ceil(fps * scrollDuration);
+  const scrollX = interpolate(loopedFrame, [0, fps * scrollDuration], [0, -totalWidth], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  const opacity = interpolate(frame - delay, [0, 15], [0, 1], {
+  const opacity = interpolate(loopFrame, [0, 15], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });

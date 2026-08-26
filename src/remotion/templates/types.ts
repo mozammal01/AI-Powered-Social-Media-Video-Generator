@@ -15,7 +15,8 @@ export type TemplateId =
   | 'luxury-commercial'
   | 'breaking-news'
   | 'tech-business-explainer'
-  | 'finance-market-breakdown';
+  | 'finance-market-breakdown'
+  | 'news-geopolitical-explainer';
 
 /**
  * Serializable template metadata — everything the app needs to know about a

@@ -340,5 +340,11 @@ export type { StockPoint, AnimatedStockChartProps } from './AnimatedStockChart';
 export { NumberCounter } from './NumberCounter';
 export type { NumberCounterProps } from './NumberCounter';
 
+export { CountryHighlight } from './CountryHighlight';
+export type { CountryHighlightProps } from './CountryHighlight';
+
+export { RouteLine } from './RouteLine';
+export type { RoutePoint, RouteLineProps } from './RouteLine';
+
 export { Timeline } from './Timeline';
 export type { TimelineStep, TimelineProps } from './Timeline';

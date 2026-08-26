@@ -15,6 +15,7 @@ import { cinematicDocumentaryDefaultContent } from './CinematicDocumentary/defau
 import { top10CountdownDefaultContent } from './Top10Countdown/defaults';
 import { techBusinessExplainerDefaultContent } from './TechBusinessExplainer/defaults';
 import { financeMarketBreakdownDefaultContent } from './FinanceMarketBreakdown/defaults';
+import { newsGeopoliticalExplainerDefaultContent } from './NewsGeopoliticalExplainer/defaults';
 
 /**
  * Template Registry
@@ -98,6 +99,22 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     durationInFrames: 900, // 30s
     featured: true,
     defaultProps: financeMarketBreakdownDefaultContent,
+  },
+
+  'news-geopolitical-explainer': {
+    id: 'news-geopolitical-explainer',
+    name: 'News / Geopolitical Explainer',
+    description:
+      'Professional 30-second broadcast news explainer with breaking headlines, world map, animated routes, timeline, statistics, news cards, ticker, and live indicator — built for news recaps and geopolitical summaries.',
+    category: 'explainer',
+    tags: ['news', 'geopolitical', 'broadcast', 'breaking', 'world', 'politics'],
+    thumbnailUrl: '/templates/news-geopolitical-explainer.svg',
+    supportedAspectRatios: ['16:9', '9:16', '1:1'],
+    defaultAspectRatio: '16:9',
+    fps: 30,
+    durationInFrames: 900, // 30s
+    featured: true,
+    defaultProps: newsGeopoliticalExplainerDefaultContent,
   },
 
    'documentary-intro': {

@@ -13,6 +13,7 @@ import { LuxuryCommercial } from './LuxuryCommercial/LuxuryCommercial';
 import { BreakingNews } from './BreakingNews/BreakingNews';
 import { TechBusinessExplainer } from './TechBusinessExplainer/TechBusinessExplainer';
 import { FinanceMarketBreakdown } from './FinanceMarketBreakdown/FinanceMarketBreakdown';
+import { NewsGeopoliticalExplainer } from './NewsGeopoliticalExplainer/NewsGeopoliticalExplainer';
 
 /**
  * Maps template IDs to their Remotion composition components.
@@ -40,6 +41,7 @@ export const templateComponents: Record<
   'breaking-news': BreakingNews,
   'tech-business-explainer': TechBusinessExplainer,
   'finance-market-breakdown': FinanceMarketBreakdown,
+  'news-geopolitical-explainer': NewsGeopoliticalExplainer,
 };
 
 /** Returns the Remotion composition component for a registered template ID. */

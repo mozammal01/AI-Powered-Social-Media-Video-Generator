@@ -29,16 +29,11 @@ export const ListItem: React.FC<ListItemProps> = ({
     durationInFrames: 24,
   });
 
-  const contentX = interpolate(slideX, [0, 1], [120, 0]);
   const contentOpacity = interpolate(slideX, [0, 0.6], [0, 1], {
     extrapolateRight: 'clamp',
   });
 
   const imageScale = interpolate(local, [0, 20], [1.15, 1], {
-    extrapolateRight: 'clamp',
-  });
-
-  const imageOpacity = interpolate(local, [0, 14], [0, 1], {
     extrapolateRight: 'clamp',
   });
 
@@ -65,7 +60,6 @@ export const ListItem: React.FC<ListItemProps> = ({
           style={{
             position: 'absolute',
             inset: 0,
-            opacity: imageOpacity,
             transform: `scale(${imageScale})`,
           }}
         >
@@ -74,7 +68,7 @@ export const ListItem: React.FC<ListItemProps> = ({
             style={{
               position: 'absolute',
               inset: 0,
-              background: 'linear-gradient(90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%)',
+              background: 'linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 45%, rgba(0,0,0,0.35) 100%)',
             }}
           />
         </div>
@@ -96,7 +90,7 @@ export const ListItem: React.FC<ListItemProps> = ({
             fontSize: 'clamp(80px, 12vw, 180px)',
             fontWeight: 900,
             lineHeight: 1,
-            color: 'rgba(255,255,255,0.08)',
+            color: 'rgba(255,255,255,0.18)',
             textShadow: '0 0 40px rgba(255,255,255,0.15)',
             WebkitTextStroke: '2px rgba(255,255,255,0.25)',
           }}
@@ -109,11 +103,12 @@ export const ListItem: React.FC<ListItemProps> = ({
       <div
         style={{
           position: 'absolute',
-          right: '4%',
+          left: '50%',
           top: '50%',
-          transform: `translateY(-50%) translateX(${contentX}px)`,
+          transform: `translateX(-50%) translateY(-50%)`,
           opacity: contentOpacity,
-          maxWidth: '48%',
+          maxWidth: '62%',
+          width: '100%',
           zIndex: 10,
         }}
       >
@@ -157,7 +152,7 @@ export const ListItem: React.FC<ListItemProps> = ({
               fontWeight: 400,
               lineHeight: 1.5,
               color: 'rgba(255,255,255,0.8)',
-              maxWidth: 520,
+              maxWidth: '100%',
             }}
           >
             {item.description}

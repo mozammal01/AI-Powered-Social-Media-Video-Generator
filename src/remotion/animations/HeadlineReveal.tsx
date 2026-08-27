@@ -17,10 +17,9 @@ export const HeadlineReveal: React.FC<{
   const translateY = interpolate(reveal, [0, 1], [100, 0]);
 
   return (
-    <div className="overflow-hidden p-2">
+    <div style={{ overflow: 'hidden', padding: 8 }}>
       <div 
-        style={{ transform: `translateY(${translateY}%)` }}
-        className="text-8xl font-black text-white uppercase drop-shadow-2xl"
+        style={{ transform: `translateY(${translateY}%)`, fontSize: 72, fontWeight: 900, color: '#FFFFFF', textTransform: 'uppercase', filter: 'drop-shadow(0 10px 8px rgba(0,0,0,0.5))' }}
       >
         {text}
       </div>

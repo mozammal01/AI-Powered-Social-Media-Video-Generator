@@ -5,14 +5,14 @@ export const ChartAnimation: React.FC<{
   data: number[];
   delay?: number;
   color?: string;
-}> = ({ data, delay = 0, color = 'bg-cyan-500' }) => {
+}> = ({ data, delay = 0, color = '#EF4444' }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
   const maxVal = Math.max(...data);
 
   return (
-    <div className="flex items-end justify-between h-full w-full gap-2">
+    <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', height: '100%', width: '100%', gap: 8 }}>
       {data.map((value, i) => {
         const heightProgress = spring({
           fps,
@@ -23,12 +23,9 @@ export const ChartAnimation: React.FC<{
         const heightPercentage = (value / maxVal) * 100;
 
         return (
-          <div key={i} className="flex-1 flex flex-col justify-end items-center h-full">
+          <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center', height: '100%' }}>
             <div 
-              className={`w-full rounded-t-sm opacity-80 ${color}`}
-              style={{
-                height: `${heightPercentage * heightProgress}%`,
-              }}
+              style={{ width: '100%', borderRadius: '2px 2px 0 0', opacity: 0.8, backgroundColor: color, height: `${heightPercentage * heightProgress}%` }}
             />
           </div>
         );

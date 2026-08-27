@@ -57,8 +57,13 @@ export const ConnectingLine: React.FC<{
       </svg>
       {frame > delay + drawFrames && (
         <div 
-          className="absolute w-4 h-4 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.8)]"
           style={{
+            position: 'absolute',
+            width: 16,
+            height: 16,
+            borderRadius: '50%',
+            backgroundColor: '#22D3EE',
+            boxShadow: '0 0 15px rgba(34,211,238,0.8)',
             transform: `translate(${currentX - 8}px, ${currentY - 8}px)`,
           }}
         />

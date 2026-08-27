@@ -34,7 +34,7 @@ const IntroScene: React.FC<{ title?: string; durationInFrames: number }> = ({ ti
   const frame = useCurrentFrame();
   const opacity = useSceneOpacity(durationInFrames);
 
-  const countdownDuration = 48;
+  const countdownDuration = 45;
   const countdownProgress = interpolate(frame, [0, countdownDuration], [10, 1], {
     extrapolateRight: 'clamp',
     easing: Easing.bezier(0.4, 0, 0.2, 1),
@@ -42,8 +42,9 @@ const IntroScene: React.FC<{ title?: string; durationInFrames: number }> = ({ ti
 
   const displayRank = Math.round(countdownProgress);
 
-  const titleY = useSpringSlideUp({ from: countdownDuration + 8, distance: 50, damping: 18, stiffness: 100 });
-  const titleOpacity = useFadeIn({ from: countdownDuration + 8, duration: 18 });
+  const titleStart = countdownDuration - 4;
+  const titleY = useSpringSlideUp({ from: titleStart, distance: 40, damping: 18, stiffness: 120 });
+  const titleOpacity = useFadeIn({ from: titleStart, duration: 16 });
   const displayTitle = title ?? "Top 10 Countdown";
 
   return (
@@ -68,6 +69,8 @@ const IntroScene: React.FC<{ title?: string; durationInFrames: number }> = ({ ti
             alignItems: 'center',
             justifyContent: 'center',
             height: 'clamp(100px, 22vh, 260px)',
+            opacity: interpolate(frame, [countdownDuration - 8, countdownDuration], [1, 0], { extrapolateRight: 'clamp' }),
+            transform: `scale(${interpolate(frame, [countdownDuration - 8, countdownDuration], [1, 0.85], { extrapolateRight: 'clamp' })}`,
           }}
         >
           {frame < countdownDuration && (
@@ -92,7 +95,7 @@ const IntroScene: React.FC<{ title?: string; durationInFrames: number }> = ({ ti
             gap: 'clamp(8px, 1.4vh, 18px)',
           }}
         >
-          <MaskReveal direction="up" enterFrame={0} duration={16}>
+          <MaskReveal direction="up" enterFrame={titleStart} duration={14}>
             <div
               style={{
                 fontFamily: SANS,
@@ -107,7 +110,7 @@ const IntroScene: React.FC<{ title?: string; durationInFrames: number }> = ({ ti
             </div>
           </MaskReveal>
 
-          <MaskReveal direction="right" enterFrame={6} duration={20}>
+          <MaskReveal direction="right" enterFrame={titleStart + 4} duration={18}>
             <h1
               style={{
                 margin: 0,
@@ -129,7 +132,7 @@ const IntroScene: React.FC<{ title?: string; durationInFrames: number }> = ({ ti
               height: 3,
               background: `linear-gradient(90deg, transparent, ${RED}, transparent)`,
               margin: '0 auto',
-              opacity: useFadeIn({ from: 18, duration: 10 }),
+              opacity: useFadeIn({ from: titleStart + 10, duration: 8 }),
             }}
           />
         </div>
@@ -236,8 +239,8 @@ const FinaleScene: React.FC<{ item: ListItemData; durationInFrames: number }> = 
     easing: Easing.bezier(0.4, 0, 0.2, 1),
   });
 
-  const ctaOpacity = useFadeIn({ from: 50, duration: 16 });
-  const ctaY = useSpringSlideUp({ from: 50, distance: 20, damping: 18, stiffness: 110 });
+  const ctaOpacity = useFadeIn({ from: 48, duration: 10 });
+  const ctaY = useSpringSlideUp({ from: 48, distance: 20, damping: 18, stiffness: 110 });
 
   return (
     <AbsoluteFill style={{ opacity }}>
@@ -515,8 +518,8 @@ export const Top10Countdown: React.FC<VideoContentProps> = (content) => {
         const itemIndex = scene.id.startsWith('scene-item-')
           ? parseInt(scene.id.split('-').pop() ?? '0', 10)
           : undefined;
-        const rank = itemIndex ? 11 - itemIndex : undefined;
-        const item = rank ? items[rank - 1] : undefined;
+        const item = itemIndex ? items[10 - itemIndex] : undefined;
+        const rank = item?.rank ?? itemIndex;
 
         return (
           <Sequence

@@ -9,7 +9,7 @@ export const BroadcastTimeline: React.FC<{
   const { fps } = useVideoConfig();
 
   return (
-    <div className="flex flex-col gap-8 absolute left-24 top-48 border-l-4 border-neutral-700 pl-8">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 32, position: 'absolute', left: 96, top: 192, borderLeft: '4px solid #525252', paddingLeft: 32 }}>
       {events.map((event, i) => {
         const eventDelay = delay + i * 30;
         
@@ -22,10 +22,10 @@ export const BroadcastTimeline: React.FC<{
         const opacity = interpolate(frame - eventDelay, [0, 10], [0, 1], { extrapolateRight: 'clamp' });
 
         return (
-          <div key={i} className="relative" style={{ opacity, transform: `scale(${pop})`, transformOrigin: 'left center' }}>
-            <div className="absolute -left-[42px] top-1 w-6 h-6 rounded-full bg-red-600 border-4 border-black" />
-            <div className="text-red-500 font-bold text-xl">{event.time}</div>
-            <div className="text-white font-medium text-2xl">{event.desc}</div>
+          <div key={i} style={{ position: 'relative', opacity, transform: `scale(${pop})`, transformOrigin: 'left center' }}>
+            <div style={{ position: 'absolute', left: -42, top: 4, width: 24, height: 24, borderRadius: '50%', backgroundColor: '#EF4444', border: '4px solid #000' }} />
+            <div style={{ color: '#EF4444', fontWeight: 700, fontSize: 20 }}>{event.time}</div>
+            <div style={{ color: '#FFFFFF', fontWeight: 500, fontSize: 24 }}>{event.desc}</div>
           </div>
         );
       })}

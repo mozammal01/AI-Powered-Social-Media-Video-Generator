@@ -27,19 +27,25 @@ export const UIPanel: React.FC<{
       style={{
         transform: `translateY(${yOffset}px)`,
         opacity,
+        backgroundColor: '#18181b',
+        border: '1px solid #3f3f46',
+        borderRadius: 12,
+        boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
         ...style
       }}
-      className="bg-neutral-900 border border-neutral-700 rounded-xl shadow-2xl overflow-hidden flex flex-col"
     >
-      <div className="bg-neutral-800 px-4 py-2 flex items-center border-b border-neutral-700">
-        <div className="flex gap-2">
-          <div className="w-3 h-3 rounded-full bg-red-500" />
-          <div className="w-3 h-3 rounded-full bg-yellow-500" />
-          <div className="w-3 h-3 rounded-full bg-green-500" />
+      <div style={{ backgroundColor: '#27272a', padding: '8px 16px', display: 'flex', alignItems: 'center', borderBottom: '1px solid #3f3f46' }}>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#EF4444' }} />
+          <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#EAB308' }} />
+          <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#22C55E' }} />
         </div>
-        <div className="mx-auto text-neutral-400 font-medium text-sm">{title}</div>
+        <div style={{ marginLeft: 'auto', marginRight: 'auto', color: '#a1a1aa', fontWeight: 500, fontSize: 14 }}>{title}</div>
       </div>
-      <div className="p-6 flex-1 overflow-hidden relative">
+      <div style={{ padding: 24, flex: 1, overflow: 'hidden', position: 'relative' }}>
         {children}
       </div>
     </div>

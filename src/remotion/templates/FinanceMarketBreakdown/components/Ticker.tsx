@@ -25,12 +25,12 @@ export const Ticker: React.FC<TickerProps> = ({
   const { fps } = useVideoConfig();
 
   const itemWidth = 220;
-  const totalWidth = items.length * itemWidth;
-  const scrollDuration = totalWidth / speed;
+  const singleWidth = items.length * itemWidth;
+  const scrollDuration = singleWidth / speed;
 
   const loopFrame = frame - delay;
   const loopedFrame = ((loopFrame % Math.ceil(fps * scrollDuration)) + Math.ceil(fps * scrollDuration)) % Math.ceil(fps * scrollDuration);
-  const scrollX = interpolate(loopedFrame, [0, fps * scrollDuration], [0, -totalWidth], {
+  const scrollX = interpolate(loopedFrame, [0, fps * scrollDuration], [0, -singleWidth], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -63,7 +63,7 @@ export const Ticker: React.FC<TickerProps> = ({
           willChange: 'transform',
         }}
       >
-        {items.map((item, i) => {
+        {[...items, ...items].map((item, i) => {
           const isPositive = item.change >= 0;
           const color = isPositive ? '#10B981' : '#EF4444';
           const arrow = isPositive ? '▲' : '▼';

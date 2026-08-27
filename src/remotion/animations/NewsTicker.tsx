@@ -15,14 +15,13 @@ export const NewsTicker: React.FC<{
   const translateX = -(((frame / fps) * scrollSpeedPerSecond) % 3000); // arbitrary large modulo to loop
 
   return (
-    <div className="absolute bottom-0 left-0 w-full h-12 bg-black z-50 flex items-center border-t border-neutral-800 overflow-hidden">
-      <div className="bg-red-600 text-white font-bold px-6 h-full flex items-center z-10 whitespace-nowrap">
+    <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: 48, backgroundColor: '#000000', zIndex: 50, display: 'flex', alignItems: 'center', borderTop: '1px solid #262626', overflow: 'hidden' }}>
+      <div style={{ backgroundColor: '#DC2626', color: '#FFFFFF', fontWeight: 700, padding: '0 24px', height: '100%', display: 'flex', alignItems: 'center', zIndex: 10, whiteSpace: 'nowrap' }}>
         BREAKING NEWS
       </div>
-      <div className="relative flex-1 h-full overflow-hidden flex items-center">
+      <div style={{ position: 'relative', flex: 1, height: '100%', overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
         <div 
-          className="whitespace-nowrap text-white font-medium text-lg"
-          style={{ transform: `translateX(${translateX + width}px)` }}
+          style={{ whiteSpace: 'nowrap', color: '#FFFFFF', fontWeight: 500, fontSize: 18, transform: `translateX(${translateX + width}px)` }}
         >
           {tickerText}
         </div>

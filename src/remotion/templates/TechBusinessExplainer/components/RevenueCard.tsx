@@ -19,6 +19,8 @@ export interface RevenueCardProps {
   showArrow?: boolean;
   arrowTargetX?: number;
   arrowTargetY?: number;
+  cardX?: number;
+  cardY?: number;
 }
 
 export const RevenueCard: React.FC<RevenueCardProps> = ({
@@ -28,12 +30,14 @@ export const RevenueCard: React.FC<RevenueCardProps> = ({
   showArrow = false,
   arrowTargetX = 0,
   arrowTargetY = 0,
+  cardX,
+  cardY,
 }) => {
   const delay = baseDelay;
   const opacity = useFadeIn({ from: delay, duration: 18 });
 
-  const cardX = index % 2 === 0 ? 160 : 980;
-  const cardY = 160 + Math.floor(index / 2) * 280;
+  const resolvedCardX = cardX ?? (index % 2 === 0 ? 160 : 980);
+  const resolvedCardY = cardY ?? (160 + Math.floor(index / 2) * 280);
 
   const chartData = Array.from({ length: 8 }, (_, i) => {
     const base = 30 + stream.percentage * 0.4;
@@ -41,7 +45,7 @@ export const RevenueCard: React.FC<RevenueCardProps> = ({
   });
 
   return (
-    <div style={{ position: 'absolute', left: cardX, top: cardY, opacity }}>
+    <div style={{ position: 'absolute', left: resolvedCardX, top: resolvedCardY, opacity }}>
       <AnimatedCard
         title={stream.label}
         value={`${stream.percentage}%`}
@@ -66,8 +70,8 @@ export const RevenueCard: React.FC<RevenueCardProps> = ({
 
       {showArrow && (
         <AnimatedArrow
-          startX={cardX + 340}
-          startY={cardY + 60}
+          startX={resolvedCardX + 340}
+          startY={resolvedCardY + 60}
           endX={arrowTargetX}
           endY={arrowTargetY}
           delay={delay + 15}

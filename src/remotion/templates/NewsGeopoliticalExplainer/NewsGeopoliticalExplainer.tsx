@@ -73,6 +73,9 @@ const MapScene: React.FC<{
     extrapolateRight: 'clamp',
   });
 
+  const mapWidth = Math.min(1000, width * 0.55);
+  const mapHeight = Math.min(500, height * 0.65);
+
   return (
     <AbsoluteFill style={{ opacity, background: DARK }}>
       <div style={{ position: 'absolute', left: 80, top: 80 }}>
@@ -90,7 +93,7 @@ const MapScene: React.FC<{
         />
       </div>
 
-      <div style={{ position: 'absolute', left: 80, top: 180, width: 1000, height: 500 }}>
+      <div style={{ position: 'absolute', left: 80, top: 160, width: mapWidth, height: mapHeight }}>
         <GeopoliticalMap
           highlights={highlights}
           routes={routes}
@@ -100,7 +103,7 @@ const MapScene: React.FC<{
         />
       </div>
 
-      <div style={{ position: 'absolute', right: 80, top: 200 }}>
+      <div style={{ position: 'absolute', right: 80, top: 200, width: Math.min(420, width * 0.3) }}>
         <BroadcastTimeline
           delay={30}
           events={events.map((e) => ({ time: e.time, desc: e.headline }))}
@@ -119,6 +122,7 @@ const StatsScene: React.FC<{
   chartData: readonly number[];
 }> = ({ statistics, chartData }) => {
   const frame = useCurrentFrame();
+  const { width } = useVideoConfig();
   const opacity = interpolate(frame, [0, 12], [0, 1], {
     extrapolateRight: 'clamp',
   });
@@ -140,7 +144,7 @@ const StatsScene: React.FC<{
         />
       </div>
 
-      <div style={{ position: 'absolute', left: 80, top: 200, display: 'flex', gap: 32, flexWrap: 'wrap' }}>
+      <div style={{ position: 'absolute', left: 80, top: 180, display: 'flex', gap: 24, flexWrap: 'wrap', maxWidth: '60%' }}>
         {statistics.map((stat, i) => (
           <div
             key={i}
@@ -186,7 +190,7 @@ const StatsScene: React.FC<{
         ))}
       </div>
 
-      <div style={{ position: 'absolute', left: 80, top: 420, width: 800 }}>
+      <div style={{ position: 'absolute', left: 80, bottom: 120, width: Math.min(800, width * 0.5) }}>
         <ChartAnimation data={[...chartData]} delay={40} color="#EF4444" />
       </div>
     </AbsoluteFill>
@@ -224,7 +228,7 @@ const NewsScene: React.FC<{
         />
       </div>
 
-      <div style={{ position: 'absolute', left: 80, top: 180, display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+      <div style={{ position: 'absolute', left: 80, top: 180, right: 80, display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start' }}>
         {cards.map((card, i) => (
           <NewsCard
             key={i}
@@ -263,11 +267,11 @@ const SummaryScene: React.FC<{ headline: string; body: string }> = ({ headline, 
     >
       <div
         style={{
-          position: 'absolute',
-          width: 900,
-          height: 900,
+          width: Math.min(900, 1920 * 0.6),
+          height: Math.min(900, 1080 * 0.6),
           borderRadius: '50%',
           background: `radial-gradient(circle, ${INDIGO}22 0%, transparent 60%)`,
+          position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
@@ -351,9 +355,9 @@ export const NewsGeopoliticalExplainer: React.FC<VideoContentProps> = (props) =>
 
   const cameraStops: CameraStop[] = [
     { frame: 0, x: width * 0.5, y: height * 0.5, scale: 1 },
-    { frame: 180, x: width * 0.5, y: height * 0.5, scale: 1.05 },
-    { frame: 360, x: width * 0.5, y: height * 0.5, scale: 1.1 },
-    { frame: 540, x: width * 0.5, y: height * 0.5, scale: 1.05 },
+    { frame: 180, x: width * 0.38, y: height * 0.5, scale: 1.03 },
+    { frame: 360, x: width * 0.5, y: height * 0.5, scale: 1.06 },
+    { frame: 540, x: width * 0.62, y: height * 0.5, scale: 1.03 },
     { frame: 720, x: width * 0.5, y: height * 0.5, scale: 1 },
   ];
 
@@ -364,7 +368,6 @@ export const NewsGeopoliticalExplainer: React.FC<VideoContentProps> = (props) =>
   };
 
   const renderScene = (sceneId: string) => {
-
     switch (sceneId) {
       case 'scene-headline':
         return (
@@ -504,7 +507,20 @@ export const NewsGeopoliticalExplainer: React.FC<VideoContentProps> = (props) =>
             from={scene.startFrame}
             durationInFrames={scene.durationInFrames}
           >
-            {renderScene(scene.id)}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                opacity: interpolate(
+                  useCurrentFrame() - scene.startFrame,
+                  [0, 12, scene.durationInFrames - 12, scene.durationInFrames],
+                  [0, 1, 1, 0],
+                  { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
+                ),
+              }}
+            >
+              {renderScene(scene.id)}
+            </div>
             {renderTransition(scene)}
           </Sequence>
         ))}

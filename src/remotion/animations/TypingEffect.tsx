@@ -17,9 +17,9 @@ export const TypingEffect: React.FC<{
   const showCursor = (frame % fps) < (fps / 2);
 
   return (
-    <div className={className}>
+    <div style={{ fontFamily: 'monospace', color: '#10B981', fontSize: 14, lineHeight: 1.5, maxWidth: 800 }}>
       {visibleText}
-      {showCursor && <span className="opacity-70">|</span>}
+      {showCursor && <span style={{ opacity: 0.7 }}>|</span>}
     </div>
   );
 };

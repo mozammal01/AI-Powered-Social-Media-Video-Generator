@@ -8,9 +8,11 @@ export const AnimatedWorldMap: React.FC<{
   const { fps } = useVideoConfig();
 
   return (
-    <div className="relative w-full h-full opacity-30">
+    <div style={{ position: 'relative', width: '100%', height: '100%', opacity: 0.3 }}>
       {/* Simplified SVG Map representation using a grid/dots pattern for broadcast look */}
-      <div className="absolute inset-0" style={{
+      <div style={{
+        position: 'absolute',
+        inset: 0,
         backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.4) 2px, transparent 2px)',
         backgroundSize: '20px 20px',
         maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 70%)',
@@ -26,12 +28,16 @@ export const AnimatedWorldMap: React.FC<{
 
         return (
           <div key={i} style={{ position: 'absolute', left: point.x, top: point.y }}>
-            <div className="absolute w-4 h-4 bg-red-600 rounded-full -translate-x-1/2 -translate-y-1/2" />
+            <div style={{ position: 'absolute', width: 16, height: 16, backgroundColor: '#EF4444', borderRadius: '50%', transform: 'translate(-50%, -50%)' }} />
             <div 
-              className="absolute w-12 h-12 border-2 border-red-600 rounded-full -translate-x-1/2 -translate-y-1/2"
               style={{
+                position: 'absolute',
+                width: 48,
+                height: 48,
+                border: '2px solid #EF4444',
+                borderRadius: '50%',
                 transform: `translate(-50%, -50%) scale(${scale})`,
-                opacity
+                opacity,
               }}
             />
           </div>

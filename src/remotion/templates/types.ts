@@ -7,13 +7,9 @@ export type TemplateId =
   | 'product-advertisement'
   | 'restaurant-promotion'
   | 'sale-promotion'
-  | 'documentary-intro'
   | 'cinematic-documentary'
-  | 'top-10-listicle'
   | 'top-10-countdown'
-  | 'tech-explainer'
   | 'luxury-commercial'
-  | 'breaking-news'
   | 'tech-business-explainer'
   | 'finance-market-breakdown'
   | 'news-geopolitical-explainer';

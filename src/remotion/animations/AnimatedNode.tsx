@@ -14,7 +14,7 @@ export const AnimatedNode: React.FC<{
   iconName?: keyof typeof ICONS;
   delay?: number;
   color?: string;
-}> = ({ title, iconName = 'Database', delay = 0, color = 'bg-blue-500' }) => {
+}> = ({ title, iconName = 'Database', delay = 0, color = '#6366F1' }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -26,7 +26,7 @@ export const AnimatedNode: React.FC<{
 
   const time = (frame - delay) / fps;
   const pulse = interpolate(
-    Math.sin(time * 3), // 3 radians per second
+    Math.sin(time * 3),
     [-1, 1],
     [0.5, 1],
     { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
@@ -39,22 +39,41 @@ export const AnimatedNode: React.FC<{
       style={{
         transform: `scale(${scale})`,
         opacity: frame >= delay ? 1 : 0,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
       }}
-      className="flex flex-col items-center justify-center relative"
     >
       <div 
-        className={`absolute rounded-full opacity-30 blur-xl ${color}`}
         style={{
+          position: 'absolute',
+          borderRadius: '50%',
+          opacity: 0.3,
+          filter: 'blur(48px)',
           width: 120,
           height: 120,
+          backgroundColor: color,
           transform: `scale(${pulse * 1.5})`,
           transition: 'transform 0.1s linear',
         }}
       />
-      <div className={`w-24 h-24 rounded-2xl shadow-xl flex items-center justify-center border border-white/20 z-10 ${color}`}>
-        {Icon && <Icon className="text-white w-12 h-12" />}
+      <div style={{
+        width: 96,
+        height: 96,
+        borderRadius: 16,
+        boxShadow: '0 20px 25px -5px rgba(0,0,0,0.3), 0 8px 10px -6px rgba(0,0,0,0.3)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: '1px solid rgba(255,255,255,0.2)',
+        zIndex: 10,
+        backgroundColor: 'rgba(15, 15, 20, 0.85)',
+      }}>
+        {Icon && <Icon style={{ width: 48, height: 48, color: '#FFFFFF' }} />}
       </div>
-      <div className="mt-4 font-bold text-white text-xl drop-shadow-md z-10">
+      <div style={{ marginTop: 16, fontWeight: 700, color: '#FFFFFF', fontSize: 20, textShadow: '0 2px 4px rgba(0,0,0,0.5)', zIndex: 10 }}>
         {title}
       </div>
     </div>

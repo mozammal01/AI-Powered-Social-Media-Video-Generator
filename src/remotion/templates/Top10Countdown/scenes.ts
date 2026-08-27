@@ -81,10 +81,10 @@ export const top10CountdownScenes: VideoScene[] = [
   },
   {
     id: 'scene-item-1',
-    type: 'headline',
+    type: 'product',
     startFrame: 750,
     durationInFrames: 75,
-    transition: { type: 'zoom', durationInFrames: 14 },
+    transition: { type: 'slide', durationInFrames: 10 },
   },
   {
     id: 'scene-finale',

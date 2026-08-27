@@ -16,6 +16,8 @@ export interface DataFlowAnimationProps {
   lineColor?: string;
   particleCount?: number;
   delay?: number;
+  width?: number;
+  height?: number;
 }
 
 export const DataFlowAnimation: React.FC<DataFlowAnimationProps> = ({
@@ -25,15 +27,19 @@ export const DataFlowAnimation: React.FC<DataFlowAnimationProps> = ({
   lineColor = 'rgba(255, 255, 255, 0.15)',
   particleCount = 6,
   delay = 0,
+  width = 1920,
+  height = 1080,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const nodeMap = useMemo(() => {
-    const map = new Map<string, FlowNode>();
-    nodes.forEach((n) => map.set(n.id, n));
-    return map;
-  }, [nodes]);
+  const resolvedNodes = useMemo(() => {
+    return nodes.map((n) => ({
+      ...n,
+      x: (n.x / 100) * width,
+      y: (n.y / 100) * height,
+    }));
+  }, [nodes, width, height]);
 
   const particles = useMemo(() => {
     const result: Array<{
@@ -76,8 +82,8 @@ export const DataFlowAnimation: React.FC<DataFlowAnimationProps> = ({
         }}
       >
         {connections.map((conn, i) => {
-          const from = nodeMap.get(conn.from);
-          const to = nodeMap.get(conn.to);
+          const from = resolvedNodes.find((n) => n.id === conn.from);
+          const to = resolvedNodes.find((n) => n.id === conn.to);
           if (!from || !to) return null;
 
           const length = Math.sqrt(
@@ -108,8 +114,8 @@ export const DataFlowAnimation: React.FC<DataFlowAnimationProps> = ({
       </svg>
 
       {particles.map((p) => {
-        const from = nodeMap.get(p.from);
-        const to = nodeMap.get(p.to);
+        const from = resolvedNodes.find((n) => n.id === p.from);
+        const to = resolvedNodes.find((n) => n.id === p.to);
         if (!from || !to) return null;
 
         const cycleDuration = fps * (1.2 / p.speed);
@@ -136,7 +142,7 @@ export const DataFlowAnimation: React.FC<DataFlowAnimationProps> = ({
         );
       })}
 
-      {nodes.map((node) => {
+      {resolvedNodes.map((node) => {
         const nodeDelay = delay + 20;
         const scale = interpolate(
           frame - nodeDelay,
@@ -156,18 +162,28 @@ export const DataFlowAnimation: React.FC<DataFlowAnimationProps> = ({
             }}
           >
             <div
-              className="flex items-center justify-center rounded-full border-2"
               style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '50%',
+                border: `2px solid ${node.color || 'rgba(255,255,255,0.4)'}`,
                 width: 72,
                 height: 72,
-                borderColor: node.color || 'rgba(255,255,255,0.4)',
                 backgroundColor: 'rgba(15, 15, 20, 0.85)',
                 backdropFilter: 'blur(8px)',
               }}
             >
               <span
-                className="text-xs font-bold uppercase tracking-widest text-center px-2"
-                style={{ color: node.color || 'rgba(255,255,255,0.9)' }}
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.2em',
+                  textAlign: 'center',
+                  padding: '0 8px',
+                  color: node.color || 'rgba(255,255,255,0.9)',
+                }}
               >
                 {node.label}
               </span>

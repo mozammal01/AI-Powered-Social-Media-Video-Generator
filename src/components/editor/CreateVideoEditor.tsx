@@ -36,6 +36,7 @@ import {
 import {
   ASPECT_OPTIONS,
   DURATION_OPTIONS,
+  FIXED_DURATION_TEMPLATES,
   defaultEditorValues,
   parseEditorForm,
   type EditorFieldErrors,
@@ -184,9 +185,13 @@ export function CreateVideoEditor() {
   };
 
   const inputProps = useMemo(() => toVideoContent(values), [values]);
-  const durationFrames =
-    DURATION_OPTIONS.find((option) => option.value === values.duration)
-      ?.frames ?? 300;
+  const isFixedDurationTemplate = FIXED_DURATION_TEMPLATES.includes(
+    values.templateId as any
+  );
+  const durationFrames = isFixedDurationTemplate
+    ? (activeTemplate?.durationInFrames ?? 900)
+    : (DURATION_OPTIONS.find((option) => option.value === values.duration)
+        ?.frames ?? 300);
   const errorCount = Object.keys(errors).length;
   const aspectOptions = ASPECT_OPTIONS.filter((option) =>
     activeTemplate?.supportedAspectRatios.includes(option.value)
@@ -313,13 +318,27 @@ export function CreateVideoEditor() {
               onChange={(value) => updateField("aspectRatio", value)}
               error={errors.aspectRatio}
             />
-            <OptionToggle
-              label="Duration"
-              value={values.duration}
-              options={DURATION_OPTIONS}
-              onChange={(value) => updateField("duration", value)}
-              error={errors.duration}
-            />
+            {isFixedDurationTemplate ? (
+              <div className="space-y-1.5">
+                <p className="block text-sm font-medium text-foreground leading-none">
+                  Duration
+                </p>
+                <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-2 text-xs font-medium text-muted-foreground">
+                  <span className="inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                  {activeTemplate?.name} is fixed at{" "}
+                  {Math.round((activeTemplate?.durationInFrames ?? 0) / (activeTemplate?.fps ?? 30))}{" "}
+                  seconds
+                </div>
+              </div>
+            ) : (
+              <OptionToggle
+                label="Duration"
+                value={values.duration}
+                options={DURATION_OPTIONS}
+                onChange={(value) => updateField("duration", value)}
+                error={errors.duration}
+              />
+            )}
           </SectionCard>
 
           <SectionCard
@@ -499,7 +518,10 @@ export function CreateVideoEditor() {
                   </h2>
                   <p className="text-xs text-muted-foreground">
                     {activeTemplate?.name} · {values.aspectRatio} ·{" "}
-                    {values.duration}s · 30 fps
+                    {isFixedDurationTemplate
+                      ? `${Math.round((activeTemplate?.durationInFrames ?? 0) / (activeTemplate?.fps ?? 30))}s`
+                      : `${values.duration}s`}{" "}
+                    · 30 fps
                   </p>
                 </div>
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 border border-emerald-500/15">

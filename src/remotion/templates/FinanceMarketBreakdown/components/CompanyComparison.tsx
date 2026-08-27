@@ -62,7 +62,7 @@ export const CompanyComparison: React.FC<CompanyComparisonProps> = ({
           border: '1px solid rgba(255, 255, 255, 0.08)',
           borderRadius: 20,
           padding: '32px 36px',
-          width: 420,
+          width: 'clamp(280px, 22vw, 420px)',
           transform: `scale(${scale})`,
           opacity,
           backdropFilter: 'blur(12px)',
@@ -130,7 +130,7 @@ export const CompanyComparison: React.FC<CompanyComparisonProps> = ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 48,
+        gap: 'clamp(16px, 3vw, 48px)',
         pointerEvents: 'none',
       }}
     >

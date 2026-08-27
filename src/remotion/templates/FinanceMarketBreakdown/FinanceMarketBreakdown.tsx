@@ -42,6 +42,7 @@ const HookScene: React.FC<{ headline: string; subheadline: string }> = ({
   subheadline,
 }) => {
   const frame = useCurrentFrame();
+  const { width, height } = useVideoConfig();
   const opacity = interpolate(frame, [0, 20], [0, 1], {
     extrapolateRight: 'clamp',
   });
@@ -61,8 +62,8 @@ const HookScene: React.FC<{ headline: string; subheadline: string }> = ({
       <div
         style={{
           position: 'absolute',
-          width: 900,
-          height: 900,
+          width: Math.min(900, width * 0.6),
+          height: Math.min(900, height * 0.6),
           borderRadius: '50%',
           background: `radial-gradient(circle, ${INDIGO}22 0%, transparent 60%)`,
           top: '50%',
@@ -105,6 +106,7 @@ const ChartScene: React.FC<{ chartData: { frame: number; value: number }[] }> = 
   chartData,
 }) => {
   const frame = useCurrentFrame();
+  const { width, height } = useVideoConfig();
   const opacity = interpolate(frame, [0, 12], [0, 1], {
     extrapolateRight: 'clamp',
   });
@@ -112,11 +114,16 @@ const ChartScene: React.FC<{ chartData: { frame: number; value: number }[] }> = 
   const currentPrice = chartData[chartData.length - 1]?.value ?? 0;
   const startPrice = chartData[0]?.value ?? 0;
 
+  const chartWidth = Math.min(1000, width * 0.55);
+  const chartHeight = Math.min(450, height * 0.5);
+
   return (
     <AbsoluteFill style={{ opacity, background: DARK }}>
       <div
-        className="absolute inset-0 opacity-[0.06]"
         style={{
+          position: 'absolute',
+          inset: 0,
+          opacity: 0.06,
           backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
           backgroundSize: '120px 120px',
         }}
@@ -140,14 +147,14 @@ const ChartScene: React.FC<{ chartData: { frame: number; value: number }[] }> = 
       <div style={{ position: 'absolute', left: 80, top: 220 }}>
         <AnimatedStockChart
           data={chartData}
-          width={1000}
-          height={450}
+          width={chartWidth}
+          height={chartHeight}
           delay={15}
           lineColor={INDIGO}
         />
       </div>
 
-      <div style={{ position: 'absolute', right: 120, top: 240 }}>
+      <div style={{ position: 'absolute', right: 80, top: 240 }}>
         <PriceMovement
           fromPrice={startPrice}
           toPrice={currentPrice}
@@ -156,13 +163,14 @@ const ChartScene: React.FC<{ chartData: { frame: number; value: number }[] }> = 
         />
       </div>
 
-      <div style={{ position: 'absolute', right: 120, top: 340 }}>
+      <div style={{ position: 'absolute', right: 80, top: 340 }}>
         <NumberCounter
           value={currentPrice}
           delay={40}
           color={GREEN}
           size={36}
           prefix="$"
+          decimals={2}
         />
       </div>
     </AbsoluteFill>
@@ -178,17 +186,23 @@ const ComparisonScene: React.FC<{ companies: CompanyData[]; chartData: { frame: 
   chartData,
 }) => {
   const frame = useCurrentFrame();
+  const { width, height } = useVideoConfig();
   const opacity = interpolate(frame, [0, 12], [0, 1], {
     extrapolateRight: 'clamp',
   });
 
   const [left, right] = companies;
 
+  const chartWidth = Math.min(1000, width * 0.55);
+  const chartHeight = Math.min(350, height * 0.4);
+
   return (
     <AbsoluteFill style={{ opacity, background: DARK }}>
       <div
-        className="absolute inset-0 opacity-[0.06]"
         style={{
+          position: 'absolute',
+          inset: 0,
+          opacity: 0.06,
           backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
           backgroundSize: '120px 120px',
         }}
@@ -213,8 +227,8 @@ const ComparisonScene: React.FC<{ companies: CompanyData[]; chartData: { frame: 
         <div style={{ position: 'absolute', left: 80, top: 220 }}>
           <AnimatedStockChart
             data={chartData}
-            width={1000}
-            height={350}
+            width={chartWidth}
+            height={chartHeight}
             delay={25}
             lineColor={PURPLE}
           />
@@ -242,8 +256,10 @@ const MarketScene: React.FC<{ cards: MarketData[]; tickerItems: TickerItem[] }> 
   return (
     <AbsoluteFill style={{ opacity, background: DARK }}>
       <div
-        className="absolute inset-0 opacity-[0.06]"
         style={{
+          position: 'absolute',
+          inset: 0,
+          opacity: 0.06,
           backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
           backgroundSize: '120px 120px',
         }}
@@ -264,7 +280,7 @@ const MarketScene: React.FC<{ cards: MarketData[]; tickerItems: TickerItem[] }> 
         />
       </div>
 
-      <div style={{ position: 'absolute', left: 80, top: 180, display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+      <div style={{ position: 'absolute', left: 80, top: 180, right: 80, display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start' }}>
         {cards.map((card, i) => (
           <MarketCard
             key={card.symbol}
@@ -286,6 +302,7 @@ const MarketScene: React.FC<{ cards: MarketData[]; tickerItems: TickerItem[] }> 
 
 const TimelineScene: React.FC<{ steps: readonly { label: string; color: string }[] }> = ({ steps }) => {
   const frame = useCurrentFrame();
+  const { width, height } = useVideoConfig();
   const opacity = interpolate(frame, [0, 12], [0, 1], {
     extrapolateRight: 'clamp',
   });
@@ -294,6 +311,8 @@ const TimelineScene: React.FC<{ steps: readonly { label: string; color: string }
     steps.length - 1,
     Math.floor((frame / 30) * steps.length)
   );
+
+  const timelineWidth = Math.min(900, width * 0.7);
 
   return (
     <AbsoluteFill
@@ -310,8 +329,8 @@ const TimelineScene: React.FC<{ steps: readonly { label: string; color: string }
       <div
         style={{
           position: 'absolute',
-          width: 1000,
-          height: 600,
+          width: Math.min(1000, width * 0.6),
+          height: Math.min(600, height * 0.5),
           borderRadius: '50%',
           background: `radial-gradient(circle, ${PURPLE}18 0%, transparent 55%)`,
           top: '50%',
@@ -339,6 +358,8 @@ const TimelineScene: React.FC<{ steps: readonly { label: string; color: string }
           display: 'flex',
           gap: 48,
           marginBottom: 16,
+          flexWrap: 'wrap',
+          justifyContent: 'center',
         }}
       >
         <div style={{ textAlign: 'center' }}>
@@ -354,14 +375,14 @@ const TimelineScene: React.FC<{ steps: readonly { label: string; color: string }
           </div>
         </div>
         <div style={{ textAlign: 'center' }}>
-          <NumberCounter value={4.2} delay={80} color={PURPLE} size={52} suffix="T" />
+          <NumberCounter value={4.2} delay={80} color={PURPLE} size={52} suffix="T" decimals={1} />
           <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, marginTop: 4 }}>
             Total Volume
           </div>
         </div>
       </div>
 
-      <Timeline steps={steps} delay={20} activeIndex={activeIndex} width={900} />
+      <Timeline steps={steps} delay={20} activeIndex={activeIndex} width={timelineWidth} />
 
       <LowerThird
         headline="Markets rally on strong earnings"
@@ -409,9 +430,9 @@ export const FinanceMarketBreakdown: React.FC<VideoContentProps> = (props) => {
 
   const cameraStops: CameraStop[] = [
     { frame: 0, x: width * 0.5, y: height * 0.5, scale: 1 },
-    { frame: 180, x: width * 0.5, y: height * 0.5, scale: 1.05 },
-    { frame: 360, x: width * 0.5, y: height * 0.5, scale: 1.1 },
-    { frame: 540, x: width * 0.5, y: height * 0.5, scale: 1.05 },
+    { frame: 180, x: width * 0.35, y: height * 0.5, scale: 1.05 },
+    { frame: 360, x: width * 0.5, y: height * 0.5, scale: 1.08 },
+    { frame: 540, x: width * 0.65, y: height * 0.5, scale: 1.05 },
     { frame: 720, x: width * 0.5, y: height * 0.5, scale: 1 },
   ];
 
@@ -553,7 +574,20 @@ export const FinanceMarketBreakdown: React.FC<VideoContentProps> = (props) => {
             from={scene.startFrame}
             durationInFrames={scene.durationInFrames}
           >
-            {renderScene(scene.id)}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                opacity: interpolate(
+                  useCurrentFrame() - scene.startFrame,
+                  [0, 12, scene.durationInFrames - 12, scene.durationInFrames],
+                  [0, 1, 1, 0],
+                  { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
+                ),
+              }}
+            >
+              {renderScene(scene.id)}
+            </div>
             {renderTransition(scene)}
           </Sequence>
         ))}

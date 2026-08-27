@@ -4,13 +4,9 @@ import type { TemplateId } from './types';
 import { ProductAdvertisement } from './ProductAdvertisement';
 import { RestaurantPromotion } from './RestaurantPromotion';
 import { SalePromotion } from './SalePromotion';
-import { DocumentaryIntro } from './DocumentaryIntro';
 import { CinematicDocumentary } from './CinematicDocumentary';
-import { Top10Listicle } from './Top10Listicle/Top10Listicle';
 import { Top10Countdown } from './Top10Countdown';
-import { TechExplainer } from './TechExplainer/TechExplainer';
 import { LuxuryCommercial } from './LuxuryCommercial/LuxuryCommercial';
-import { BreakingNews } from './BreakingNews/BreakingNews';
 import { TechBusinessExplainer } from './TechBusinessExplainer/TechBusinessExplainer';
 import { FinanceMarketBreakdown } from './FinanceMarketBreakdown/FinanceMarketBreakdown';
 import { NewsGeopoliticalExplainer } from './NewsGeopoliticalExplainer/NewsGeopoliticalExplainer';
@@ -32,13 +28,9 @@ export const templateComponents: Record<
   'product-advertisement': ProductAdvertisement,
   'restaurant-promotion': RestaurantPromotion,
   'sale-promotion': SalePromotion,
-  'documentary-intro': DocumentaryIntro,
   'cinematic-documentary': CinematicDocumentary,
-  'top-10-listicle': Top10Listicle,
   'top-10-countdown': Top10Countdown,
-  'tech-explainer': TechExplainer,
   'luxury-commercial': LuxuryCommercial,
-  'breaking-news': BreakingNews,
   'tech-business-explainer': TechBusinessExplainer,
   'finance-market-breakdown': FinanceMarketBreakdown,
   'news-geopolitical-explainer': NewsGeopoliticalExplainer,

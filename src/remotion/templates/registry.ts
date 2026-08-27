@@ -6,14 +6,10 @@ import type { TemplateId, TemplateMetadata } from './types';
 import { productAdDefaultContent } from './ProductAdvertisement/defaults';
 import { restaurantDefaultContent } from './RestaurantPromotion/defaults';
 import { saleDefaultContent } from './SalePromotion/defaults';
-import { documentaryDefaultContent } from './DocumentaryIntro/defaults';
-import { top10ListicleDefaultContent } from './Top10Listicle/defaults';
-import { techExplainerDefaultContent } from './TechExplainer/defaults';
-import { luxuryCommercialDefaultContent } from './LuxuryCommercial/defaults';
-import { breakingNewsDefaultContent } from './BreakingNews/defaults';
 import { cinematicDocumentaryDefaultContent } from './CinematicDocumentary/defaults';
 import { top10CountdownDefaultContent } from './Top10Countdown/defaults';
 import { techBusinessExplainerDefaultContent } from './TechBusinessExplainer/defaults';
+import { luxuryCommercialDefaultContent } from './LuxuryCommercial/defaults';
 import { financeMarketBreakdownDefaultContent } from './FinanceMarketBreakdown/defaults';
 import { newsGeopoliticalExplainerDefaultContent } from './NewsGeopoliticalExplainer/defaults';
 
@@ -41,14 +37,14 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     id: 'cinematic-documentary',
     name: 'Cinematic Documentary',
     description:
-      'Premium 30-second documentary sequence: cinematic opening, archival parallax, kinetic statement, map movement, broadcast timeline, and finale lockup with film grain, light sweeps, and cinematic letterbox bars.',
+      'Premium 20-second documentary sequence: cinematic opening, archival parallax, kinetic statement, map movement, broadcast timeline, and finale lockup with film grain, light sweeps, and cinematic letterbox bars.',
     category: 'intro',
     tags: ['documentary', 'cinematic', 'parallax', 'kinetic', 'timeline', 'premium'],
     thumbnailUrl: '/templates/cinematic-documentary.svg',
     supportedAspectRatios: ['16:9', '9:16', '1:1'],
     defaultAspectRatio: '16:9',
     fps: 30,
-    durationInFrames: 900, // 30s @ 30fps
+    durationInFrames: 600, // 20s @ 30fps
     featured: true,
     defaultProps: cinematicDocumentaryDefaultContent,
   },
@@ -115,66 +111,6 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     durationInFrames: 900, // 30s
     featured: true,
     defaultProps: newsGeopoliticalExplainerDefaultContent,
-  },
-
-  'top-10-listicle': {
-    id: 'top-10-listicle',
-    name: 'Top 10 Countdown',
-    description:
-      'Countdown-style listicle with ranked items, swipe transitions, and a progress bar — perfect for viral social ranking videos.',
-    category: 'social-media',
-    tags: ['countdown', 'ranking', 'listicle', 'viral', 'top-10'],
-    thumbnailUrl: '/templates/top-10-listicle.svg',
-    supportedAspectRatios: ['9:16', '1:1', '16:9'],
-    defaultAspectRatio: '9:16',
-    fps: 30,
-    durationInFrames: 900, // 10 items × 3s each
-    defaultProps: top10ListicleDefaultContent,
-  },
-
-  'tech-explainer': {
-    id: 'tech-explainer',
-    name: 'Tech / Business Explainer',
-    description:
-      'Animated workflow walkthrough with cinematic camera moves — ideal for SaaS, product demos, and business concept explainers.',
-    category: 'explainer',
-    tags: ['tech', 'workflow', 'saas', 'business', 'explainer'],
-    thumbnailUrl: '/templates/tech-explainer.svg',
-    supportedAspectRatios: ['16:9', '9:16', '1:1'],
-    defaultAspectRatio: '16:9',
-    fps: 30,
-    durationInFrames: 300, // 10s
-    defaultProps: techExplainerDefaultContent,
-  },
-
-  'documentary-intro': {
-    id: 'documentary-intro',
-    name: 'Cinematic Documentary',
-    description:
-      'Cinematic 20-second documentary opening: map push-in with a rolling year counter, masked title reveal with lens focus rack, parallax chapter card, kinetic typography, light sweeps, and film grain under letterbox bars.',
-    category: 'intro',
-    tags: ['documentary', 'cinematic', 'intro', 'title', 'map', 'history'],
-    thumbnailUrl: '/templates/documentary-intro.svg',
-    supportedAspectRatios: ['16:9', '9:16', '1:1'],
-    defaultAspectRatio: '16:9',
-    fps: 24,
-    durationInFrames: 480, // 20s @ 24fps (cinematic)
-    defaultProps: documentaryDefaultContent,
-  },
-
-  'breaking-news': {
-    id: 'breaking-news',
-    name: 'News / Geopolitical Explainer',
-    description:
-      'Broadcast-style news package with live badge, scrolling ticker, and dramatic scene reveals — built for news recaps, geopolitical summaries, and current-events shorts.',
-    category: 'explainer',
-    tags: ['news', 'broadcast', 'breaking', 'geopolitical', 'ticker'],
-    thumbnailUrl: '/templates/breaking-news.svg',
-    supportedAspectRatios: ['16:9', '9:16', '1:1'],
-    defaultAspectRatio: '16:9',
-    fps: 30,
-    durationInFrames: 360, // 12s
-    defaultProps: breakingNewsDefaultContent,
   },
 
   'product-advertisement': {

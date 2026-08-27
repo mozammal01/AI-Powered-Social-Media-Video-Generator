@@ -54,10 +54,10 @@ export const techBusinessExplainerDefaultContent = {
     { label: 'Monetize', color: '#14B8A6' },
   ] as TimelineStep[],
   flowNodes: [
-    { id: 'data', label: 'DATA', x: 200, y: 540, color: '#6366F1' },
-    { id: 'train', label: 'TRAIN', x: 600, y: 300, color: '#A855F7' },
-    { id: 'api', label: 'API', x: 1000, y: 300, color: '#EC4899' },
-    { id: 'product', label: 'PRODUCT', x: 1400, y: 540, color: '#14B8A6' },
+    { id: 'data', label: 'DATA', x: 15, y: 55, color: '#6366F1' },
+    { id: 'train', label: 'TRAIN', x: 38, y: 30, color: '#A855F7' },
+    { id: 'api', label: 'API', x: 62, y: 30, color: '#EC4899' },
+    { id: 'product', label: 'PRODUCT', x: 85, y: 55, color: '#14B8A6' },
   ] as FlowNode[],
   flowConnections: [
     { from: 'data', to: 'train' },

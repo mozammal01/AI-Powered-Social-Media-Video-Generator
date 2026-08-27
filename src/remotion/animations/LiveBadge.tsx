@@ -15,12 +15,11 @@ export const LiveBadge: React.FC = () => {
   );
 
   return (
-    <div className="absolute top-12 left-12 z-50 flex items-center bg-red-600 px-4 py-1.5 rounded-sm drop-shadow-lg">
+    <div style={{ position: 'absolute', top: 48, left: 48, zIndex: 50, display: 'flex', alignItems: 'center', backgroundColor: '#DC2626', padding: '6px 16px', filter: 'drop-shadow(0 4px 3px rgba(0,0,0,0.3))' }}>
       <div 
-        className="w-3 h-3 bg-white rounded-full mr-2"
-        style={{ opacity }}
+        style={{ width: 12, height: 12, backgroundColor: '#FFFFFF', borderRadius: '50%', marginRight: 8, opacity }}
       />
-      <span className="text-white font-black text-xl tracking-widest">LIVE</span>
+      <span style={{ color: '#FFFFFF', fontWeight: 900, fontSize: 20, letterSpacing: '0.1em' }}>LIVE</span>
     </div>
   );
 };

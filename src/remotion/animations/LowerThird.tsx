@@ -28,16 +28,14 @@ export const LowerThird: React.FC<{
   const subTranslateX = interpolate(subSlideIn, [0, 1], [-800, 0]);
 
   return (
-    <div className="absolute bottom-24 left-16 z-50 flex flex-col drop-shadow-2xl font-sans">
+    <div style={{ position: 'absolute', bottom: 96, left: 64, zIndex: 50, display: 'flex', flexDirection: 'column', filter: 'drop-shadow(0 10px 8px rgba(0,0,0,0.5))', fontFamily: 'sans-serif' }}>
       <div 
-        className="bg-red-600 text-white px-6 py-3 font-black text-4xl uppercase tracking-wider"
-        style={{ transform: `translateX(${translateX}px)` }}
+        style={{ backgroundColor: '#EF4444', color: '#FFFFFF', padding: '12px 24px', fontWeight: 900, fontSize: 36, textTransform: 'uppercase', letterSpacing: '0.05em', transform: `translateX(${translateX}px)` }}
       >
         {headline}
       </div>
       <div 
-        className="bg-white text-black px-6 py-2 font-bold text-2xl uppercase tracking-wide border-b-4 border-red-600"
-        style={{ transform: `translateX(${subTranslateX}px)` }}
+        style={{ backgroundColor: '#FFFFFF', color: '#000000', padding: '8px 24px', fontWeight: 700, fontSize: 24, textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '4px solid #EF4444', transform: `translateX(${subTranslateX}px)` }}
       >
         {subheadline}
       </div>

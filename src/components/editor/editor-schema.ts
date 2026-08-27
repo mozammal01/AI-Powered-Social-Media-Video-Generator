@@ -75,6 +75,14 @@ export const DURATION_OPTIONS = [
   { value: "30" as const, label: "30 seconds", frames: 900 },
 ];
 
+export const FIXED_DURATION_TEMPLATES = [
+  'cinematic-documentary',
+  'top-10-countdown',
+  'tech-business-explainer',
+  'finance-market-breakdown',
+  'news-geopolitical-explainer',
+] as const;
+
 export const ASPECT_OPTIONS = [
   { value: "9:16" as const, label: "9:16", hint: "TikTok / Reels" },
   { value: "1:1" as const, label: "1:1", hint: "Instagram Feed" },

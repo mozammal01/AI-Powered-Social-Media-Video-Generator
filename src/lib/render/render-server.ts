@@ -161,14 +161,19 @@ export async function renderVideoToMp4(
     );
   }
   if (
-    request.templateId === 'data-statistics-explainer' &&
+    (request.templateId === 'data-statistics-explainer' ||
+      request.templateId === 'breaking-news-intro') &&
     request.durationInFrames !== template.durationInFrames
   ) {
     throw new RenderValidationError(
       `Template "${template.name}" has a fixed duration of ${template.durationInFrames} frames.`
     );
   }
-  if (request.templateId === 'data-statistics-explainer' && request.fps !== template.fps) {
+  if (
+    (request.templateId === 'data-statistics-explainer' ||
+      request.templateId === 'breaking-news-intro') &&
+    request.fps !== template.fps
+  ) {
     throw new RenderValidationError(
       `Template "${template.name}" has a fixed frame rate of ${template.fps} fps.`
     );

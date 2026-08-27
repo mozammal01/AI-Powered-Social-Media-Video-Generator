@@ -48,6 +48,12 @@ export const videoContentSchema = z.object({
   chartData: z.array(z.number().finite()).optional(),
   labels: z.array(z.string()).optional(),
   source: z.string().optional(),
+  /** Optional broadcast-news fields. Existing templates safely ignore these. */
+  category: z.string().optional(),
+  location: z.string().optional(),
+  date: z.string().optional(),
+  image: z.string().optional(),
+  tickerText: z.string().optional(),
 });
 
 /** Input props type for every template composition. */

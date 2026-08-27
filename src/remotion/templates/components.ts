@@ -12,6 +12,7 @@ import { FinanceMarketBreakdown } from './FinanceMarketBreakdown/FinanceMarketBr
 import { NewsGeopoliticalExplainer } from './NewsGeopoliticalExplainer/NewsGeopoliticalExplainer';
 import { CinematicProductShowcase } from './CinematicProductShowcase';
 import { DataStatisticsExplainer } from './DataStatisticsExplainer';
+import { BreakingNewsIntro } from './BreakingNewsIntro';
 
 /**
  * Maps template IDs to their Remotion composition components.
@@ -27,6 +28,7 @@ export const templateComponents: Record<
   TemplateId,
   React.ComponentType<any> // eslint-disable-line @typescript-eslint/no-explicit-any
 > = {
+  'breaking-news-intro': BreakingNewsIntro,
   'product-advertisement': ProductAdvertisement,
   'restaurant-promotion': RestaurantPromotion,
   'sale-promotion': SalePromotion,

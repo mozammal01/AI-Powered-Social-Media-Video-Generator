@@ -14,6 +14,7 @@ import { financeMarketBreakdownDefaultContent } from './FinanceMarketBreakdown/d
 import { newsGeopoliticalExplainerDefaultContent } from './NewsGeopoliticalExplainer/defaults';
 import { cinematicProductShowcaseDefaultContent } from './CinematicProductShowcase/defaults';
 import { dataStatisticsExplainerDefaultContent } from './DataStatisticsExplainer/defaults';
+import { breakingNewsIntroDefaultContent } from './BreakingNewsIntro/defaults';
 
 /**
  * Template Registry
@@ -35,6 +36,22 @@ import { dataStatisticsExplainerDefaultContent } from './DataStatisticsExplainer
  * template to the Featured section in the UI.
  */
 export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
+  'breaking-news-intro': {
+    id: 'breaking-news-intro',
+    name: 'Breaking News Intro',
+    description:
+      'Professional 10-second broadcast news intro with a breaking badge, kinetic headline, location map, animated route, statistic lower third, and final live ticker.',
+    category: 'intro',
+    tags: ['breaking-news', 'broadcast', 'news', 'live', 'editorial', 'youtube'],
+    thumbnailUrl: '/templates/breaking-news.svg',
+    supportedAspectRatios: ['16:9'],
+    defaultAspectRatio: '16:9',
+    fps: 30,
+    durationInFrames: 300, // Fixed: 10s @ 30fps
+    featured: true,
+    defaultProps: breakingNewsIntroDefaultContent,
+  },
+
   'cinematic-documentary': {
     id: 'cinematic-documentary',
     name: 'Cinematic Documentary',

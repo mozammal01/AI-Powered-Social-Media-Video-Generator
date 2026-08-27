@@ -58,7 +58,11 @@ export function CreateVideoEditor() {
     ...defaultEditorValues,
     // Deep-link support: /create-video?template=<id> preselects a template.
     ...(queryTemplate && isTemplateId(queryTemplate)
-      ? { templateId: queryTemplate satisfies TemplateId }
+      ? {
+          templateId: queryTemplate satisfies TemplateId,
+          aspectRatio:
+            getTemplateDefinition(queryTemplate)?.defaultAspectRatio ?? "9:16",
+        }
       : {}),
   }));
   const [errors, setErrors] = useState<EditorFieldErrors>({});

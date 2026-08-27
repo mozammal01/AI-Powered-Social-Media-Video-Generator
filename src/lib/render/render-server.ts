@@ -160,6 +160,19 @@ export async function renderVideoToMp4(
       `Template "${template.name}" does not support the ${request.aspectRatio} aspect ratio. Supported: ${template.supportedAspectRatios.join(", ")}.`
     );
   }
+  if (
+    request.templateId === 'data-statistics-explainer' &&
+    request.durationInFrames !== template.durationInFrames
+  ) {
+    throw new RenderValidationError(
+      `Template "${template.name}" has a fixed duration of ${template.durationInFrames} frames.`
+    );
+  }
+  if (request.templateId === 'data-statistics-explainer' && request.fps !== template.fps) {
+    throw new RenderValidationError(
+      `Template "${template.name}" has a fixed frame rate of ${template.fps} fps.`
+    );
+  }
 
   // ── Prepare headless browser (downloads Chrome Headless Shell on first run) ──
   callbacks.onStage("preparing-browser", "Preparing headless browser…");

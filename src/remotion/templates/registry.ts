@@ -12,6 +12,8 @@ import { techBusinessExplainerDefaultContent } from './TechBusinessExplainer/def
 import { luxuryCommercialDefaultContent } from './LuxuryCommercial/defaults';
 import { financeMarketBreakdownDefaultContent } from './FinanceMarketBreakdown/defaults';
 import { newsGeopoliticalExplainerDefaultContent } from './NewsGeopoliticalExplainer/defaults';
+import { cinematicProductShowcaseDefaultContent } from './CinematicProductShowcase/defaults';
+import { dataStatisticsExplainerDefaultContent } from './DataStatisticsExplainer/defaults';
 
 /**
  * Template Registry
@@ -171,6 +173,38 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     fps: 30,
     durationInFrames: 600, // 20s
     defaultProps: luxuryCommercialDefaultContent,
+  },
+
+  'cinematic-product-showcase': {
+    id: 'cinematic-product-showcase',
+    name: 'Cinematic Product Showcase',
+    description:
+      'Premium 10-second product commercial with cinematic brand reveal, product showcase, key features, pricing, and CTA — built for social/video marketing.',
+    category: 'ads',
+    tags: ['product', 'cinematic', 'premium', 'launch', 'social', 'marketing'],
+    thumbnailUrl: '/templates/cinematic-product-showcase.svg',
+    supportedAspectRatios: ['16:9'],
+    defaultAspectRatio: '16:9',
+    fps: 30,
+    durationInFrames: 300, // 10s
+    featured: false,
+    defaultProps: cinematicProductShowcaseDefaultContent,
+  },
+
+  'data-statistics-explainer': {
+    id: 'data-statistics-explainer',
+    name: 'Data & Statistics Explainer',
+    description:
+      'Professional 10-second data explainer with a headline reveal, animated number, progressive SVG chart, key statistics, and a concise sourced conclusion.',
+    category: 'explainer',
+    tags: ['data', 'statistics', 'chart', 'business', 'education', 'youtube'],
+    thumbnailUrl: '/templates/data-statistics-explainer.svg',
+    supportedAspectRatios: ['16:9'],
+    defaultAspectRatio: '16:9',
+    fps: 30,
+    durationInFrames: 300, // Fixed: 10s @ 30fps
+    featured: false,
+    defaultProps: dataStatisticsExplainerDefaultContent,
   },
 };
 

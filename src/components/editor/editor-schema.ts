@@ -81,6 +81,8 @@ export const FIXED_DURATION_TEMPLATES = [
   'tech-business-explainer',
   'finance-market-breakdown',
   'news-geopolitical-explainer',
+  'cinematic-product-showcase',
+  'data-statistics-explainer',
 ] as const;
 
 export const ASPECT_OPTIONS = [

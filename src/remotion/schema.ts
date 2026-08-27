@@ -40,6 +40,14 @@ export const videoContentSchema = z.object({
   backgroundImageUrl: z.string().optional(),
   headline: z.string().optional(),
   bodyText: z.string().optional(),
+  /** Optional data-explainer fields. Existing templates safely ignore these. */
+  title: z.string().optional(),
+  subtitle: z.string().optional(),
+  statistic: z.number().finite().optional(),
+  percentage: z.number().finite().optional(),
+  chartData: z.array(z.number().finite()).optional(),
+  labels: z.array(z.string()).optional(),
+  source: z.string().optional(),
 });
 
 /** Input props type for every template composition. */

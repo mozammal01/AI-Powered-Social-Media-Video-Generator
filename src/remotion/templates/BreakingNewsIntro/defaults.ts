@@ -1,25 +1,27 @@
-export interface BreakingNewsStatistic {
-  value: number;
-  label: string;
-  prefix?: string;
-  suffix?: string;
-}
-
 export const breakingNewsIntroDefaultContent = {
+  brand: {
+    name: 'Global News Network',
+    tagline: '',
+    logoUrl: '',
+    primaryColor: '#EF4444',
+    accentColor: '#6366F1',
+  },
+  product: {
+    name: 'GLOBAL CRISIS ESCALATES',
+    description: '',
+    imageUrl: 'https://images.unsplash.com/photo-1504711434969-e33886168d6c?q=80&w=1000&auto=format&fit=crop',
+  },
+  cta: {
+    text: 'Watch Live',
+    subtext: '',
+    url: '',
+  },
   headline: 'GLOBAL CRISIS ESCALATES',
   category: 'WORLD NEWS',
   location: 'Eastern Europe',
   date: 'March 15, 2026',
-  statistic: {
-    value: 2400000,
-    label: 'People Affected',
-    prefix: '',
-    suffix: '+',
-  },
-  imageUrl: 'https://images.unsplash.com/photo-1504711434969-e33886168d6c?q=80&w=1000&auto=format&fit=crop',
   source: 'CNN',
   tickerText: 'Breaking news updates every minute',
+  statistic: 2400000,
+  bodyText: 'People Affected',
 };
-
-export type BreakingNewsIntroDefaultContent =
-  typeof breakingNewsIntroDefaultContent;

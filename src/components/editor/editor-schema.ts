@@ -78,10 +78,6 @@ export const DURATION_OPTIONS = [
 export const FIXED_DURATION_TEMPLATES = [
   'breaking-news-intro',
   'cinematic-documentary',
-  'top-10-countdown',
-  'tech-business-explainer',
-  'finance-market-breakdown',
-  'news-geopolitical-explainer',
   'cinematic-product-showcase',
 ] as const;
 

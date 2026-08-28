@@ -5,11 +5,7 @@ import { ProductAdvertisement } from './ProductAdvertisement';
 import { RestaurantPromotion } from './RestaurantPromotion';
 import { SalePromotion } from './SalePromotion';
 import { CinematicDocumentary } from './CinematicDocumentary';
-import { Top10Countdown } from './Top10Countdown';
 import { LuxuryCommercial } from './LuxuryCommercial/LuxuryCommercial';
-import { TechBusinessExplainer } from './TechBusinessExplainer/TechBusinessExplainer';
-import { FinanceMarketBreakdown } from './FinanceMarketBreakdown/FinanceMarketBreakdown';
-import { NewsGeopoliticalExplainer } from './NewsGeopoliticalExplainer/NewsGeopoliticalExplainer';
 import { CinematicProductShowcase } from './CinematicProductShowcase';
 import { DataStatisticsExplainer } from './DataStatisticsExplainer';
 import { BreakingNewsIntro } from './BreakingNewsIntro';
@@ -33,11 +29,7 @@ export const templateComponents: Record<
   'restaurant-promotion': RestaurantPromotion,
   'sale-promotion': SalePromotion,
   'cinematic-documentary': CinematicDocumentary,
-  'top-10-countdown': Top10Countdown,
   'luxury-commercial': LuxuryCommercial,
-  'tech-business-explainer': TechBusinessExplainer,
-  'finance-market-breakdown': FinanceMarketBreakdown,
-  'news-geopolitical-explainer': NewsGeopoliticalExplainer,
   'cinematic-product-showcase': CinematicProductShowcase,
   'data-statistics-explainer': DataStatisticsExplainer,
 };

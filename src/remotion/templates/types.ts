@@ -8,11 +8,7 @@ export type TemplateId =
   | 'restaurant-promotion'
   | 'sale-promotion'
   | 'cinematic-documentary'
-  | 'top-10-countdown'
   | 'luxury-commercial'
-  | 'tech-business-explainer'
-  | 'finance-market-breakdown'
-  | 'news-geopolitical-explainer'
   | 'cinematic-product-showcase'
   | 'data-statistics-explainer'
   | 'breaking-news-intro';

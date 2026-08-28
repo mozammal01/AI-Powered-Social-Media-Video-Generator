@@ -7,11 +7,7 @@ import { productAdDefaultContent } from './ProductAdvertisement/defaults';
 import { restaurantDefaultContent } from './RestaurantPromotion/defaults';
 import { saleDefaultContent } from './SalePromotion/defaults';
 import { cinematicDocumentaryDefaultContent } from './CinematicDocumentary/defaults';
-import { top10CountdownDefaultContent } from './Top10Countdown/defaults';
-import { techBusinessExplainerDefaultContent } from './TechBusinessExplainer/defaults';
 import { luxuryCommercialDefaultContent } from './LuxuryCommercial/defaults';
-import { financeMarketBreakdownDefaultContent } from './FinanceMarketBreakdown/defaults';
-import { newsGeopoliticalExplainerDefaultContent } from './NewsGeopoliticalExplainer/defaults';
 import { cinematicProductShowcaseDefaultContent } from './CinematicProductShowcase/defaults';
 import { dataStatisticsExplainerDefaultContent } from './DataStatisticsExplainer/defaults';
 import { breakingNewsIntroDefaultContent } from './BreakingNewsIntro/defaults';
@@ -66,70 +62,6 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     durationInFrames: 600, // 20s @ 30fps
     featured: true,
     defaultProps: cinematicDocumentaryDefaultContent,
-  },
-
-  'top-10-countdown': {
-    id: 'top-10-countdown',
-    name: 'Top 10 Countdown',
-    description:
-      'High-retention YouTube listicle with animated rank counters, image reveals, progress bar, statistics, and fast item-to-item transitions.',
-    category: 'social-media',
-    tags: ['countdown', 'ranking', 'listicle', 'youtube', 'top-10', 'viral'],
-    thumbnailUrl: '/templates/top-10-countdown.svg',
-    supportedAspectRatios: ['16:9', '9:16', '1:1'],
-    defaultAspectRatio: '16:9',
-    fps: 30,
-    durationInFrames: 900, // 30s
-    featured: true,
-    defaultProps: top10CountdownDefaultContent,
-  },
-
-  'tech-business-explainer': {
-    id: 'tech-business-explainer',
-    name: 'Tech / Business Explainer',
-    description:
-      'Premium 30-second YouTube explainer with animated diagrams, data flow, revenue cards, counters, timeline, and cinematic camera movement — perfect for AI, SaaS, and business deep-dives.',
-    category: 'explainer',
-    tags: ['tech', 'business', 'explainer', 'youtube', 'ai', 'data', 'revenue'],
-    thumbnailUrl: '/templates/tech-business-explainer.svg',
-    supportedAspectRatios: ['16:9', '9:16', '1:1'],
-    defaultAspectRatio: '16:9',
-    fps: 30,
-    durationInFrames: 900, // 30s
-    featured: true,
-    defaultProps: techBusinessExplainerDefaultContent,
-  },
-
-  'finance-market-breakdown': {
-    id: 'finance-market-breakdown',
-    name: 'Finance / Market Breakdown',
-    description:
-      'Premium 30-second financial explainer with animated stock charts, company comparisons, market cards, scrolling ticker, counters, and cinematic camera movement — built for finance, market news, and economic breakdowns.',
-    category: 'explainer',
-    tags: ['finance', 'market', 'stocks', 'news', 'business', 'economics'],
-    thumbnailUrl: '/templates/finance-market-breakdown.svg',
-    supportedAspectRatios: ['16:9', '9:16', '1:1'],
-    defaultAspectRatio: '16:9',
-    fps: 30,
-    durationInFrames: 900, // 30s
-    featured: true,
-    defaultProps: financeMarketBreakdownDefaultContent,
-  },
-
-  'news-geopolitical-explainer': {
-    id: 'news-geopolitical-explainer',
-    name: 'News / Geopolitical Explainer',
-    description:
-      'Professional 30-second broadcast news explainer with breaking headlines, world map, animated routes, timeline, statistics, news cards, ticker, and live indicator — built for news recaps and geopolitical summaries.',
-    category: 'explainer',
-    tags: ['news', 'geopolitical', 'broadcast', 'breaking', 'world', 'politics'],
-    thumbnailUrl: '/templates/news-geopolitical-explainer.svg',
-    supportedAspectRatios: ['16:9', '9:16', '1:1'],
-    defaultAspectRatio: '16:9',
-    fps: 30,
-    durationInFrames: 900, // 30s
-    featured: true,
-    defaultProps: newsGeopoliticalExplainerDefaultContent,
   },
 
   'product-advertisement': {

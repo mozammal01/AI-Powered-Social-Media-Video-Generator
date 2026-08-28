@@ -6,7 +6,6 @@ import { useFadeIn, useSceneOpacity, useSpringScale, useSpringSlideUp, useBackgr
 import { LiveBadge } from '../../animations/LiveBadge';
 import { NewsTicker } from '../../animations/NewsTicker';
 import { HeadlineReveal } from '../../animations/HeadlineReveal';
-import { LowerThird } from '../../animations/LowerThird';
 import { KineticTypography } from '../../components/KineticTypography';
 import { MaskReveal } from '../../components/MaskReveal';
 import { BlurFocus } from '../../components/BlurFocus';
@@ -15,8 +14,6 @@ import { FilmGrain } from '../../components/FilmGrain';
 import { LightSweep } from '../../components/LightSweep';
 import { ProductImage } from '../../components/ProductImage';
 import { AnimatedWorldMap } from '../../animations/AnimatedWorldMap';
-import { CountryHighlight } from '../../animations/CountryHighlight';
-import { RouteLine } from '../../animations/RouteLine';
 import { NumberCounter } from '../../animations/NumberCounter';
 import { breakingNewsIntroScenes } from './scenes';
 
@@ -352,11 +349,15 @@ const StatisticScene: React.FC<VideoContentProps & { durationInFrames: number }>
   brand,
   product,
   durationInFrames,
+  statistic,
+  source,
+  bodyText,
 }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
 
-  const statistic = (product as Record<string, unknown>).statistic as BreakingNewsStatistic | undefined;
+  const statisticValue = typeof statistic === 'number' && Number.isFinite(statistic) ? statistic : undefined;
+  const statisticLabel = typeof bodyText === 'string' && bodyText.trim() ? bodyText.trim() : 'Impact';
 
   return (
     <AbsoluteFill style={{ opacity, background: DARK }}>
@@ -400,7 +401,7 @@ const StatisticScene: React.FC<VideoContentProps & { durationInFrames: number }>
         }}
       >
         {/* Statistic */}
-        {statistic && (
+        {statisticValue !== undefined && (
           <div
             style={{
               opacity: useFadeIn({ from: 0, duration: 16 }),
@@ -409,12 +410,12 @@ const StatisticScene: React.FC<VideoContentProps & { durationInFrames: number }>
             }}
           >
             <NumberCounter
-              value={statistic.value}
+              value={statisticValue}
               delay={0}
               color={WHITE}
               size={72}
-              prefix={statistic.prefix}
-              suffix={statistic.suffix}
+              prefix=""
+              suffix=""
             />
             <div
               style={{
@@ -427,7 +428,7 @@ const StatisticScene: React.FC<VideoContentProps & { durationInFrames: number }>
                 marginTop: 8,
               }}
             >
-              {statistic.label}
+              {statisticLabel}
             </div>
           </div>
         )}
@@ -457,7 +458,7 @@ const StatisticScene: React.FC<VideoContentProps & { durationInFrames: number }>
               marginBottom: 8,
             }}
           >
-            Source: {(product as Record<string, unknown>).source as string ?? 'News Desk'}
+            Source: {typeof source === 'string' && source.trim() ? source.trim() : 'News Desk'}
           </div>
           <div
             style={{
@@ -486,6 +487,7 @@ const FinalScene: React.FC<VideoContentProps & { durationInFrames: number }> = (
   product,
   cta,
   durationInFrames,
+  tickerText,
 }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
@@ -493,7 +495,7 @@ const FinalScene: React.FC<VideoContentProps & { durationInFrames: number }> = (
 
   const headline = product?.name ?? 'BREAKING NEWS';
   const imageUrl = product?.imageUrl;
-  const tickerText = (cta?.text ?? (brand as Record<string, unknown>)?.tickerText as string) ?? 'Breaking news updates every minute';
+  const resolvedTickerText = typeof tickerText === 'string' && tickerText.trim() ? tickerText.trim() : 'Breaking news updates every minute';
 
   // Subtle breathing glow
   const glowScale = 1 + Math.sin((frame / 40) * Math.PI * 2) * 0.025;
@@ -609,7 +611,7 @@ const FinalScene: React.FC<VideoContentProps & { durationInFrames: number }> = (
           opacity: useFadeIn({ from: 28, duration: 12 }),
         }}
       >
-        <NewsTicker headlines={[tickerText]} />
+        <NewsTicker headlines={[resolvedTickerText]} />
       </div>
 
       <LightSweep enterFrame={16} duration={28} angle={-14} intensity={0.25} color="#FFFFFF" />

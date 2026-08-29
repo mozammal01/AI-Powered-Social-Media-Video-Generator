@@ -7,6 +7,7 @@ import { productAdDefaultContent } from './ProductAdvertisement/defaults';
 import { restaurantDefaultContent } from './RestaurantPromotion/defaults';
 import { saleDefaultContent } from './SalePromotion/defaults';
 import { cinematicDocumentaryDefaultContent } from './CinematicDocumentary/defaults';
+import { top10CountdownDefaultContent } from './Top10Countdown/defaults';
 import { luxuryCommercialDefaultContent } from './LuxuryCommercial/defaults';
 import { cinematicProductShowcaseDefaultContent } from './CinematicProductShowcase/defaults';
 import { dataStatisticsExplainerDefaultContent } from './DataStatisticsExplainer/defaults';
@@ -46,6 +47,22 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     durationInFrames: 300, // Fixed: 10s @ 30fps
     featured: true,
     defaultProps: breakingNewsIntroDefaultContent,
+  },
+
+  'top-10-countdown': {
+    id: 'top-10-countdown',
+    name: 'Top 10 Countdown',
+    description:
+      'High-retention YouTube listicle with animated rank counters, image reveals, progress bar, statistics, and fast item-to-item transitions.',
+    category: 'social-media',
+    tags: ['countdown', 'ranking', 'listicle', 'youtube', 'top-10', 'viral'],
+    thumbnailUrl: '/templates/top-10-countdown.svg',
+    supportedAspectRatios: ['16:9'],
+    defaultAspectRatio: '16:9',
+    fps: 30,
+    durationInFrames: 300, // Fixed: 10s @ 30fps
+    featured: true,
+    defaultProps: top10CountdownDefaultContent,
   },
 
   'cinematic-documentary': {

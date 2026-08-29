@@ -5,10 +5,6 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
-  Building2,
-  Package,
-  Megaphone,
-  Settings2,
   Clapperboard,
   RotateCcw,
   Play,
@@ -20,13 +16,12 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { FormField, TextInput, TextArea } from "@/components/editor/FormField";
-import { SectionCard } from "@/components/editor/SectionCard";
-import { ImageUpload } from "@/components/editor/ImageUpload";
+import { DynamicFields } from "@/components/editor/DynamicFields";
 import { VideoPreview } from "@/components/editor/VideoPreview";
 import { OptionToggle } from "@/components/editor/OptionToggle";
 import { TemplateSelector } from "@/components/editor/TemplateSelector";
 import { AiCopyPanel } from "@/components/editor/AiCopyPanel";
+import { SectionCard } from "@/components/editor/SectionCard";
 import type { GeneratedCopy } from "@/lib/ai/copy-schema";
 import {
   getTemplateDefinition,
@@ -345,171 +340,11 @@ export function CreateVideoEditor() {
             )}
           </SectionCard>
 
-          <SectionCard
-            title="Brand"
-            description="Shown in the intro and closing CTA scenes."
-            icon={<Building2 className="w-4 h-4" />}
-          >
-            <FormField
-              label="Brand Name"
-              htmlFor="brandName"
-              error={errors.brandName}
-            >
-              <TextInput
-                id="brandName"
-                value={values.brandName}
-                onChange={(e) => updateField("brandName", e.target.value)}
-                placeholder="e.g. NovaSpark"
-                hasError={Boolean(errors.brandName)}
-              />
-            </FormField>
-
-            <FormField label="Tagline" htmlFor="tagline" error={errors.tagline}>
-              <TextInput
-                id="tagline"
-                value={values.tagline}
-                onChange={(e) => updateField("tagline", e.target.value)}
-                placeholder="e.g. Ignite Your Growth"
-                hasError={Boolean(errors.tagline)}
-              />
-            </FormField>
-
-            <FormField
-              label="Website URL"
-              htmlFor="websiteUrl"
-              error={errors.websiteUrl}
-            >
-              <TextInput
-                id="websiteUrl"
-                type="url"
-                value={values.websiteUrl}
-                onChange={(e) => updateField("websiteUrl", e.target.value)}
-                placeholder="https://example.com"
-                hasError={Boolean(errors.websiteUrl)}
-              />
-            </FormField>
-
-            <ImageUpload
-              label="Brand logo"
-              value={values.brandLogoUrl}
-              onChange={(value) => updateField("brandLogoUrl", value)}
-              error={errors.brandLogoUrl}
-            />
-          </SectionCard>
-
-          <SectionCard
-            title="Product"
-            description="Copy and media used in the product, features, and pricing scenes."
-            icon={<Package className="w-4 h-4" />}
-          >
-            <FormField
-              label="Product Name"
-              htmlFor="productName"
-              error={errors.productName}
-            >
-              <TextInput
-                id="productName"
-                value={values.productName}
-                onChange={(e) => updateField("productName", e.target.value)}
-                placeholder="e.g. NovaSpark Pro"
-                hasError={Boolean(errors.productName)}
-              />
-            </FormField>
-
-            <FormField
-              label="Description"
-              htmlFor="description"
-              error={errors.description}
-              hint={`${values.description.length}/160 characters`}
-            >
-              <TextArea
-                id="description"
-                rows={3}
-                value={values.description}
-                onChange={(e) => updateField("description", e.target.value)}
-                placeholder="Short marketing description (1–2 sentences)"
-                hasError={Boolean(errors.description)}
-              />
-            </FormField>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <FormField label="Price" htmlFor="price" error={errors.price}>
-                <TextInput
-                  id="price"
-                  value={values.price}
-                  onChange={(e) => updateField("price", e.target.value)}
-                  placeholder="$49 / mo"
-                  hasError={Boolean(errors.price)}
-                />
-              </FormField>
-
-              <FormField
-                label="Discount"
-                htmlFor="discount"
-                error={errors.discount}
-              >
-                <TextInput
-                  id="discount"
-                  value={values.discount}
-                  onChange={(e) => updateField("discount", e.target.value)}
-                  placeholder="30% OFF"
-                  hasError={Boolean(errors.discount)}
-                />
-              </FormField>
-            </div>
-
-            <ImageUpload
-              label="Product image"
-              value={values.productImageUrl}
-              onChange={(value) => updateField("productImageUrl", value)}
-              error={errors.productImageUrl}
-            />
-          </SectionCard>
-
-          <SectionCard
-            title="Key features"
-            description="Up to three selling points, revealed sequentially."
-            icon={<Settings2 className="w-4 h-4" />}
-          >
-            {(["feature1", "feature2", "feature3"] as const).map(
-              (key, index) => (
-                <FormField
-                  key={key}
-                  label={`Feature ${index + 1}`}
-                  htmlFor={key}
-                  error={errors[key]}
-                >
-                  <TextInput
-                    id={key}
-                    value={values[key]}
-                    onChange={(e) => updateField(key, e.target.value)}
-                    placeholder={`Feature ${index + 1}`}
-                    hasError={Boolean(errors[key])}
-                  />
-                </FormField>
-              )
-            )}
-          </SectionCard>
-
-          <SectionCard
-            title="Call to action"
-            description="Button label shown in the final scene."
-            icon={<Megaphone className="w-4 h-4" />}
-          >
-            <FormField
-              label="CTA Text"
-              htmlFor="ctaText"
-              error={errors.ctaText}
-            >
-              <TextInput
-                id="ctaText"
-                value={values.ctaText}
-                onChange={(e) => updateField("ctaText", e.target.value)}
-                placeholder="e.g. Start Free Trial"
-                hasError={Boolean(errors.ctaText)}
-              />
-            </FormField>
-          </SectionCard>
+          <DynamicFields
+            values={values}
+            errors={errors}
+            updateField={updateField}
+          />
         </form>
 
         <div ref={previewRef} className="xl:sticky xl:top-6 space-y-4">

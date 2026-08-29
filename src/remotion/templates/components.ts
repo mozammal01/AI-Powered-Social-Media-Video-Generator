@@ -5,6 +5,7 @@ import { ProductAdvertisement } from './ProductAdvertisement';
 import { RestaurantPromotion } from './RestaurantPromotion';
 import { SalePromotion } from './SalePromotion';
 import { CinematicDocumentary } from './CinematicDocumentary';
+import { Top10Countdown } from './Top10Countdown';
 import { LuxuryCommercial } from './LuxuryCommercial/LuxuryCommercial';
 import { CinematicProductShowcase } from './CinematicProductShowcase';
 import { DataStatisticsExplainer } from './DataStatisticsExplainer';
@@ -25,6 +26,7 @@ export const templateComponents: Record<
   React.ComponentType<any> // eslint-disable-line @typescript-eslint/no-explicit-any
 > = {
   'breaking-news-intro': BreakingNewsIntro,
+  'top-10-countdown': Top10Countdown,
   'product-advertisement': ProductAdvertisement,
   'restaurant-promotion': RestaurantPromotion,
   'sale-promotion': SalePromotion,

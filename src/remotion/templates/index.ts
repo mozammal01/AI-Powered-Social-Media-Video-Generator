@@ -13,3 +13,10 @@ export {
   resolveTemplateOrDefault,
   getTemplateDimensions,
 } from './registry';
+
+export {
+  templateFieldConfigs,
+  getTemplateFields,
+  type TemplateFieldDefinition,
+  type TemplateFieldType,
+} from './templateFields';

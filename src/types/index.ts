@@ -128,6 +128,30 @@ export interface VideoContent {
    * Short body copy used in mid-video scenes (max ~120 chars).
    */
   bodyText?: string;
+  /** Title for data/statistics templates. */
+  title?: string;
+  /** Subtitle for data/statistics templates. */
+  subtitle?: string;
+  /** Main statistic value for countdown/data templates. */
+  statistic?: number;
+  /** Percentage value for data templates. */
+  percentage?: number;
+  /** Chart data points for data visualization templates. */
+  chartData?: number[];
+  /** Labels for chart axes. */
+  labels?: string[];
+  /** Source attribution. */
+  source?: string;
+  /** Category badge text (news, countdown, etc.). */
+  category?: string;
+  /** Location text (news, documentary, etc.). */
+  location?: string;
+  /** Date text (news, documentary, etc.). */
+  date?: string;
+  /** News image URL (news template). */
+  image?: string;
+  /** Ticker text for news templates. */
+  tickerText?: string;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -14,6 +14,8 @@ const optionalUrl = z
     "Enter a valid URL (e.g. https://example.com)"
   );
 
+const optionalNumber = z.coerce.number().optional();
+
 /** Registered template IDs as a tuple, so the enum stays in sync with the registry. */
 const TEMPLATE_IDS = Object.keys(templateRegistry) as [TemplateId, ...TemplateId[]];
 
@@ -44,6 +46,7 @@ export const editorFormSchema = z.object({
     .string()
     .max(160, "Description must be 160 characters or fewer"),
   price: z.string().max(30, "Price must be 30 characters or fewer"),
+  originalPrice: z.string().max(30, "Original price must be 30 characters or fewer"),
   discount: z.string().max(20, "Discount must be 20 characters or fewer"),
   feature1: z.string().max(80, "Feature 1 must be 80 characters or fewer"),
   feature2: z.string().max(80, "Feature 2 must be 80 characters or fewer"),
@@ -64,6 +67,26 @@ export const editorFormSchema = z.object({
   duration: z.enum(["10", "15", "30"], {
     error: "Choose a duration",
   }),
+
+  headline: z.string().max(120, "Headline must be 120 characters or fewer"),
+  title: z.string().max(120, "Title must be 120 characters or fewer"),
+  subtitle: z.string().max(160, "Subtitle must be 160 characters or fewer"),
+  statistic: optionalNumber,
+  percentage: optionalNumber,
+  chartData: z.string().optional(),
+  labels: z.string().optional(),
+  source: z.string().max(120, "Source must be 120 characters or fewer"),
+  category: z.string().max(60, "Category must be 60 characters or fewer"),
+  location: z.string().max(120, "Location must be 120 characters or fewer"),
+  date: z.string().max(60, "Date must be 60 characters or fewer"),
+  tickerText: z.string().max(200, "Ticker text must be 200 characters or fewer"),
+  listTitle: z.string().max(120, "List title must be 120 characters or fewer"),
+  rank: optionalNumber,
+  itemTitle: z.string().max(120, "Item title must be 120 characters or fewer"),
+  image: z.string().optional(),
+  statisticLabel: z.string().max(120, "Label must be 120 characters or fewer"),
+  accentText: z.string().max(60, "Accent text must be 60 characters or fewer"),
+  bodyText: z.string().max(200, "Body text must be 200 characters or fewer"),
 });
 
 export type EditorFormValues = z.infer<typeof editorFormSchema>;
@@ -77,6 +100,7 @@ export const DURATION_OPTIONS = [
 
 export const FIXED_DURATION_TEMPLATES = [
   'breaking-news-intro',
+  'top-10-countdown',
   'cinematic-documentary',
   'cinematic-product-showcase',
 ] as const;
@@ -95,6 +119,7 @@ export const defaultEditorValues: EditorFormValues = {
   productName: demoVideoContent.product.name,
   description: demoVideoContent.product.description ?? "",
   price: demoVideoContent.product.price ?? "",
+  originalPrice: demoVideoContent.product.originalPrice ?? "",
   discount: demoVideoContent.product.discount ?? "",
   feature1: demoVideoContent.product.features?.[0] ?? "",
   feature2: demoVideoContent.product.features?.[1] ?? "",
@@ -104,6 +129,25 @@ export const defaultEditorValues: EditorFormValues = {
   productImageUrl: demoVideoContent.product.imageUrl ?? "",
   aspectRatio: "9:16",
   duration: "10",
+  headline: demoVideoContent.headline ?? "",
+  title: demoVideoContent.title ?? "",
+  subtitle: demoVideoContent.subtitle ?? "",
+  statistic: demoVideoContent.statistic ?? 0,
+  percentage: demoVideoContent.percentage ?? 0,
+  chartData: (demoVideoContent.chartData ?? []).join(", "),
+  labels: (demoVideoContent.labels ?? []).join(", "),
+  source: demoVideoContent.source ?? "",
+  category: demoVideoContent.category ?? "",
+  location: demoVideoContent.location ?? "",
+  date: demoVideoContent.date ?? "",
+  tickerText: demoVideoContent.tickerText ?? "",
+  listTitle: "",
+  rank: 10,
+  itemTitle: "",
+  image: "",
+  statisticLabel: "",
+  accentText: "",
+  bodyText: demoVideoContent.bodyText ?? "",
 };
 
 export function parseEditorForm(values: EditorFormValues): {

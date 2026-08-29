@@ -9,6 +9,7 @@ export type TemplateId =
   | 'sale-promotion'
   | 'cinematic-documentary'
   | 'luxury-commercial'
+  | 'top-10-countdown'
   | 'cinematic-product-showcase'
   | 'data-statistics-explainer'
   | 'breaking-news-intro';

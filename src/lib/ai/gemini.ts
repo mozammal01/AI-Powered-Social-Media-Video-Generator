@@ -16,7 +16,7 @@ import {
  */
 
 const NEWLINE = String.fromCharCode(10);
-const DEFAULT_MODEL = "gemini-2.0-flash";
+const DEFAULT_MODEL = "gemini-3.6-flash";
 const API_BASE = "https://generativelanguage.googleapis.com/v1beta/models";
 const TIMEOUT_MS = 30_000;
 

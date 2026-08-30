@@ -106,9 +106,9 @@ export const FIXED_DURATION_TEMPLATES = [
 ] as const;
 
 export const ASPECT_OPTIONS = [
-  { value: "9:16" as const, label: "9:16", hint: "TikTok / Reels" },
-  { value: "1:1" as const, label: "1:1", hint: "Instagram Feed" },
-  { value: "16:9" as const, label: "16:9", hint: "YouTube / LinkedIn" },
+  { value: "16:9" as const, label: "16:9", hint: "Landscape" },
+  { value: "1:1" as const, label: "1:1", hint: "Square" },
+  { value: "9:16" as const, label: "9:16", hint: "Vertical" },
 ];
 
 export const defaultEditorValues: EditorFormValues = {

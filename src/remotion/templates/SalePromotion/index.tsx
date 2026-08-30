@@ -7,6 +7,7 @@ import {
   useSceneOpacity,
   useSpringScale,
   useSpringSlideUp,
+  useResponsiveLayout,
 } from '../../animations';
 import {
   Background,
@@ -33,6 +34,7 @@ const GiantHeadline: React.FC<{
   const scale = useSpringScale({ from: 0, damping: 10, stiffness: 140, mass: 0.8 });
   const translateY = useSpringSlideUp({ from: 0, distance: 60, damping: 14, stiffness: 120 });
   const pulse = usePulse(50, 0.03);
+  const layout = useResponsiveLayout();
 
   return (
     <h1
@@ -40,7 +42,7 @@ const GiantHeadline: React.FC<{
         opacity: 1,
         transform: `translateY(${translateY}px) scale(${scale * pulse})`,
         margin: 0,
-        fontSize: 132,
+        fontSize: Math.round(132 * layout.fontScale),
         fontWeight: 900,
         lineHeight: 1,
         letterSpacing: '-0.04em',
@@ -50,8 +52,9 @@ const GiantHeadline: React.FC<{
         WebkitBackgroundClip: 'text',
         backgroundClip: 'text',
         color: 'transparent',
-        filter: `drop-shadow(0 12px 48px ${primaryColor}66)`,
-        padding: '0 40px',
+        filter: `drop-shadow(0 ${Math.round(12 * layout.fontScale)}px ${Math.round(48 * layout.fontScale)}px ${primaryColor}66)`,
+        padding: `0 ${Math.round(40 * layout.fontScale)}px`,
+        maxWidth: layout.maxTextWidth,
       }}
     >
       {text}
@@ -65,6 +68,7 @@ const GiantHeadline: React.FC<{
 
 const HookScene: React.FC<VideoContentProps> = ({ brand, product, headline }) => {
   const { durationInFrames } = useVideoConfig();
+  const layout = useResponsiveLayout();
   const opacity = useSceneOpacity(durationInFrames);
   const brandOpacity = useFadeIn({ from: 16, duration: 18 });
   const brandY = useSpringSlideUp({ from: 16, distance: 24, damping: 16, stiffness: 110 });
@@ -77,7 +81,8 @@ const HookScene: React.FC<VideoContentProps> = ({ brand, product, headline }) =>
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 44,
+        gap: layout.safeMargin,
+        padding: `0 ${layout.paddingX}px`,
       }}
     >
       <BrandLogo
@@ -86,7 +91,7 @@ const HookScene: React.FC<VideoContentProps> = ({ brand, product, headline }) =>
         primaryColor={brand.primaryColor}
         accentColor={brand.accentColor}
         enterFrame={0}
-        size={96}
+        size={Math.round(96 * layout.fontScale)}
       />
       <GiantHeadline
         text={headline ?? 'Mega Sale'}
@@ -98,11 +103,13 @@ const HookScene: React.FC<VideoContentProps> = ({ brand, product, headline }) =>
           opacity: brandOpacity,
           transform: `translateY(${brandY}px)`,
           margin: 0,
-          fontSize: 34,
+          fontSize: Math.round(34 * layout.fontScale),
           fontWeight: 600,
           color: 'rgba(255, 255, 255, 0.85)',
           letterSpacing: '0.06em',
           textTransform: 'uppercase',
+          maxWidth: layout.maxTextWidth,
+          textAlign: 'center',
         }}
       >
         {product.name}
@@ -117,6 +124,7 @@ const HookScene: React.FC<VideoContentProps> = ({ brand, product, headline }) =>
 
 const DiscountRevealScene: React.FC<VideoContentProps> = ({ brand, product }) => {
   const { durationInFrames } = useVideoConfig();
+  const layout = useResponsiveLayout();
   const opacity = useSceneOpacity(durationInFrames);
 
   return (
@@ -127,7 +135,8 @@ const DiscountRevealScene: React.FC<VideoContentProps> = ({ brand, product }) =>
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 36,
+        gap: layout.safeMargin * 0.75,
+        padding: `0 ${layout.paddingX}px`,
       }}
     >
       {product.discount && (
@@ -155,6 +164,7 @@ const DiscountRevealScene: React.FC<VideoContentProps> = ({ brand, product }) =>
 
 const SpotlightScene: React.FC<VideoContentProps> = ({ brand, product, bodyText }) => {
   const { durationInFrames } = useVideoConfig();
+  const layout = useResponsiveLayout();
   const opacity = useSceneOpacity(durationInFrames);
   const description = bodyText ?? product.description;
 
@@ -166,7 +176,8 @@ const SpotlightScene: React.FC<VideoContentProps> = ({ brand, product, bodyText 
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 40,
+        gap: layout.safeMargin * 0.8,
+        padding: `0 ${layout.paddingX}px`,
       }}
     >
       <ProductImage
@@ -193,6 +204,7 @@ const SpotlightScene: React.FC<VideoContentProps> = ({ brand, product, bodyText 
 
 const DealPerksScene: React.FC<VideoContentProps> = ({ brand, product }) => {
   const { durationInFrames } = useVideoConfig();
+  const layout = useResponsiveLayout();
   const opacity = useSceneOpacity(durationInFrames);
   const perks = (product.features ?? []).filter(Boolean).slice(0, 3) as string[];
 
@@ -204,7 +216,8 @@ const DealPerksScene: React.FC<VideoContentProps> = ({ brand, product }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 32,
+        gap: layout.safeMargin * 0.65,
+        padding: `0 ${layout.paddingX}px`,
       }}
     >
       <SectionLabel label="Deal Perks" primaryColor={brand.primaryColor} enterFrame={0} />
@@ -225,6 +238,7 @@ const DealPerksScene: React.FC<VideoContentProps> = ({ brand, product }) => {
 
 const UrgencyCTAScene: React.FC<VideoContentProps> = ({ brand, cta }) => {
   const { durationInFrames } = useVideoConfig();
+  const layout = useResponsiveLayout();
   const opacity = useSceneOpacity(durationInFrames);
   const websiteUrl = cta.url ?? brand.websiteUrl;
   const sceneY = useSpringSlideUp({ from: 4, distance: 20, damping: 16, stiffness: 100 });
@@ -238,7 +252,8 @@ const UrgencyCTAScene: React.FC<VideoContentProps> = ({ brand, cta }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 44,
+        gap: layout.safeMargin,
+        padding: `0 ${layout.paddingX}px`,
       }}
     >
       <CTAButton
@@ -255,7 +270,7 @@ const UrgencyCTAScene: React.FC<VideoContentProps> = ({ brand, cta }) => {
         primaryColor={brand.primaryColor}
         accentColor={brand.accentColor}
         enterFrame={18}
-        size={72}
+        size={Math.round(72 * layout.fontScale)}
       />
     </AbsoluteFill>
   );

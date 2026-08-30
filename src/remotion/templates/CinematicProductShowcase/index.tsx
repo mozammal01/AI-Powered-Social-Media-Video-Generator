@@ -2,7 +2,7 @@ import React from 'react';
 import { AbsoluteFill, Sequence, useCurrentFrame, useVideoConfig, interpolate, Easing } from 'remotion';
 import type { VideoContentProps } from '@/remotion/schema';
 import { scaleScenesToDuration } from '@/remotion/utils/scenes';
-import { useFadeIn, useSceneOpacity, useSpringScale, useSpringSlideUp, useBackgroundMovement } from '../../animations';
+import { useFadeIn, useSceneOpacity, useSpringScale, useSpringSlideUp, useBackgroundMovement, useResponsiveLayout } from '../../animations';
 import { BrandLogo } from '../../components/BrandLogo';
 import { ProductImage } from '../../components/ProductImage';
 import { KineticTypography } from '../../components/KineticTypography';
@@ -163,7 +163,7 @@ const ProductRevealScene: React.FC<VideoContentProps & { durationInFrames: numbe
 }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
-  const { width } = useVideoConfig();
+  const layout = useResponsiveLayout();
 
   const bg = useBackgroundMovement(durationInFrames, 14);
 
@@ -188,7 +188,7 @@ const ProductRevealScene: React.FC<VideoContentProps & { durationInFrames: numbe
         }}
       />
 
-      <ParallaxLayers
+      {/* <ParallaxLayers
         amplitude={16}
         verticalAmplitude={10}
         periodFrames={200}
@@ -200,13 +200,13 @@ const ProductRevealScene: React.FC<VideoContentProps & { durationInFrames: numbe
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  background: `radial-gradient(circle at 50% 45%, ${(brand?.accentColor ?? PURPLE)}10 0%, transparent 45%)`,
+                  background: `radial-gradient(circle at 50% 45%, ${PURPLE}10 0%, transparent 45%)`,
                 }}
               />
             ),
           },
         ]}
-      />
+      /> */}
 
       {/* Product image */}
       <AbsoluteFill
@@ -214,7 +214,7 @@ const ProductRevealScene: React.FC<VideoContentProps & { durationInFrames: numbe
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '0 48px',
+          padding: `0 ${layout.paddingX}px`,
           opacity: productOpacity,
           transform: `scale(${productScale})`,
         }}
@@ -225,7 +225,7 @@ const ProductRevealScene: React.FC<VideoContentProps & { durationInFrames: numbe
           primaryColor={brand?.primaryColor ?? INDIGO}
           accentColor={brand?.accentColor ?? PURPLE}
           enterFrame={0}
-          maxWidth={Math.min(680, width * 0.45)}
+          maxWidth={Math.min(680, layout.maxImageWidth)}
         />
       </AbsoluteFill>
 
@@ -233,12 +233,13 @@ const ProductRevealScene: React.FC<VideoContentProps & { durationInFrames: numbe
       <div
         style={{
           position: 'absolute',
-          bottom: '10%',
+          bottom: layout.isPortrait ? '6%' : '10%',
           left: 0,
           right: 0,
           textAlign: 'center',
           opacity: titleOpacity,
           transform: `translateY(${titleY}px)`,
+          padding: `0 ${layout.paddingX}px`,
         }}
       >
         <KineticTypography
@@ -253,6 +254,8 @@ const ProductRevealScene: React.FC<VideoContentProps & { durationInFrames: numbe
             color: WHITE,
             textShadow: '0 4px 24px rgba(0,0,0,0.6)',
             textAlign: 'center',
+            maxWidth: layout.maxTextWidth,
+            margin: '0 auto',
           }}
         />
       </div>
@@ -273,6 +276,7 @@ const FeaturesScene: React.FC<VideoContentProps & { durationInFrames: number }> 
   durationInFrames,
 }) => {
   const opacity = useSceneOpacity(durationInFrames);
+  const layout = useResponsiveLayout();
   const features = (product?.features ?? []).filter(Boolean).slice(0, 3);
 
   return (
@@ -314,7 +318,7 @@ const FeaturesScene: React.FC<VideoContentProps & { durationInFrames: number }> 
           alignItems: 'center',
           justifyContent: 'center',
           gap: 'clamp(16px, 3vh, 40px)',
-          padding: '0 48px',
+          padding: `0 ${layout.paddingX}px`,
         }}
       >
         {/* Section label */}
@@ -341,7 +345,7 @@ const FeaturesScene: React.FC<VideoContentProps & { durationInFrames: number }> 
             flexDirection: 'column',
             gap: 'clamp(10px, 1.8vh, 20px)',
             width: '100%',
-            maxWidth: 900,
+            maxWidth: Math.min(900, layout.maxTextWidth),
           }}
         >
           {features.map((feature, i) => {
@@ -549,6 +553,7 @@ const CTAScene: React.FC<VideoContentProps & { durationInFrames: number }> = ({
 }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
+  const layout = useResponsiveLayout();
 
   const ctaOpacity = useFadeIn({ from: 8, duration: 14 });
   const ctaY = useSpringSlideUp({ from: 8, distance: 24, damping: 16, stiffness: 120 });
@@ -598,7 +603,8 @@ const CTAScene: React.FC<VideoContentProps & { durationInFrames: number }> = ({
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 'clamp(16px, 3vh, 32px)',
+          gap: 'clamp(12px, 2vh, 28px)',
+          padding: `0 ${layout.paddingX}px`,
         }}
       >
         {/* CTA Button */}
@@ -654,7 +660,7 @@ const CTAScene: React.FC<VideoContentProps & { durationInFrames: number }> = ({
             primaryColor={brand?.primaryColor ?? INDIGO}
             accentColor={brand?.accentColor ?? PURPLE}
             enterFrame={28}
-            size={Math.min(80, 1920 * 0.05)}
+            size={Math.round(Math.min(80, 1920 * 0.05) * layout.fontScale)}
           />
         </div>
       </AbsoluteFill>

@@ -2,7 +2,7 @@ import React from 'react';
 import { AbsoluteFill, Sequence, useCurrentFrame, useVideoConfig, interpolate, Easing } from 'remotion';
 import type { VideoContentProps } from '@/remotion/schema';
 import { scaleScenesToDuration } from '@/remotion/utils/scenes';
-import { useFadeIn, useSceneOpacity, useSpringScale, useSpringSlideUp, useBackgroundMovement } from '../../animations';
+import { useFadeIn, useSceneOpacity, useSpringScale, useSpringSlideUp, useBackgroundMovement, useResponsiveLayout } from '../../animations';
 import { LiveBadge } from '../../animations/LiveBadge';
 import { NewsTicker } from '../../animations/NewsTicker';
 import { HeadlineReveal } from '../../animations/HeadlineReveal';
@@ -37,6 +37,7 @@ const BadgeScene: React.FC<VideoContentProps & { durationInFrames: number }> = (
 }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
+  const layout = useResponsiveLayout();
 
   const badgeScale = useSpringScale({ from: 0, damping: 14, stiffness: 120 });
   const badgeY = useSpringSlideUp({ from: 0, distance: 24, damping: 16, stiffness: 100 });
@@ -82,6 +83,7 @@ const BadgeScene: React.FC<VideoContentProps & { durationInFrames: number }> = (
           alignItems: 'center',
           justifyContent: 'center',
           gap: 'clamp(16px, 3vh, 32px)',
+          padding: `0 ${layout.paddingX}px`,
         }}
       >
         {/* Category badge */}
@@ -135,6 +137,7 @@ const HeadlineImageScene: React.FC<VideoContentProps & { durationInFrames: numbe
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
   const { width } = useVideoConfig();
+  const layout = useResponsiveLayout();
 
   const bg = useBackgroundMovement(durationInFrames, 12);
 
@@ -185,7 +188,7 @@ const HeadlineImageScene: React.FC<VideoContentProps & { durationInFrames: numbe
           alignItems: 'center',
           justifyContent: 'center',
           gap: 'clamp(16px, 3vh, 32px)',
-          padding: '0 48px',
+          padding: `0 ${layout.paddingX}px`,
         }}
       >
         {/* Headline */}
@@ -198,7 +201,7 @@ const HeadlineImageScene: React.FC<VideoContentProps & { durationInFrames: numbe
           style={{
             opacity: useFadeIn({ from: 18, duration: 18 }),
             transform: `scale(${imageScale})`,
-            maxWidth: Math.min(900, width * 0.55),
+            maxWidth: Math.min(900, layout.maxImageWidth),
             width: '100%',
             borderRadius: 16,
             overflow: 'hidden',
@@ -211,7 +214,7 @@ const HeadlineImageScene: React.FC<VideoContentProps & { durationInFrames: numbe
             primaryColor={INDIGO}
             accentColor={RED}
             enterFrame={18}
-            maxWidth={Math.min(900, width * 0.55)}
+            maxWidth={Math.min(900, layout.maxImageWidth)}
           />
         </div>
       </AbsoluteFill>
@@ -232,6 +235,7 @@ const LocationScene: React.FC<VideoContentProps & { durationInFrames: number }> 
 }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
+  const layout = useResponsiveLayout();
 
   const locationText = location ?? 'Unknown Location';
 
@@ -355,6 +359,7 @@ const StatisticScene: React.FC<VideoContentProps & { durationInFrames: number }>
 }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
+  const layout = useResponsiveLayout();
 
   const statisticValue = typeof statistic === 'number' && Number.isFinite(statistic) ? statistic : undefined;
   const statisticLabel = typeof bodyText === 'string' && bodyText.trim() ? bodyText.trim() : 'Impact';
@@ -397,7 +402,7 @@ const StatisticScene: React.FC<VideoContentProps & { durationInFrames: number }>
           alignItems: 'center',
           justifyContent: 'center',
           gap: 'clamp(16px, 3vh, 32px)',
-          padding: '0 48px',
+          padding: `0 ${layout.paddingX}px`,
         }}
       >
         {/* Statistic */}
@@ -492,6 +497,7 @@ const FinalScene: React.FC<VideoContentProps & { durationInFrames: number }> = (
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
   const { width } = useVideoConfig();
+  const layout = useResponsiveLayout();
 
   const headline = product?.name ?? 'BREAKING NEWS';
   const imageUrl = product?.imageUrl;
@@ -538,8 +544,8 @@ const FinalScene: React.FC<VideoContentProps & { durationInFrames: number }> = (
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 'clamp(12px, 2vh, 24px)',
-          padding: '0 48px',
+          gap: 'clamp(16px, 3vh, 32px)',
+          padding: `0 ${layout.paddingX}px`,
         }}
       >
         {/* Live badge */}
@@ -583,7 +589,7 @@ const FinalScene: React.FC<VideoContentProps & { durationInFrames: number }> = (
           style={{
             opacity: useFadeIn({ from: 14, duration: 14 }),
             transform: `scale(${interpolate(frame, [14, 28], [0.97, 1], { extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic) })})`,
-            maxWidth: Math.min(800, width * 0.5),
+            maxWidth: Math.min(800, layout.maxImageWidth),
             width: '100%',
             borderRadius: 12,
             overflow: 'hidden',
@@ -596,7 +602,7 @@ const FinalScene: React.FC<VideoContentProps & { durationInFrames: number }> = (
             primaryColor={INDIGO}
             accentColor={RED}
             enterFrame={14}
-            maxWidth={Math.min(800, width * 0.5)}
+            maxWidth={Math.min(800, layout.maxImageWidth)}
           />
         </div>
       </AbsoluteFill>

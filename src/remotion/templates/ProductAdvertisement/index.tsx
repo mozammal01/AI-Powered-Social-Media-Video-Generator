@@ -4,6 +4,7 @@ import { scaleScenesToDuration } from '@/remotion/utils/scenes';
 import {
   useSceneOpacity,
   useSpringSlideUp,
+  useResponsiveLayout,
 } from '../../animations';
 import {
   Background,
@@ -24,6 +25,7 @@ import { productAdScenes } from './scenes';
 
 const IntroScene: React.FC<VideoContentProps> = ({ brand, product, headline }) => {
   const { durationInFrames } = useVideoConfig();
+  const layout = useResponsiveLayout();
   const opacity = useSceneOpacity(durationInFrames);
 
   return (
@@ -34,7 +36,7 @@ const IntroScene: React.FC<VideoContentProps> = ({ brand, product, headline }) =
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 48,
+        gap: layout.safeMargin,
       }}
     >
       <BrandLogo
@@ -43,7 +45,7 @@ const IntroScene: React.FC<VideoContentProps> = ({ brand, product, headline }) =
         primaryColor={brand.primaryColor}
         accentColor={brand.accentColor}
         enterFrame={0}
-        size={140}
+        size={Math.round(140 * layout.fontScale)}
       />
       <ProductTitle
         title={product.name}
@@ -62,6 +64,7 @@ const IntroScene: React.FC<VideoContentProps> = ({ brand, product, headline }) =
 
 const ProductScene: React.FC<VideoContentProps> = ({ brand, product, bodyText }) => {
   const { durationInFrames } = useVideoConfig();
+  const layout = useResponsiveLayout();
   const opacity = useSceneOpacity(durationInFrames);
   const description = bodyText ?? product.description;
 
@@ -73,7 +76,8 @@ const ProductScene: React.FC<VideoContentProps> = ({ brand, product, bodyText })
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 40,
+        gap: layout.safeMargin * 0.8,
+        padding: `0 ${layout.paddingX}px`,
       }}
     >
       <ProductImage
@@ -101,6 +105,7 @@ const ProductScene: React.FC<VideoContentProps> = ({ brand, product, bodyText })
 
 const FeaturesScene: React.FC<VideoContentProps> = ({ brand, product }) => {
   const { durationInFrames } = useVideoConfig();
+  const layout = useResponsiveLayout();
   const opacity = useSceneOpacity(durationInFrames);
   const features = (product.features ?? []).filter(Boolean).slice(0, 3) as string[];
 
@@ -112,7 +117,8 @@ const FeaturesScene: React.FC<VideoContentProps> = ({ brand, product }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 32,
+        gap: layout.safeMargin * 0.65,
+        padding: `0 ${layout.paddingX}px`,
       }}
     >
       <SectionLabel label="Key Features" primaryColor={brand.primaryColor} enterFrame={0} />
@@ -133,6 +139,7 @@ const FeaturesScene: React.FC<VideoContentProps> = ({ brand, product }) => {
 
 const PricingScene: React.FC<VideoContentProps> = ({ brand, product }) => {
   const { durationInFrames } = useVideoConfig();
+  const layout = useResponsiveLayout();
   const opacity = useSceneOpacity(durationInFrames);
 
   return (
@@ -143,7 +150,8 @@ const PricingScene: React.FC<VideoContentProps> = ({ brand, product }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 16,
+        gap: layout.safeMargin * 0.4,
+        padding: `0 ${layout.paddingX}px`,
       }}
     >
       <SectionLabel label="Special Offer" primaryColor={brand.primaryColor} enterFrame={0} />
@@ -165,6 +173,7 @@ const PricingScene: React.FC<VideoContentProps> = ({ brand, product }) => {
 
 const CTAScene: React.FC<VideoContentProps> = ({ brand, cta }) => {
   const { durationInFrames } = useVideoConfig();
+  const layout = useResponsiveLayout();
   const opacity = useSceneOpacity(durationInFrames);
   const websiteUrl = cta.url ?? brand.websiteUrl;
   const sceneY = useSpringSlideUp({ from: 4, distance: 20, damping: 16, stiffness: 100 });
@@ -178,7 +187,8 @@ const CTAScene: React.FC<VideoContentProps> = ({ brand, cta }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 48,
+        gap: layout.safeMargin,
+        padding: `0 ${layout.paddingX}px`,
       }}
     >
       <CTAButton
@@ -195,7 +205,7 @@ const CTAScene: React.FC<VideoContentProps> = ({ brand, cta }) => {
         primaryColor={brand.primaryColor}
         accentColor={brand.accentColor}
         enterFrame={18}
-        size={80}
+        size={Math.round(80 * layout.fontScale)}
       />
     </AbsoluteFill>
   );

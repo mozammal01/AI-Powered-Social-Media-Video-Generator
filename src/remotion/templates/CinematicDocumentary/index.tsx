@@ -1,7 +1,7 @@
 import { AbsoluteFill, Sequence, useCurrentFrame, useVideoConfig, interpolate, spring, Easing } from 'remotion';
 import type { VideoContentProps } from '@/remotion/schema';
 import { scaleScenesToDuration } from '@/remotion/utils/scenes';
-import { useFadeIn, useSceneOpacity, useSpringSlideUp } from '../../animations';
+import { useFadeIn, useSceneOpacity, useSpringSlideUp, useResponsiveLayout } from '../../animations';
 import {
   FilmGrain,
   LightSweep,
@@ -181,6 +181,7 @@ const CinematicWipe: React.FC<{ enterFrame?: number; duration?: number; color?: 
 const OpeningScene: React.FC<VideoContentProps & { durationInFrames: number }> = ({ brand, headline, durationInFrames }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const scale = useSlowCameraPush({ duration: 120, targetScale: 1.05 });
+  const layout = useResponsiveLayout();
   const title = (headline ?? brand.name ?? 'DOCUMENTARY').toUpperCase();
 
   return (
@@ -239,6 +240,7 @@ const OpeningScene: React.FC<VideoContentProps & { durationInFrames: number }> =
             alignItems: 'center',
             justifyContent: 'center',
             gap: 'clamp(12px, 1.8vh, 24px)',
+            padding: `0 ${layout.paddingX}px`,
           }}
         >
           <MaskReveal direction="up" enterFrame={8} duration={22}>
@@ -277,7 +279,7 @@ const OpeningScene: React.FC<VideoContentProps & { durationInFrames: number }> =
 
           <div
             style={{
-              width: 120,
+              width: Math.round(120 * layout.fontScale),
               height: 2,
               background: `linear-gradient(90deg, transparent, ${brand.primaryColor ?? GOLD}, transparent)`,
               opacity: useFadeIn({ from: 42, duration: 16 }),
@@ -458,6 +460,7 @@ const ParallaxScene: React.FC<VideoContentProps & { durationInFrames: number }> 
 
 const StatementScene: React.FC<VideoContentProps & { durationInFrames: number }> = ({ brand, bodyText, durationInFrames }) => {
   const opacity = useSceneOpacity(durationInFrames);
+  const layout = useResponsiveLayout();
   const statement = bodyText ?? '';
 
   return (
@@ -469,7 +472,7 @@ const StatementScene: React.FC<VideoContentProps & { durationInFrames: number }>
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '0 8%',
+        padding: `0 ${layout.paddingX}px`,
       }}
     >
       {/* Parallax depth behind text */}
@@ -513,7 +516,7 @@ const StatementScene: React.FC<VideoContentProps & { durationInFrames: number }>
 
       <div
         style={{
-          width: 80,
+          width: Math.round(80 * layout.fontScale),
           height: 2,
           background: `linear-gradient(90deg, transparent, ${brand.primaryColor ?? GOLD}, transparent)`,
           marginTop: 'clamp(14px, 2.4vh, 32px)',
@@ -613,6 +616,7 @@ const MapScene: React.FC<VideoContentProps & { durationInFrames: number }> = ({ 
 const TimelineScene: React.FC<VideoContentProps & { durationInFrames: number }> = ({ brand, product, durationInFrames }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
+  const layout = useResponsiveLayout();
   const events = product.features?.map((feature, i) => ({
     time: `0${i + 1}:00`,
     desc: feature,
@@ -708,8 +712,8 @@ const TimelineScene: React.FC<VideoContentProps & { durationInFrames: number }> 
               {/* Timeline dot */}
               <div
                 style={{
-                  width: 14,
-                  height: 14,
+                  width: Math.round(14 * layout.fontScale),
+                  height: Math.round(14 * layout.fontScale),
                   borderRadius: '50%',
                   background: brand.primaryColor ?? GOLD,
                   boxShadow: `0 0 12px ${brand.primaryColor ?? GOLD}66`,
@@ -719,7 +723,7 @@ const TimelineScene: React.FC<VideoContentProps & { durationInFrames: number }> 
               {/* Connector line */}
               <div
                 style={{
-                  width: 40,
+                  width: Math.round(40 * layout.fontScale),
                   height: 2,
                   background: `linear-gradient(90deg, ${brand.primaryColor ?? GOLD}66, transparent)`,
                   flexShrink: 0,
@@ -773,6 +777,7 @@ const TimelineScene: React.FC<VideoContentProps & { durationInFrames: number }> 
 const FinaleScene: React.FC<VideoContentProps & { durationInFrames: number }> = ({ brand, product, headline, cta, durationInFrames }) => {
   const frame = useCurrentFrame();
   const opacity = useSceneOpacity(durationInFrames);
+  const layout = useResponsiveLayout();
   const title = (headline ?? product.name ?? 'DOCUMENTARY').toUpperCase();
 
   // Slow breathing glow
@@ -864,7 +869,7 @@ const FinaleScene: React.FC<VideoContentProps & { durationInFrames: number }> = 
 
         <div
           style={{
-            width: 100,
+            width: Math.round(100 * layout.fontScale),
             height: 2,
             background: `linear-gradient(90deg, transparent, ${brand.primaryColor ?? GOLD}, transparent)`,
             opacity: useFadeIn({ from: 50, duration: 14 }),

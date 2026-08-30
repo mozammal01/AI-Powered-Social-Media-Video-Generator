@@ -317,6 +317,8 @@ export function useSceneOpacity(
 // Reusable animation primitives
 // ─────────────────────────────────────────────────────────────────────────────
 
+export { useResponsiveLayout, type AspectRatioMode, type ResponsiveLayout } from './useResponsiveLayout';
+
 export { CameraMovement } from './CameraMovement';
 export type { CameraStop } from './CameraMovement';
 

@@ -15,6 +15,7 @@ import {
   useSceneOpacity,
   useSpringScale,
   useSpringSlideUp,
+  useResponsiveLayout,
 } from '../../animations';
 import { RankingCounter } from '../../components/RankingCounter';
 import { NumberCounter } from '../../animations/NumberCounter';
@@ -67,6 +68,7 @@ const OpeningScene: React.FC<Top10CountdownProps & { durationInFrames: number }>
 }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
+  const layout = useResponsiveLayout();
 
   const title = listTitle ?? headline ?? 'This Week\'s Top 10';
   const displayRank = typeof rank === 'number' && Number.isFinite(rank) ? rank : 10;
@@ -127,6 +129,7 @@ const OpeningScene: React.FC<Top10CountdownProps & { durationInFrames: number }>
           alignItems: 'center',
           justifyContent: 'center',
           gap: 'clamp(16px, 3vh, 32px)',
+          padding: `0 ${layout.paddingX}px`,
         }}
       >
         {/* TOP 10 label with mask reveal */}
@@ -214,6 +217,7 @@ const RankRevealScene: React.FC<Top10CountdownProps & { durationInFrames: number
 }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
+  const layout = useResponsiveLayout();
 
   const displayRank = typeof rank === 'number' && Number.isFinite(rank) ? rank : 10;
   const title = itemTitle ?? 'Ranked Item';
@@ -267,21 +271,22 @@ const RankRevealScene: React.FC<Top10CountdownProps & { durationInFrames: number
       <AbsoluteFill
         style={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: layout.horizontalLayout ? 'row' : 'column',
           alignItems: 'center',
           justifyContent: 'center',
           gap: 'clamp(24px, 4vw, 48px)',
-          padding: '0 48px',
+          padding: `0 ${layout.paddingX}px`,
         }}
       >
         {/* Left: Rank + Text */}
         <div
           style={{
-            flex: '0 0 auto',
+            flex: layout.horizontalLayout ? '0 0 auto' : '1 1 auto',
             display: 'flex',
             flexDirection: 'column',
             gap: 'clamp(12px, 2vh, 24px)',
-            maxWidth: 700,
+            maxWidth: Math.min(700, layout.maxTextWidth),
+            textAlign: 'center',
           }}
         >
           {/* Rank number */}
@@ -367,7 +372,7 @@ const RankRevealScene: React.FC<Top10CountdownProps & { durationInFrames: number
             flex: '0 1 auto',
             opacity: useFadeIn({ from: 8, duration: 16 }),
             transform: `scale(${imageScale})`,
-            maxWidth: Math.min(700, 1920 * 0.4),
+            maxWidth: Math.min(700, layout.maxImageWidth),
             width: '100%',
             borderRadius: 16,
             overflow: 'hidden',
@@ -402,6 +407,7 @@ const StatisticsScene: React.FC<Top10CountdownProps & { durationInFrames: number
 }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
+  const layout = useResponsiveLayout();
 
   const statValue = typeof statistic === 'number' && Number.isFinite(statistic) ? statistic : 0;
   const label = typeof statisticLabel === 'string' && statisticLabel.trim() ? statisticLabel.trim() : 'Score';
@@ -449,7 +455,7 @@ const StatisticsScene: React.FC<Top10CountdownProps & { durationInFrames: number
           alignItems: 'center',
           justifyContent: 'center',
           gap: 'clamp(16px, 3vh, 32px)',
-          padding: '0 48px',
+          padding: `0 ${layout.paddingX}px`,
         }}
       >
         {/* Statistic counter */}
@@ -526,6 +532,7 @@ const TransitionScene: React.FC<Top10CountdownProps & { durationInFrames: number
 }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
+  const layout = useResponsiveLayout();
 
   const displayRank = typeof rank === 'number' && Number.isFinite(rank) ? rank : 10;
   const title = itemTitle ?? 'Ranked Item';
@@ -631,7 +638,7 @@ const TransitionScene: React.FC<Top10CountdownProps & { durationInFrames: number
           style={{
             opacity: useFadeIn({ from: 16, duration: 14 }),
             transform: `translateX(${imageSlide}px)`,
-            maxWidth: Math.min(500, 1920 * 0.3),
+            maxWidth: Math.min(500, layout.maxImageWidth),
             width: '100%',
             borderRadius: 12,
             overflow: 'hidden',
@@ -668,7 +675,7 @@ const FinalScene: React.FC<Top10CountdownProps & { durationInFrames: number }> =
 }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
-  const { width } = useVideoConfig();
+  const layout = useResponsiveLayout();
 
   const title = itemTitle ?? 'The #1 Pick';
   const desc = typeof description === 'string' ? description.trim() : '';
@@ -733,7 +740,7 @@ const FinalScene: React.FC<Top10CountdownProps & { durationInFrames: number }> =
           alignItems: 'center',
           justifyContent: 'center',
           gap: 'clamp(12px, 2vh, 24px)',
-          padding: '0 48px',
+          padding: `0 ${layout.paddingX}px`,
         }}
       >
         {/* #1 Rank */}
@@ -823,7 +830,7 @@ const FinalScene: React.FC<Top10CountdownProps & { durationInFrames: number }> =
           style={{
             opacity: useFadeIn({ from: 16, duration: 14 }),
             transform: `scale(${interpolate(frame, [16, 32], [0.97, 1], { extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic) })})`,
-            maxWidth: Math.min(500, width * 0.35),
+            maxWidth: Math.min(500, layout.maxImageWidth),
             width: '100%',
             borderRadius: 12,
             overflow: 'hidden',
@@ -836,7 +843,7 @@ const FinalScene: React.FC<Top10CountdownProps & { durationInFrames: number }> =
             primaryColor={GOLD}
             accentColor={RED}
             enterFrame={16}
-            maxWidth={Math.min(500, width * 0.35)}
+            maxWidth={Math.min(500, layout.maxImageWidth)}
           />
         </div>
 

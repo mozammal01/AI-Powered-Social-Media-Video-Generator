@@ -41,7 +41,7 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     category: 'intro',
     tags: ['breaking-news', 'broadcast', 'news', 'live', 'editorial', 'youtube'],
     thumbnailUrl: '/templates/breaking-news.svg',
-    supportedAspectRatios: ['16:9'],
+    supportedAspectRatios: ['16:9', '1:1', '9:16'],
     defaultAspectRatio: '16:9',
     fps: 30,
     durationInFrames: 300, // Fixed: 10s @ 30fps
@@ -57,7 +57,7 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     category: 'social-media',
     tags: ['countdown', 'ranking', 'listicle', 'youtube', 'top-10', 'viral'],
     thumbnailUrl: '/templates/top-10-countdown.svg',
-    supportedAspectRatios: ['16:9'],
+    supportedAspectRatios: ['16:9', '1:1', '9:16'],
     defaultAspectRatio: '16:9',
     fps: 30,
     durationInFrames: 300, // Fixed: 10s @ 30fps
@@ -73,7 +73,7 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     category: 'intro',
     tags: ['documentary', 'cinematic', 'parallax', 'kinetic', 'timeline', 'premium'],
     thumbnailUrl: '/templates/cinematic-documentary.svg',
-    supportedAspectRatios: ['16:9', '9:16', '1:1'],
+    supportedAspectRatios: ['16:9', '1:1', '9:16'],
     defaultAspectRatio: '16:9',
     fps: 30,
     durationInFrames: 600, // 20s @ 30fps
@@ -89,8 +89,8 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     category: 'ads',
     tags: ['product', 'launch', 'saas', 'features', 'pricing'],
     thumbnailUrl: '/templates/product-advertisement.svg',
-    supportedAspectRatios: ['9:16', '1:1', '16:9'],
-    defaultAspectRatio: '9:16',
+    supportedAspectRatios: ['16:9', '1:1', '9:16'],
+    defaultAspectRatio: '16:9',
     fps: 30,
     durationInFrames: 300, // 10s default
     defaultProps: productAdDefaultContent,
@@ -104,8 +104,8 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     category: 'social-media',
     tags: ['restaurant', 'food', 'menu', 'cafe', 'reservation'],
     thumbnailUrl: '/templates/restaurant-promotion.svg',
-    supportedAspectRatios: ['9:16', '1:1'],
-    defaultAspectRatio: '9:16',
+    supportedAspectRatios: ['16:9', '1:1', '9:16'],
+    defaultAspectRatio: '16:9',
     fps: 30,
     durationInFrames: 300, // 10s default
     defaultProps: restaurantDefaultContent,
@@ -119,8 +119,8 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     category: 'ads',
     tags: ['sale', 'discount', 'flash-sale', 'ecommerce', 'urgency'],
     thumbnailUrl: '/templates/sale-promotion.svg',
-    supportedAspectRatios: ['9:16', '1:1', '16:9'],
-    defaultAspectRatio: '9:16',
+    supportedAspectRatios: ['16:9', '1:1', '9:16'],
+    defaultAspectRatio: '16:9',
     fps: 30,
     durationInFrames: 300, // 10s default
     defaultProps: saleDefaultContent,
@@ -134,7 +134,7 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     category: 'ads',
     tags: ['luxury', 'premium', 'cinematic', 'brand', 'product'],
     thumbnailUrl: '/templates/luxury-commercial.svg',
-    supportedAspectRatios: ['16:9', '9:16', '1:1'],
+    supportedAspectRatios: ['16:9', '1:1', '9:16'],
     defaultAspectRatio: '16:9',
     fps: 30,
     durationInFrames: 600, // 20s
@@ -149,7 +149,7 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     category: 'ads',
     tags: ['product', 'cinematic', 'premium', 'launch', 'social', 'marketing'],
     thumbnailUrl: '/templates/cinematic-product-showcase.svg',
-    supportedAspectRatios: ['16:9'],
+    supportedAspectRatios: ['16:9', '1:1', '9:16'],
     defaultAspectRatio: '16:9',
     fps: 30,
     durationInFrames: 300, // 10s
@@ -165,7 +165,7 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     category: 'explainer',
     tags: ['data', 'statistics', 'chart', 'business', 'education', 'youtube'],
     thumbnailUrl: '/templates/data-statistics-explainer.svg',
-    supportedAspectRatios: ['16:9'],
+    supportedAspectRatios: ['16:9', '1:1', '9:16'],
     defaultAspectRatio: '16:9',
     fps: 30,
     durationInFrames: 300, // Fixed: 10s @ 30fps

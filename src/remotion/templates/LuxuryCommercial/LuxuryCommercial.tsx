@@ -5,10 +5,18 @@ import { FloatingParticles } from '../../animations/FloatingParticles';
 import { GlassPanel } from '../../animations/GlassPanel';
 import { ElegantTypography } from '../../animations/ElegantTypography';
 import { ObjectReveal } from '../../animations/ObjectReveal';
+import { useResponsiveLayout } from '../../animations';
 
 const PRODUCT_IMAGE = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1999&auto=format&fit=crop'; // High-end watch
 
 export const LuxuryCommercial: React.FC = () => {
+  const layout = useResponsiveLayout();
+  const orbSize = Math.min(600, layout.width * 0.35);
+  const imageWidth = layout.isPortrait ? '85%' : layout.isSquare ? '70%' : '60%';
+  const imageHeight = layout.isPortrait ? '40%' : layout.isSquare ? '55%' : '80%';
+  const panelWidth = Math.min(600, layout.maxTextWidth);
+  const panelHeight = Math.round(300 * layout.fontScale);
+
   return (
     <AbsoluteFill className="bg-neutral-950 overflow-hidden">
       {/* Dynamic Background */}
@@ -36,11 +44,11 @@ export const LuxuryCommercial: React.FC = () => {
             <ObjectReveal 
               src={PRODUCT_IMAGE} 
               delay={15} 
-              style={{ width: '60%', height: '80%', zIndex: 5 }} 
+              style={{ width: imageWidth, height: imageHeight, zIndex: 5 }} 
             />
             
             {/* Background glowing orb behind product */}
-            <div className="absolute w-[600px] h-[600px] bg-amber-500/10 rounded-full blur-[100px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute rounded-full blur-[100px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style={{ width: `${orbSize}px`, height: `${orbSize}px`, background: 'rgba(245, 158, 11, 0.1)' }} />
           </AbsoluteFill>
         </Sequence>
 
@@ -50,10 +58,10 @@ export const LuxuryCommercial: React.FC = () => {
              <ObjectReveal 
               src={PRODUCT_IMAGE} 
               delay={0} 
-              style={{ width: '80%', height: '100%', zIndex: 1, filter: 'blur(10px) brightness(0.4)' }} 
+              style={{ width: '85%', height: '100%', zIndex: 1, filter: 'blur(10px) brightness(0.4)' }} 
             />
-            <GlassPanel intensity={20} style={{ width: '600px', height: '300px', zIndex: 10, borderRadius: '20px' }}>
-              <div className="w-full h-full flex flex-col items-center justify-center p-12 text-center">
+            <GlassPanel intensity={20} style={{ width: `${panelWidth}px`, height: `${panelHeight}px`, zIndex: 10, borderRadius: '20px' }}>
+              <div className="w-full h-full flex flex-col items-center justify-center text-center" style={{ padding: `${Math.round(48 * layout.fontScale)}px` }}>
                 <ElegantTypography text="T H E   C R O W N" delay={20} className="text-4xl text-white font-medium" />
                 <div className="w-12 h-px bg-amber-500/50 my-6" />
                 <ElegantTypography text="PRECISION ENGINEERING. TIMELESS DESIGN." type="subtitle" delay={60} className="text-sm text-neutral-300 leading-loose" />

@@ -11,6 +11,7 @@ import type { VideoContentProps } from '@/remotion/schema';
 import { MaskReveal } from '@/remotion/components';
 import { AnimatedCard } from '@/remotion/animations';
 import { dataStatisticsExplainerDefaultContent } from './defaults';
+import { useResponsiveLayout } from '@/remotion/animations';
 
 const FRAMES_PER_SCENE = 60;
 const FONT = 'Inter, "Helvetica Neue", Arial, sans-serif';
@@ -96,6 +97,7 @@ function LineChart({ data, labels, accent }: { data: number[]; labels: string[];
 export const DataStatisticsExplainer: React.FC<ExplainerProps> = (rawProps) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const layout = useResponsiveLayout();
   const props = { ...dataStatisticsExplainerDefaultContent, ...rawProps };
   const accent = text(props.brand?.primaryColor, '#38BDF8', 16);
   const title = text(props.title ?? props.headline, dataStatisticsExplainerDefaultContent.title, 62);
@@ -121,32 +123,37 @@ export const DataStatisticsExplainer: React.FC<ExplainerProps> = (rawProps) => {
     { title: 'Change', value: `${percentage >= 0 ? '+' : ''}${compact(percentage)}%`, description: 'Compared with prior period', icon: '△' },
   ];
 
+  const padX = layout.paddingX;
+  const padY = layout.paddingY;
+  const maxText = layout.maxTextWidth;
+  const fontScale = layout.fontScale;
+
   return <AbsoluteFill style={{ fontFamily: FONT, color: '#F8FAFC', overflow: 'hidden' }}>
     <BackgroundGrid accent={accent} />
     <AbsoluteFill style={{ transform: `scale(${cameraScale})`, transformOrigin: 'center center' }}>
       <div style={{ position: 'absolute', inset: 0, opacity: sceneOpacity }}>
-      {scene === 0 && <div style={{ position: 'absolute', inset: 0, padding: '150px 180px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-        <div style={{ color: accent, fontSize: 22, fontWeight: 800, letterSpacing: '0.24em', textTransform: 'uppercase', marginBottom: 26 }}>Data brief</div>
-        <MaskReveal direction="right" enterFrame={6} duration={26}><h1 style={{ margin: 0, maxWidth: 1350, fontSize: 92, lineHeight: 1.02, letterSpacing: '-0.055em', transform: `translateY(${(1 - titleIn) * 38}px)`, overflowWrap: 'anywhere' }}>{title}</h1></MaskReveal>
-        <p style={{ maxWidth: 1060, fontSize: 31, lineHeight: 1.35, color: 'rgba(226,232,240,0.8)', margin: '30px 0 0' }}>{subtitle}</p>
+      {scene === 0 && <div style={{ position: 'absolute', inset: 0, padding: `${padY}px ${padX}px`, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <div style={{ color: accent, fontSize: Math.round(22 * fontScale), fontWeight: 800, letterSpacing: '0.24em', textTransform: 'uppercase', marginBottom: Math.round(26 * fontScale) }}>Data brief</div>
+        <MaskReveal direction="right" enterFrame={6} duration={26}><h1 style={{ margin: 0, maxWidth: Math.min(1350, maxText), fontSize: Math.round(92 * fontScale), lineHeight: 1.02, letterSpacing: '-0.055em', transform: `translateY(${(1 - titleIn) * 38}px)`, overflowWrap: 'anywhere' }}>{title}</h1></MaskReveal>
+        <p style={{ maxWidth: Math.min(1060, maxText), fontSize: Math.round(31 * fontScale), lineHeight: 1.35, color: 'rgba(226,232,240,0.8)', margin: `${Math.round(30 * fontScale)}px 0 0` }}>{subtitle}</p>
       </div>}
-      {scene === 1 && <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 18 }}>
-        <div style={{ color: 'rgba(226,232,240,0.65)', fontSize: 25, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' }}>Headline statistic</div>
-        <div style={{ fontSize: 224, lineHeight: 0.96, fontWeight: 850, letterSpacing: '-0.08em', color: accent, textShadow: `0 0 80px ${accent}55` }}><SafeCounter value={statistic} suffix="" start={5} /></div>
-        <div style={{ fontSize: 42, fontWeight: 700, opacity: interpolate(frame % 60, [9, 28], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }) }}><span style={{ color: percentage >= 0 ? '#34D399' : '#FB7185' }}>{percentage >= 0 ? '+' : ''}<SafeCounter value={percentage} suffix="%" start={10} /></span> versus the prior period</div>
+      {scene === 1 && <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: Math.round(18 * fontScale) }}>
+        <div style={{ color: 'rgba(226,232,240,0.65)', fontSize: Math.round(25 * fontScale), fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' }}>Headline statistic</div>
+        <div style={{ fontSize: Math.round(224 * fontScale), lineHeight: 0.96, fontWeight: 850, letterSpacing: '-0.08em', color: accent, textShadow: `0 0 80px ${accent}55` }}><SafeCounter value={statistic} suffix="" start={5} /></div>
+        <div style={{ fontSize: Math.round(42 * fontScale), fontWeight: 700, opacity: interpolate(frame % 60, [9, 28], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }) }}><span style={{ color: percentage >= 0 ? '#34D399' : '#FB7185' }}>{percentage >= 0 ? '+' : ''}<SafeCounter value={percentage} suffix="%" start={10} /></span> versus the prior period</div>
       </div>}
-      {scene === 2 && <div style={{ position: 'absolute', inset: 0, padding: '98px 190px 50px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 12 }}><div style={{ fontSize: 42, fontWeight: 800, letterSpacing: '-0.035em' }}>Momentum over time</div><div style={{ fontSize: 20, color: 'rgba(226,232,240,0.6)' }}>Progressive trend</div></div>
+      {scene === 2 && <div style={{ position: 'absolute', inset: 0, padding: `${Math.round(98 * fontScale)}px ${Math.round(190 * fontScale)}px ${Math.round(50 * fontScale)}px`, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: Math.round(12 * fontScale) }}><div style={{ fontSize: Math.round(42 * fontScale), fontWeight: 800, letterSpacing: '-0.035em' }}>Momentum over time</div><div style={{ fontSize: Math.round(20 * fontScale), color: 'rgba(226,232,240,0.6)' }}>Progressive trend</div></div>
         <LineChart data={chartData} labels={labels} accent={accent} />
       </div>}
-      {scene === 3 && <div style={{ position: 'absolute', inset: 0, padding: '160px 160px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-        <div style={{ fontSize: 31, fontWeight: 800, color: accent, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 26 }}>What the data says</div>
-        <div style={{ display: 'flex', gap: 28, width: '100%', justifyContent: 'center' }}>{cards.map((card, index) => <AnimatedCard key={card.title} title={card.title} value={card.value} description={card.description} icon={<span style={{ fontSize: 28 }}>{card.icon}</span>} delay={5 + index * 12} accentColor={index === 2 ? '#A78BFA' : accent} style={{ flex: 1, minWidth: 0, maxWidth: 500, height: 250 }} />)}</div>
+      {scene === 3 && <div style={{ position: 'absolute', inset: 0, padding: `${Math.round(160 * fontScale)}px ${Math.round(160 * fontScale)}px`, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <div style={{ fontSize: Math.round(31 * fontScale), fontWeight: 800, color: accent, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: Math.round(26 * fontScale) }}>What the data says</div>
+        <div style={{ display: 'flex', gap: Math.round(28 * fontScale), width: '100%', justifyContent: 'center' }}>{cards.map((card, index) => <AnimatedCard key={card.title} title={card.title} value={card.value} description={card.description} icon={<span style={{ fontSize: Math.round(28 * fontScale) }}>{card.icon}</span>} delay={5 + index * 12} accentColor={index === 2 ? '#A78BFA' : accent} style={{ flex: 1, minWidth: 0, maxWidth: Math.min(500, maxText), height: Math.round(250 * fontScale) }} />)}</div>
       </div>}
-      {scene === 4 && <div style={{ position: 'absolute', inset: 0, padding: '150px 190px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start' }}>
-        <div style={{ color: accent, fontSize: 22, fontWeight: 800, letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: 20 }}>The key insight</div>
-        <MaskReveal direction="up" enterFrame={4} duration={22}><div style={{ maxWidth: 1350, fontSize: 70, fontWeight: 850, letterSpacing: '-0.045em', lineHeight: 1.08 }}>The trend is clear: <span style={{ color: accent }}>{compact(statistic)}</span> is the signal worth acting on.</div></MaskReveal>
-        <div style={{ marginTop: 42, display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}><div style={{ fontSize: 19, color: 'rgba(226,232,240,0.64)', maxWidth: 620, overflowWrap: 'anywhere' }}>{source}</div><div style={{ padding: '18px 30px', borderRadius: 999, background: accent, color: '#06101E', fontSize: 21, fontWeight: 850, boxShadow: `0 14px 42px ${accent}55`, maxWidth: 460, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{cta}</div></div>
+      {scene === 4 && <div style={{ position: 'absolute', inset: 0, padding: `${Math.round(150 * fontScale)}px ${Math.round(190 * fontScale)}px`, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start' }}>
+        <div style={{ color: accent, fontSize: Math.round(22 * fontScale), fontWeight: 800, letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: Math.round(20 * fontScale) }}>The key insight</div>
+        <MaskReveal direction="up" enterFrame={4} duration={22}><div style={{ maxWidth: Math.min(1350, maxText), fontSize: Math.round(70 * fontScale), fontWeight: 850, letterSpacing: '-0.045em', lineHeight: 1.08 }}>The trend is clear: <span style={{ color: accent }}>{compact(statistic)}</span> is the signal worth acting on.</div></MaskReveal>
+        <div style={{ marginTop: Math.round(42 * fontScale), display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}><div style={{ fontSize: Math.round(19 * fontScale), color: 'rgba(226,232,240,0.64)', maxWidth: Math.min(620, maxText), overflowWrap: 'anywhere' }}>{source}</div><div style={{ padding: `${Math.round(18 * fontScale)}px ${Math.round(30 * fontScale)}px`, borderRadius: 999, background: accent, color: '#06101E', fontSize: Math.round(21 * fontScale), fontWeight: 850, boxShadow: `0 14px 42px ${accent}55`, maxWidth: Math.min(460, maxText), overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{cta}</div></div>
       </div>}
       </div>
     </AbsoluteFill>

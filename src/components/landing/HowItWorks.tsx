@@ -96,7 +96,7 @@ export function HowItWorks() {
                 <motion.div
                   key={step.number}
                   variants={cardReveal}
-                  className="group relative rounded-2xl border border-border/70 bg-card/50 p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl hover:shadow-black/20"
+                  className="group relative rounded-2xl border border-border/70 bg-card/50 p-7 backdrop-blur shadow-md shadow-black/8 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg hover:shadow-black/12"
                 >
                   <span className="absolute right-5 top-5 font-mono text-sm font-semibold text-muted-foreground/40 transition-colors group-hover:text-primary/50">
                     {step.number}

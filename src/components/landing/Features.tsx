@@ -75,7 +75,7 @@ export function Features() {
             return (
               <div
                 key={feature.title}
-                className="group rounded-2xl border border-border/70 bg-card/50 p-7 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl hover:shadow-black/20"
+                className="group rounded-2xl border border-border/70 bg-card/50 p-7 backdrop-blur shadow-md shadow-black/8 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg hover:shadow-black/12"
               >
                 <span className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500/15 to-fuchsia-500/15 text-primary ring-1 ring-inset ring-primary/25 transition-all duration-300 group-hover:from-indigo-500/30 group-hover:to-fuchsia-500/30">
                   <Icon className="h-5 w-5" />

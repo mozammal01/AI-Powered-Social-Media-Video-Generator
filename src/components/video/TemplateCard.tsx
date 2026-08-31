@@ -92,10 +92,10 @@ export function TemplateCard({
   );
 
   const baseClassName = cn(
-    "group block w-full text-left rounded-xl border bg-card overflow-hidden transition-all",
-    "hover:border-primary/40 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+    "group block w-full text-left rounded-xl border bg-card overflow-hidden shadow-md shadow-black/8 transition-all duration-200",
+    "hover:border-primary/40 hover:shadow-lg hover:shadow-black/12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
     selected
-      ? "border-primary ring-2 ring-primary/25 shadow-md"
+      ? "border-primary ring-2 ring-primary/25 shadow-lg shadow-black/12"
       : "border-border",
     className
   );

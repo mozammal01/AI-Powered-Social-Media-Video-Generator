@@ -8,6 +8,7 @@ import { restaurantDefaultContent } from './RestaurantPromotion/defaults';
 import { saleDefaultContent } from './SalePromotion/defaults';
 import { cinematicDocumentaryDefaultContent } from './CinematicDocumentary/defaults';
 import { top10CountdownDefaultContent } from './Top10Countdown/defaults';
+import { top5CountdownDefaultContent } from './Top5Countdown/defaults';
 import { luxuryCommercialDefaultContent } from './LuxuryCommercial/defaults';
 import { cinematicProductShowcaseDefaultContent } from './CinematicProductShowcase/defaults';
 import { dataStatisticsExplainerDefaultContent } from './DataStatisticsExplainer/defaults';
@@ -63,6 +64,22 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     durationInFrames: 300, // Fixed: 10s @ 30fps
     featured: true,
     defaultProps: top10CountdownDefaultContent,
+  },
+
+  'top-5-countdown': {
+    id: 'top-5-countdown',
+    name: 'Top 5 Countdown',
+    description:
+      'Compact ranking video with animated rank counters, image reveals, and smooth transitions across 5 ranked items.',
+    category: 'social-media',
+    tags: ['countdown', 'ranking', 'listicle', 'top-5', 'viral'],
+    thumbnailUrl: '/templates/top-5-countdown.svg',
+    supportedAspectRatios: ['16:9', '1:1', '9:16'],
+    defaultAspectRatio: '16:9',
+    fps: 30,
+    durationInFrames: 750, // Fixed: 25s @ 30fps
+    featured: true,
+    defaultProps: top5CountdownDefaultContent,
   },
 
   'cinematic-documentary': {

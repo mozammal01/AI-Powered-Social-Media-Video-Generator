@@ -101,6 +101,7 @@ export const DURATION_OPTIONS = [
 export const FIXED_DURATION_TEMPLATES = [
   'breaking-news-intro',
   'top-10-countdown',
+  'top-5-countdown',
   'cinematic-documentary',
   'cinematic-product-showcase',
 ] as const;

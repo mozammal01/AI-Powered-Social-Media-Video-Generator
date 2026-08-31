@@ -41,7 +41,7 @@ export default function DashboardHome() {
             AI Video Suite Active
           </div>
           <h1 className="text-3xl font-bold tracking-tight">
-            Welcome back, John!
+            Welcome back!
           </h1>
           <p className="text-muted-foreground text-sm max-w-lg">
             Create high-quality, professional social media videos from scripts

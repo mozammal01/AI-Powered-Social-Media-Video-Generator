@@ -69,12 +69,13 @@ export function toVideoContent(
 
   // Template-specific overrides / additions
   switch (templateId) {
+    case 'top-5-countdown':
     case 'top-10-countdown': {
-      const rankValue = typeof values.rank === 'number' && Number.isFinite(values.rank) ? values.rank : 10;
+      const rankValue = typeof values.rank === 'number' && Number.isFinite(values.rank) ? values.rank : (templateId === 'top-5-countdown' ? 5 : 10);
       void rankValue;
       return {
         ...content,
-        headline: values.headline.trim() || 'TOP 10',
+        headline: values.headline.trim() || (templateId === 'top-5-countdown' ? 'TOP 5' : 'TOP 10'),
         product: {
           ...content.product,
           name: values.itemTitle.trim() || values.productName.trim() || 'Ranked Item',

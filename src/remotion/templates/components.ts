@@ -6,6 +6,7 @@ import { RestaurantPromotion } from './RestaurantPromotion';
 import { SalePromotion } from './SalePromotion';
 import { CinematicDocumentary } from './CinematicDocumentary';
 import { Top10Countdown } from './Top10Countdown';
+import { Top5Countdown } from './Top5Countdown';
 import { LuxuryCommercial } from './LuxuryCommercial/LuxuryCommercial';
 import { CinematicProductShowcase } from './CinematicProductShowcase';
 import { DataStatisticsExplainer } from './DataStatisticsExplainer';
@@ -27,6 +28,7 @@ export const templateComponents: Record<
 > = {
   'breaking-news-intro': BreakingNewsIntro,
   'top-10-countdown': Top10Countdown,
+  'top-5-countdown': Top5Countdown,
   'product-advertisement': ProductAdvertisement,
   'restaurant-promotion': RestaurantPromotion,
   'sale-promotion': SalePromotion,

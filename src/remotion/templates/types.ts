@@ -10,6 +10,7 @@ export type TemplateId =
   | 'cinematic-documentary'
   | 'luxury-commercial'
   | 'top-10-countdown'
+  | 'top-5-countdown'
   | 'cinematic-product-showcase'
   | 'data-statistics-explainer'
   | 'breaking-news-intro';

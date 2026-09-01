@@ -54,6 +54,28 @@ export const videoContentSchema = z.object({
   date: z.string().optional(),
   image: z.string().optional(),
   tickerText: z.string().optional(),
+  /** Optional countdown fields. Existing templates safely ignore these. */
+  listTitle: z.string().optional(),
+  item1Title: z.string().optional(),
+  item1Description: z.string().optional(),
+  item1Image: z.string().optional(),
+  item1AccentText: z.string().optional(),
+  item2Title: z.string().optional(),
+  item2Description: z.string().optional(),
+  item2Image: z.string().optional(),
+  item2AccentText: z.string().optional(),
+  item3Title: z.string().optional(),
+  item3Description: z.string().optional(),
+  item3Image: z.string().optional(),
+  item3AccentText: z.string().optional(),
+  item4Title: z.string().optional(),
+  item4Description: z.string().optional(),
+  item4Image: z.string().optional(),
+  item4AccentText: z.string().optional(),
+  item5Title: z.string().optional(),
+  item5Description: z.string().optional(),
+  item5Image: z.string().optional(),
+  item5AccentText: z.string().optional(),
 });
 
 /** Input props type for every template composition. */

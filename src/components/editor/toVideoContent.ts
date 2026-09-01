@@ -69,13 +69,46 @@ export function toVideoContent(
 
   // Template-specific overrides / additions
   switch (templateId) {
-    case 'top-5-countdown':
+    case 'top-5-countdown': {
+      return {
+        ...content,
+        headline: values.headline.trim() || 'TOP 5',
+        listTitle: values.listTitle.trim() || 'TOP 5 TECH INNOVATIONS',
+        product: {
+          ...content.product,
+          name: values.itemTitle.trim() || values.productName.trim() || 'Ranked Item',
+          description: values.description.trim() || undefined,
+          imageUrl: values.image || values.productImageUrl || undefined,
+        },
+        category: values.category.trim() || 'Technology',
+        item5Title: 'Smart Glasses',
+        item5Description: 'Smart glasses are bringing digital information directly into our everyday view.',
+        item5Image: values.image || values.productImageUrl || undefined,
+        item5AccentText: '#5',
+        item4Title: 'AI Assistants',
+        item4Description: 'AI assistants are changing how people work, communicate and access information.',
+        item4Image: values.image || values.productImageUrl || undefined,
+        item4AccentText: '#4',
+        item3Title: 'Electric Vehicles',
+        item3Description: 'Electric vehicles are transforming transportation with cleaner and smarter technology.',
+        item3Image: values.image || values.productImageUrl || undefined,
+        item3AccentText: '#3',
+        item2Title: 'Robotics',
+        item2Description: 'Advanced robots are becoming essential across factories, logistics and everyday life.',
+        item2Image: values.image || values.productImageUrl || undefined,
+        item2AccentText: '#2',
+        item1Title: 'Generative AI',
+        item1Description: 'Generative AI is transforming software, creativity and the way businesses work.',
+        item1Image: values.image || values.productImageUrl || undefined,
+        item1AccentText: '#1',
+      };
+    }
     case 'top-10-countdown': {
-      const rankValue = typeof values.rank === 'number' && Number.isFinite(values.rank) ? values.rank : (templateId === 'top-5-countdown' ? 5 : 10);
+      const rankValue = typeof values.rank === 'number' && Number.isFinite(values.rank) ? values.rank : 10;
       void rankValue;
       return {
         ...content,
-        headline: values.headline.trim() || (templateId === 'top-5-countdown' ? 'TOP 5' : 'TOP 10'),
+        headline: values.headline.trim() || 'TOP 10',
         product: {
           ...content.product,
           name: values.itemTitle.trim() || values.productName.trim() || 'Ranked Item',

@@ -13,32 +13,20 @@ import { scaleScenesToDuration } from '@/remotion/utils/scenes';
 import {
   useFadeIn,
   useSceneOpacity,
-  useSpringScale,
   useSpringSlideUp,
   useResponsiveLayout,
 } from '../../animations';
 import { RankingCounter } from '../../components/RankingCounter';
-import { NumberCounter } from '../../animations/NumberCounter';
 import { SplitImageReveal } from '../../components/SplitImageReveal';
 import { MaskReveal } from '../../components/MaskReveal';
 import { KineticTypography } from '../../components/KineticTypography';
-import { FilmGrain } from '../../components/FilmGrain';
 import { LightSweep } from '../../components/LightSweep';
-import { ParallaxLayers } from '../../components/ParallaxLayers';
 import { top5CountdownScenes } from './scenes';
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Styling constants
-// ─────────────────────────────────────────────────────────────────────────────
 
 const DARK = '#08080C';
 const GOLD = '#FFD60A';
 const RED = '#FF3B5C';
 const WHITE = '#FFFFFF';
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Extended props for Top 5 specific fields
-// ─────────────────────────────────────────────────────────────────────────────
 
 interface Top5CountdownProps extends VideoContentProps {
   listTitle?: string;
@@ -53,54 +41,138 @@ interface Top5CountdownProps extends VideoContentProps {
   item1Title?: string;
   item1Description?: string;
   item1Image?: string;
-  item1Statistic?: number;
-  item1StatisticLabel?: string;
   item1AccentText?: string;
   item2Title?: string;
   item2Description?: string;
   item2Image?: string;
-  item2Statistic?: number;
-  item2StatisticLabel?: string;
   item2AccentText?: string;
   item3Title?: string;
   item3Description?: string;
   item3Image?: string;
-  item3Statistic?: number;
-  item3StatisticLabel?: string;
   item3AccentText?: string;
   item4Title?: string;
   item4Description?: string;
   item4Image?: string;
-  item4Statistic?: number;
-  item4StatisticLabel?: string;
   item4AccentText?: string;
   item5Title?: string;
   item5Description?: string;
   item5Image?: string;
-  item5Statistic?: number;
-  item5StatisticLabel?: string;
   item5AccentText?: string;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────────────────────────────────────────────
-
 function getItemFields(content: Top5CountdownProps, rank: number) {
   const prefix = `item${rank}` as 'item1' | 'item2' | 'item3' | 'item4' | 'item5';
+  const record = content as unknown as Record<string, unknown>;
   return {
-    title: (content as any)[`${prefix}Title`] ?? content.itemTitle ?? 'Ranked Item',
-    description: (content as any)[`${prefix}Description`] ?? content.description ?? '',
-    image: (content as any)[`${prefix}Image`] ?? content.image ?? undefined,
-    statistic: (content as any)[`${prefix}Statistic`] ?? content.statistic ?? 0,
-    statisticLabel: (content as any)[`${prefix}StatisticLabel`] ?? content.statisticLabel ?? 'Score',
-    accentText: (content as any)[`${prefix}AccentText`] ?? content.accentText ?? '',
+    title: (record[`${prefix}Title`] as string | undefined) ?? content.itemTitle ?? 'Ranked Item',
+    description: (record[`${prefix}Description`] as string | undefined) ?? content.description ?? '',
+    image: (record[`${prefix}Image`] as string | undefined) ?? content.image ?? undefined,
+    accentText: (record[`${prefix}AccentText`] as string | undefined) ?? content.accentText ?? '',
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Scene 1 — Opening (0 - 3s)
-// ─────────────────────────────────────────────────────────────────────────────
+const ENTER_DURATION = 40;
+const EXIT_START = 110;
+
+interface ItemLayoutProps {
+  accentText: string;
+  description: string;
+  rankAnimation: React.ReactNode;
+  imageAnimation: React.ReactNode;
+  textAnimation: React.ReactNode;
+  exitOpacity: number;
+  exitTransform: string;
+}
+
+const ItemLayout: React.FC<ItemLayoutProps> = ({
+  accentText,
+  description,
+  rankAnimation,
+  imageAnimation,
+  textAnimation,
+  exitOpacity,
+  exitTransform,
+}) => {
+  const layout = useResponsiveLayout();
+
+  return (
+    <AbsoluteFill
+      style={{
+        display: 'flex',
+        flexDirection: layout.horizontalLayout ? 'row' : 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: layout.horizontalLayout ? 'clamp(24px, 4vw, 48px)' : 'clamp(16px, 2vh, 24px)',
+        padding: `0 ${layout.paddingX}px`,
+        opacity: exitOpacity,
+        transform: exitTransform,
+      }}
+    >
+      <div
+        style={{
+          flex: layout.horizontalLayout ? '0 0 auto' : '1 1 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'clamp(8px, 1.5vh, 16px)',
+          maxWidth: Math.min(700, layout.maxTextWidth),
+          textAlign: layout.horizontalLayout ? 'left' : 'center',
+          alignItems: layout.horizontalLayout ? 'flex-start' : 'center',
+        }}
+      >
+        <div>{rankAnimation}</div>
+
+        {accentText && (
+          <div
+            style={{
+              padding: 'clamp(4px, 0.6vh, 8px) clamp(10px, 1.2vw, 18px)',
+              borderRadius: 999,
+              background: `linear-gradient(135deg, ${GOLD}, ${RED})`,
+              color: DARK,
+              fontFamily: '"Arial Black", "Helvetica Neue", Arial, sans-serif',
+              fontSize: 'clamp(10px, 0.8vw, 14px)',
+              fontWeight: 800,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              alignSelf: layout.horizontalLayout ? 'flex-start' : 'center',
+            }}
+          >
+            {accentText}
+          </div>
+        )}
+
+        <div>{textAnimation}</div>
+
+        {description && (
+          <div
+            style={{
+              fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+              fontSize: 'clamp(14px, 1.1vw, 18px)',
+              fontWeight: 500,
+              color: 'rgba(255,255,255,0.75)',
+              lineHeight: 1.5,
+              maxWidth: layout.horizontalLayout ? 480 : 520,
+            }}
+          >
+            {description}
+          </div>
+        )}
+      </div>
+
+      <div
+        style={{
+          flex: layout.horizontalLayout ? '0 1 auto' : '0 0 auto',
+          maxWidth: Math.min(700, layout.maxImageWidth),
+          width: '100%',
+          borderRadius: 16,
+          overflow: 'hidden',
+          boxShadow: '0 24px 80px rgba(0,0,0,0.5)',
+        }}
+      >
+        {imageAnimation}
+      </div>
+    </AbsoluteFill>
+  );
+};
 
 const OpeningScene: React.FC<Top5CountdownProps & { durationInFrames: number }> = ({
   headline,
@@ -111,8 +183,7 @@ const OpeningScene: React.FC<Top5CountdownProps & { durationInFrames: number }> 
   const frame = useCurrentFrame();
   const layout = useResponsiveLayout();
 
-  const title = listTitle ?? headline ?? 'This Week\'s Top 5';
-  const displayRank = 5;
+  const title = listTitle ?? headline ?? 'TOP 5 TECH INNOVATIONS';
 
   const bgScale = interpolate(frame, [0, 30], [1.05, 1], {
     extrapolateRight: 'clamp',
@@ -133,7 +204,6 @@ const OpeningScene: React.FC<Top5CountdownProps & { durationInFrames: number }> 
 
   return (
     <AbsoluteFill style={{ opacity, background: DARK }}>
-      {/* Background with scale */}
       <div
         style={{
           position: 'absolute',
@@ -141,26 +211,6 @@ const OpeningScene: React.FC<Top5CountdownProps & { durationInFrames: number }> 
           background: `radial-gradient(circle at 50% 45%, ${GOLD}12 0%, transparent 55%)`,
           transform: `scale(${bgScale})`,
         }}
-      />
-
-      <ParallaxLayers
-        amplitude={10}
-        verticalAmplitude={6}
-        periodFrames={180}
-        layers={[
-          {
-            speed: 0.3,
-            content: (
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: `radial-gradient(circle at 50% 50%, ${RED}08 0%, transparent 40%)`,
-                }}
-              />
-            ),
-          },
-        ]}
       />
 
       <AbsoluteFill
@@ -173,7 +223,6 @@ const OpeningScene: React.FC<Top5CountdownProps & { durationInFrames: number }> 
           padding: `0 ${layout.paddingX}px`,
         }}
       >
-        {/* TOP 5 label with mask reveal */}
         <MaskReveal direction="right" enterFrame={0} duration={18}>
           <div
             style={{
@@ -190,7 +239,6 @@ const OpeningScene: React.FC<Top5CountdownProps & { durationInFrames: number }> 
           </div>
         </MaskReveal>
 
-        {/* Title */}
         <MaskReveal direction="up" enterFrame={10} duration={16}>
           <div
             style={{
@@ -208,7 +256,6 @@ const OpeningScene: React.FC<Top5CountdownProps & { durationInFrames: number }> 
           </div>
         </MaskReveal>
 
-        {/* Large rank number */}
         <div
           style={{
             opacity: useFadeIn({ from: 6, duration: 12 }),
@@ -216,17 +263,16 @@ const OpeningScene: React.FC<Top5CountdownProps & { durationInFrames: number }> 
           }}
         >
           <RankingCounter
-            rank={displayRank}
+            rank={5}
             total={5}
             enterFrame={6}
             variant="pop"
             color={GOLD}
             suffixColor="rgba(255,255,255,0.55)"
-            size={Math.min(220, 1920 * 0.12)}
+            size={Math.min(200, 1920 * 0.11)}
           />
         </div>
 
-        {/* Highlight line */}
         <div
           style={{
             width: `${lineWidth}px`,
@@ -243,305 +289,498 @@ const OpeningScene: React.FC<Top5CountdownProps & { durationInFrames: number }> 
   );
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Scene 2-6 — Item Reveal (3s - 23s)
-// ─────────────────────────────────────────────────────────────────────────────
-
-const ItemRevealScene: React.FC<Top5CountdownProps & { durationInFrames: number; rank?: number }> = ({
-  rank,
-  itemTitle,
-  description,
-  image,
-  category,
+const Item5Scene: React.FC<Top5CountdownProps & { durationInFrames: number }> = ({
   durationInFrames,
+  ...content
 }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
-  const layout = useResponsiveLayout();
-
-  const displayRank = typeof rank === 'number' && Number.isFinite(rank) ? rank : 5;
-  const item = getItemFields({
-    itemTitle,
-    description,
-    image,
-    statistic: 0,
-    statisticLabel: '',
-    category,
-    accentText: '',
-    listTitle: '',
-    headline: '',
-    rank: displayRank,
-    item1Title: '', item1Description: '', item1Image: '', item1Statistic: 0, item1StatisticLabel: '', item1AccentText: '',
-    item2Title: '', item2Description: '', item2Image: '', item2Statistic: 0, item2StatisticLabel: '', item2AccentText: '',
-    item3Title: '', item3Description: '', item3Image: '', item3Statistic: 0, item3StatisticLabel: '', item3AccentText: '',
-    item4Title: '', item4Description: '', item4Image: '', item4Statistic: 0, item4StatisticLabel: '', item4AccentText: '',
-    item5Title: '', item5Description: '', item5Image: '', item5Statistic: 0, item5StatisticLabel: '', item5AccentText: '',
-  } as Top5CountdownProps, displayRank);
+  const item = getItemFields(content as Top5CountdownProps, 5);
 
   const title = item.title;
   const desc = typeof item.description === 'string' ? item.description.trim() : '';
   const imageUrl = typeof item.image === 'string' ? item.image : undefined;
-  const categoryText = typeof category === 'string' && category.trim() ? category.trim() : '';
+  const accentText = item.accentText;
 
   const rankSpring = spring({
     fps: 30,
-    frame: frame - 0,
+    frame: frame,
     config: { damping: 10, stiffness: 150, mass: 0.9 },
-    durationInFrames: 28,
+    durationInFrames: ENTER_DURATION,
   });
 
-  const imageScale = interpolate(frame, [0, 28], [1.08, 1], {
+  const imageReveal = interpolate(frame, [8, ENTER_DURATION + 10], [0, 1], {
+    extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
     easing: Easing.out(Easing.cubic),
   });
 
-  return (
-    <AbsoluteFill style={{ opacity, background: DARK }}>
-      {/* Background */}
+  const textSlide = useSpringSlideUp({ from: 20, distance: 30, damping: 18, stiffness: 120 });
+  const textOpacity = useFadeIn({ from: 20, duration: 20 });
+
+  const exitProgress = interpolate(frame, [EXIT_START, durationInFrames], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.in(Easing.cubic),
+  });
+  const exitOpacity = 1 - exitProgress;
+  const exitTransform = `translateY(${-exitProgress * 40}px) translateX(${exitProgress * 60}px)`;
+
+  const rankAnimation = (
+    <div
+      style={{
+        opacity: interpolate(frame, [0, 10], [0, 1], { extrapolateRight: 'clamp' }),
+        transform: `translateX(${(1 - rankSpring) * 80}px) scale(${0.5 + rankSpring * 0.5})`,
+      }}
+    >
+      <RankingCounter
+        rank={5}
+        total={5}
+        enterFrame={0}
+        variant="pop"
+        color={GOLD}
+        suffixColor="rgba(255,255,255,0.55)"
+        size={Math.min(160, 1920 * 0.08)}
+      />
+    </div>
+  );
+
+  const imageAnimation = (
+    <div style={{ opacity: imageReveal, transform: `scale(${1.1 - imageReveal * 0.1})` }}>
+      <SplitImageReveal
+        src={imageUrl}
+        alt={title}
+        enterFrame={8}
+        duration={24}
+        accentColor={GOLD}
+        borderRadius={16}
+      />
+    </div>
+  );
+
+  const textAnimation = (
+    <MaskReveal direction="up" enterFrame={20} duration={16}>
       <div
         style={{
-          position: 'absolute',
-          inset: 0,
-          background: `radial-gradient(circle at 50% 45%, ${GOLD}10 0%, transparent 50%)`,
-        }}
-      />
-
-      <ParallaxLayers
-        amplitude={12}
-        verticalAmplitude={7}
-        periodFrames={200}
-        layers={[
-          {
-            speed: 0.35,
-            content: (
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: `radial-gradient(circle at 50% 50%, ${RED}06 0%, transparent 45%)`,
-                }}
-              />
-            ),
-          },
-        ]}
-      />
-
-      <AbsoluteFill
-        style={{
-          display: 'flex',
-          flexDirection: layout.horizontalLayout ? 'row' : 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 'clamp(24px, 4vw, 48px)',
-          padding: `0 ${layout.paddingX}px`,
+          opacity: textOpacity,
+          transform: `translateY(${textSlide}px)`,
+          fontFamily: 'Georgia, "Times New Roman", Times, serif',
+          fontSize: 'clamp(28px, 3.2vw, 52px)',
+          fontWeight: 700,
+          color: WHITE,
+          textShadow: '0 4px 24px rgba(0,0,0,0.6)',
+          lineHeight: 1.15,
         }}
       >
-        {/* Left: Rank + Text */}
-        <div
-          style={{
-            flex: layout.horizontalLayout ? '0 0 auto' : '1 1 auto',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 'clamp(12px, 2vh, 24px)',
-            maxWidth: Math.min(700, layout.maxTextWidth),
-            textAlign: 'center',
-          }}
-        >
-          {/* Rank number */}
-          <div
-            style={{
-              opacity: interpolate(frame, [0, 8], [0, 1], { extrapolateRight: 'clamp' }),
-              transform: `translateX(${(1 - rankSpring) * 80}px)`,
-            }}
-          >
-            <RankingCounter
-              rank={displayRank}
-              total={5}
-              enterFrame={0}
-              variant="pop"
-              color={GOLD}
-              suffixColor="rgba(255,255,255,0.55)"
-              size={Math.min(160, 1920 * 0.08)}
-            />
-          </div>
+        {title}
+      </div>
+    </MaskReveal>
+  );
 
-          {/* Category badge */}
-          {categoryText && (
-            <div
-              style={{
-                opacity: useFadeIn({ from: 10, duration: 12 }),
-                transform: `scale(${useSpringScale({ from: 10, damping: 14, stiffness: 150 })}`,
-                alignSelf: 'flex-start',
-                padding: 'clamp(6px, 0.8vh, 10px) clamp(14px, 1.6vw, 22px)',
-                borderRadius: 999,
-                background: `linear-gradient(135deg, ${GOLD}, ${RED})`,
-                color: DARK,
-                fontFamily: '"Arial Black", "Helvetica Neue", Arial, sans-serif',
-                fontSize: 'clamp(10px, 0.8vw, 13px)',
-                fontWeight: 800,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-              }}
-            >
-              {categoryText}
-            </div>
-          )}
-
-          {/* Title */}
-          <MaskReveal direction="up" enterFrame={14} duration={18}>
-            <div
-              style={{
-                opacity: useFadeIn({ from: 14, duration: 14 }),
-                transform: `translateY(${useSpringSlideUp({ from: 14, distance: 16, damping: 18, stiffness: 120 })}px)`,
-                fontFamily: 'Georgia, "Times New Roman", Times, serif',
-                fontSize: 'clamp(28px, 3.2vw, 52px)',
-                fontWeight: 400,
-                color: WHITE,
-                textShadow: '0 4px 24px rgba(0,0,0,0.6)',
-                lineHeight: 1.15,
-              }}
-            >
-              {title}
-            </div>
-          </MaskReveal>
-
-          {/* Description */}
-          {desc && (
-            <div
-              style={{
-                opacity: useFadeIn({ from: 22, duration: 14 }),
-                transform: `translateY(${useSpringSlideUp({ from: 22, distance: 14, damping: 16, stiffness: 110 })}px)`,
-                fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
-                fontSize: 'clamp(13px, 1vw, 16px)',
-                fontWeight: 500,
-                color: 'rgba(255,255,255,0.65)',
-                lineHeight: 1.5,
-                maxWidth: 520,
-              }}
-            >
-              {desc}
-            </div>
-          )}
-        </div>
-
-        {/* Right: Image */}
-        <div
-          style={{
-            flex: '0 1 auto',
-            opacity: useFadeIn({ from: 8, duration: 16 }),
-            transform: `scale(${imageScale})`,
-            maxWidth: Math.min(700, layout.maxImageWidth),
-            width: '100%',
-            borderRadius: 16,
-            overflow: 'hidden',
-            boxShadow: '0 24px 80px rgba(0,0,0,0.5)',
-          }}
-        >
-          <SplitImageReveal
-            src={imageUrl}
-            alt={title}
-            enterFrame={8}
-            duration={20}
-            accentColor={GOLD}
-            borderRadius={16}
-          />
-        </div>
-      </AbsoluteFill>
-
-      <FilmGrain opacity={0.2} blendMode="overlay" flicker={0.02} />
+  return (
+    <AbsoluteFill style={{ opacity, background: DARK }}>
+      <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 50% 45%, ${GOLD}10 0%, transparent 50%)` }} />
+      <ItemLayout
+        accentText={accentText}
+        description={desc}
+        rankAnimation={rankAnimation}
+        imageAnimation={imageAnimation}
+        textAnimation={textAnimation}
+        exitOpacity={exitOpacity}
+        exitTransform={exitTransform}
+      />
     </AbsoluteFill>
   );
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Scene 7 — Final / #1 Moment (19s - 25s)
-// ─────────────────────────────────────────────────────────────────────────────
-
-const FinalScene: React.FC<Top5CountdownProps & { durationInFrames: number }> = ({
-  itemTitle,
-  description,
-  image,
-  category,
-  statistic,
-  statisticLabel,
+const Item4Scene: React.FC<Top5CountdownProps & { durationInFrames: number }> = ({
   durationInFrames,
+  ...content
 }) => {
   const opacity = useSceneOpacity(durationInFrames);
   const frame = useCurrentFrame();
-  const layout = useResponsiveLayout();
-
-  const item = getItemFields({
-    itemTitle,
-    description,
-    image,
-    statistic,
-    statisticLabel,
-    category,
-    accentText: '',
-    listTitle: '',
-    headline: '',
-    rank: 1,
-    item1Title: itemTitle ?? '', item1Description: description ?? '', item1Image: image ?? '', item1Statistic: statistic ?? 0, item1StatisticLabel: statisticLabel ?? '', item1AccentText: '',
-    item2Title: '', item2Description: '', item2Image: '', item2Statistic: 0, item2StatisticLabel: '', item2AccentText: '',
-    item3Title: '', item3Description: '', item3Image: '', item3Statistic: 0, item3StatisticLabel: '', item3AccentText: '',
-    item4Title: '', item4Description: '', item4Image: '', item4Statistic: 0, item4StatisticLabel: '', item4AccentText: '',
-    item5Title: '', item5Description: '', item5Image: '', item5Statistic: 0, item5StatisticLabel: '', item5AccentText: '',
-  } as Top5CountdownProps, 1);
+  const item = getItemFields(content as Top5CountdownProps, 4);
 
   const title = item.title;
   const desc = typeof item.description === 'string' ? item.description.trim() : '';
   const imageUrl = typeof item.image === 'string' ? item.image : undefined;
-  const categoryText = typeof category === 'string' && category.trim() ? category.trim() : '';
-  const statValue = typeof item.statistic === 'number' && Number.isFinite(item.statistic) ? item.statistic : 0;
-  const label = typeof item.statisticLabel === 'string' && item.statisticLabel.trim() ? item.statisticLabel.trim() : 'Score';
+  const accentText = item.accentText;
 
-  const bgScale = interpolate(frame, [0, 20], [1, 1.03], {
-    extrapolateRight: 'clamp',
-    easing: Easing.out(Easing.cubic),
-  });
-
-  const oneSpring = spring({
+  const rankScale = spring({
     fps: 30,
-    frame: frame - 2,
-    config: { damping: 10, stiffness: 140, mass: 0.9 },
-    durationInFrames: 26,
+    frame: frame - 5,
+    config: { damping: 14, stiffness: 160 },
+    durationInFrames: ENTER_DURATION,
   });
 
-  const lineWidth = interpolate(frame, [14, 32], [0, 180], {
+  const imageSlide = interpolate(frame, [10, ENTER_DURATION + 5], [100, 0], {
+    extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
     easing: Easing.out(Easing.cubic),
   });
+
+  const textOpacity = useFadeIn({ from: 18, duration: 22 });
+  const textSlide = interpolate(frame, [18, ENTER_DURATION + 10], [40, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
+
+  const exitProgress = interpolate(frame, [EXIT_START, durationInFrames], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.in(Easing.cubic),
+  });
+  const exitOpacity = 1 - exitProgress;
+  const exitTransform = `translateX(${exitProgress * 100}px)`;
+
+  const rankAnimation = (
+    <div
+      style={{
+        opacity: interpolate(frame, [5, 15], [0, 1], { extrapolateRight: 'clamp' }),
+        transform: `scale(${0.3 + rankScale * 0.7})`,
+      }}
+    >
+      <RankingCounter
+        rank={4}
+        total={5}
+        enterFrame={5}
+        variant="pop"
+        color={GOLD}
+        suffixColor="rgba(255,255,255,0.55)"
+        size={Math.min(160, 1920 * 0.08)}
+      />
+    </div>
+  );
+
+  const imageAnimation = (
+    <div style={{ transform: `translateX(${imageSlide}%)`, opacity: interpolate(frame, [10, 25], [0, 1], { extrapolateRight: 'clamp' }) }}>
+      <SplitImageReveal
+        src={imageUrl}
+        alt={title}
+        enterFrame={10}
+        duration={22}
+        accentColor={RED}
+        borderRadius={16}
+      />
+    </div>
+  );
+
+  const textAnimation = (
+    <MaskReveal direction="left" enterFrame={18} duration={18}>
+      <div
+        style={{
+          opacity: textOpacity,
+          transform: `translateX(${textSlide}px)`,
+          fontFamily: 'Georgia, "Times New Roman", Times, serif',
+          fontSize: 'clamp(28px, 3.2vw, 52px)',
+          fontWeight: 700,
+          color: WHITE,
+          textShadow: '0 4px 24px rgba(0,0,0,0.6)',
+          lineHeight: 1.15,
+        }}
+      >
+        {title}
+      </div>
+    </MaskReveal>
+  );
 
   return (
     <AbsoluteFill style={{ opacity, background: DARK }}>
-      {/* Ambient background */}
+      <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 50% 45%, ${RED}08 0%, transparent 50%)` }} />
+      <ItemLayout
+        accentText={accentText}
+        description={desc}
+        rankAnimation={rankAnimation}
+        imageAnimation={imageAnimation}
+        textAnimation={textAnimation}
+        exitOpacity={exitOpacity}
+        exitTransform={exitTransform}
+      />
+    </AbsoluteFill>
+  );
+};
+
+const Item3Scene: React.FC<Top5CountdownProps & { durationInFrames: number }> = ({
+  durationInFrames,
+  ...content
+}) => {
+  const opacity = useSceneOpacity(durationInFrames);
+  const frame = useCurrentFrame();
+  const item = getItemFields(content as Top5CountdownProps, 3);
+
+  const title = item.title;
+  const desc = typeof item.description === 'string' ? item.description.trim() : '';
+  const imageUrl = typeof item.image === 'string' ? item.image : undefined;
+  const accentText = item.accentText;
+
+  const rankSpring = spring({
+    fps: 30,
+    frame: frame - 8,
+    config: { damping: 12, stiffness: 140 },
+    durationInFrames: ENTER_DURATION,
+  });
+
+  const imageZoom = interpolate(frame, [12, ENTER_DURATION + 8], [1.3, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
+
+  const imageOpacity = interpolate(frame, [12, ENTER_DURATION], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
+  const textOpacity = useFadeIn({ from: 22, duration: 20 });
+  const textSlide = useSpringSlideUp({ from: 22, distance: 25, damping: 16, stiffness: 110 });
+
+  const exitProgress = interpolate(frame, [EXIT_START, durationInFrames], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.in(Easing.cubic),
+  });
+  const exitOpacity = 1 - exitProgress;
+  const exitTransform = `scale(${1 + exitProgress * 0.1})`;
+
+  const rankAnimation = (
+    <div
+      style={{
+        opacity: interpolate(frame, [8, 18], [0, 1], { extrapolateRight: 'clamp' }),
+        transform: `scale(${0.5 + rankSpring * 0.5}) rotate(${(1 - rankSpring) * -10}deg)`,
+      }}
+    >
+      <RankingCounter
+        rank={3}
+        total={5}
+        enterFrame={8}
+        variant="pop"
+        color={GOLD}
+        suffixColor="rgba(255,255,255,0.55)"
+        size={Math.min(160, 1920 * 0.08)}
+      />
+    </div>
+  );
+
+  const imageAnimation = (
+    <div style={{ opacity: imageOpacity, transform: `scale(${imageZoom})` }}>
+      <SplitImageReveal
+        src={imageUrl}
+        alt={title}
+        enterFrame={12}
+        duration={20}
+        accentColor={GOLD}
+        borderRadius={16}
+      />
+    </div>
+  );
+
+  const textAnimation = (
+    <div
+      style={{
+        opacity: textOpacity,
+        transform: `translateY(${textSlide}px)`,
+        fontFamily: 'Georgia, "Times New Roman", Times, serif',
+        fontSize: 'clamp(28px, 3.2vw, 52px)',
+        fontWeight: 700,
+        color: WHITE,
+        textShadow: '0 4px 24px rgba(0,0,0,0.6)',
+        lineHeight: 1.15,
+      }}
+    >
+      {title}
+    </div>
+  );
+
+  return (
+    <AbsoluteFill style={{ opacity, background: DARK }}>
+      <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 50% 45%, ${GOLD}10 0%, transparent 50%)` }} />
+      <ItemLayout
+        accentText={accentText}
+        description={desc}
+        rankAnimation={rankAnimation}
+        imageAnimation={imageAnimation}
+        textAnimation={textAnimation}
+        exitOpacity={exitOpacity}
+        exitTransform={exitTransform}
+      />
+    </AbsoluteFill>
+  );
+};
+
+const Item2Scene: React.FC<Top5CountdownProps & { durationInFrames: number }> = ({
+  durationInFrames,
+  ...content
+}) => {
+  const opacity = useSceneOpacity(durationInFrames);
+  const frame = useCurrentFrame();
+  const item = getItemFields(content as Top5CountdownProps, 2);
+
+  const title = item.title;
+  const desc = typeof item.description === 'string' ? item.description.trim() : '';
+  const imageUrl = typeof item.image === 'string' ? item.image : undefined;
+  const accentText = item.accentText;
+
+  const rankSpring = spring({
+    fps: 30,
+    frame: frame - 6,
+    config: { damping: 11, stiffness: 155, mass: 0.85 },
+    durationInFrames: ENTER_DURATION,
+  });
+
+  const imageReveal = interpolate(frame, [10, ENTER_DURATION + 8], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
+
+  const imageScale = interpolate(frame, [10, ENTER_DURATION + 8], [1.15, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
+
+  const textOpacity = useFadeIn({ from: 20, duration: 20 });
+  const textSlide = interpolate(frame, [20, ENTER_DURATION + 8], [-30, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
+
+  const exitProgress = interpolate(frame, [EXIT_START, durationInFrames], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.in(Easing.cubic),
+  });
+  const exitOpacity = 1 - exitProgress;
+  const exitTransform = `translateY(${exitProgress * 50}px) scale(${1 - exitProgress * 0.05})`;
+
+  const rankAnimation = (
+    <div
+      style={{
+        opacity: interpolate(frame, [6, 16], [0, 1], { extrapolateRight: 'clamp' }),
+        transform: `scale(${0.4 + rankSpring * 0.6})`,
+      }}
+    >
+      <RankingCounter
+        rank={2}
+        total={5}
+        enterFrame={6}
+        variant="pop"
+        color={GOLD}
+        suffixColor="rgba(255,255,255,0.55)"
+        size={Math.min(160, 1920 * 0.08)}
+      />
+    </div>
+  );
+
+  const imageAnimation = (
+    <div style={{ opacity: imageReveal, transform: `scale(${imageScale})`, borderRadius: 16, overflow: 'hidden' }}>
+      <SplitImageReveal
+        src={imageUrl}
+        alt={title}
+        enterFrame={10}
+        duration={22}
+        accentColor={RED}
+        borderRadius={16}
+      />
+    </div>
+  );
+
+  const textAnimation = (
+    <MaskReveal direction="down" enterFrame={20} duration={16}>
+      <div
+        style={{
+          opacity: textOpacity,
+          transform: `translateY(${textSlide}px)`,
+          fontFamily: 'Georgia, "Times New Roman", Times, serif',
+          fontSize: 'clamp(28px, 3.2vw, 52px)',
+          fontWeight: 700,
+          color: WHITE,
+          textShadow: '0 4px 24px rgba(0,0,0,0.6)',
+          lineHeight: 1.15,
+        }}
+      >
+        {title}
+      </div>
+    </MaskReveal>
+  );
+
+  return (
+    <AbsoluteFill style={{ opacity, background: DARK }}>
+      <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 50% 45%, ${RED}10 0%, transparent 50%)` }} />
+      <ItemLayout
+        description={desc}
+        accentText={accentText}
+        rankAnimation={rankAnimation}
+        imageAnimation={imageAnimation}
+        textAnimation={textAnimation}
+        exitOpacity={exitOpacity}
+        exitTransform={exitTransform}
+      />
+    </AbsoluteFill>
+  );
+};
+
+const Item1Scene: React.FC<Top5CountdownProps & { durationInFrames: number }> = ({
+  durationInFrames,
+  ...content
+}) => {
+  const opacity = useSceneOpacity(durationInFrames);
+  const frame = useCurrentFrame();
+  const layout = useResponsiveLayout();
+  const item = getItemFields(content as Top5CountdownProps, 1);
+
+  const title = item.title;
+  const desc = typeof item.description === 'string' ? item.description.trim() : '';
+  const imageUrl = typeof item.image === 'string' ? item.image : undefined;
+  const accentText = item.accentText;
+
+  const oneSpring = spring({
+    fps: 30,
+    frame: frame - 4,
+    config: { damping: 10, stiffness: 130, mass: 0.9 },
+    durationInFrames: ENTER_DURATION + 5,
+  });
+
+  const imageReveal = interpolate(frame, [12, ENTER_DURATION + 10], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
+
+  const imageScale = interpolate(frame, [12, ENTER_DURATION + 10], [1.1, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
+
+  const bgScale = interpolate(frame, [0, ENTER_DURATION], [1.05, 1], {
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
+
+  const exitProgress = interpolate(frame, [EXIT_START, durationInFrames], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.in(Easing.cubic),
+  });
+
+  const accentOpacity = useFadeIn({ from: 14, duration: 14 });
+  const descOpacity = useFadeIn({ from: 24, duration: 16 });
+  const titleOpacity = useFadeIn({ from: 16, duration: 16 });
+  const exitOpacity = 1 - exitProgress;
+  const exitTransform = `scale(${1 + exitProgress * 0.05})`;
+
+  return (
+    <AbsoluteFill style={{ opacity, background: DARK }}>
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          background: `radial-gradient(circle at 50% 45%, ${GOLD}15 0%, transparent 55%)`,
+          background: `radial-gradient(circle at 50% 45%, ${GOLD}18 0%, transparent 55%)`,
           transform: `scale(${bgScale})`,
         }}
-      />
-
-      <ParallaxLayers
-        amplitude={6}
-        verticalAmplitude={4}
-        periodFrames={120}
-        layers={[
-          {
-            speed: 0.2,
-            content: (
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: `radial-gradient(circle at 50% 50%, ${RED}10 0%, transparent 40%)`,
-                }}
-              />
-            ),
-          },
-        ]}
       />
 
       <AbsoluteFill
@@ -550,21 +789,22 @@ const FinalScene: React.FC<Top5CountdownProps & { durationInFrames: number }> = 
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 'clamp(12px, 2vh, 24px)',
+          gap: 'clamp(12px, 2vh, 20px)',
           padding: `0 ${layout.paddingX}px`,
+          opacity: exitOpacity,
+          transform: exitTransform,
         }}
       >
-        {/* #1 Rank */}
         <div
           style={{
-            opacity: useFadeIn({ from: 2, duration: 12 }),
-            transform: `scale(${oneSpring})`,
+            opacity: interpolate(frame, [4, 14], [0, 1], { extrapolateRight: 'clamp' }),
+            transform: `scale(${0.4 + oneSpring * 0.6})`,
           }}
         >
           <RankingCounter
             rank={1}
             total={5}
-            enterFrame={2}
+            enterFrame={4}
             variant="pop"
             color={GOLD}
             suffixColor="rgba(255,255,255,0.55)"
@@ -572,44 +812,40 @@ const FinalScene: React.FC<Top5CountdownProps & { durationInFrames: number }> = 
           />
         </div>
 
-        {/* Category badge */}
-        {categoryText && (
+        {accentText && (
           <div
             style={{
-              opacity: useFadeIn({ from: 10, duration: 12 }),
-              transform: `scale(${useSpringScale({ from: 10, damping: 14, stiffness: 150 })}`,
+              opacity: accentOpacity,
               padding: 'clamp(6px, 0.8vh, 10px) clamp(14px, 1.6vw, 22px)',
               borderRadius: 999,
               background: `linear-gradient(135deg, ${GOLD}, ${RED})`,
               color: DARK,
               fontFamily: '"Arial Black", "Helvetica Neue", Arial, sans-serif',
-              fontSize: 'clamp(10px, 0.8vw, 13px)',
+              fontSize: 'clamp(12px, 1vw, 16px)',
               fontWeight: 800,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
             }}
           >
-            {categoryText}
+            {accentText}
           </div>
         )}
 
-        {/* Title */}
         <div
           style={{
-            opacity: useFadeIn({ from: 12, duration: 14 }),
-            transform: `translateY(${useSpringSlideUp({ from: 12, distance: 16, damping: 18, stiffness: 120 })}px)`,
+            opacity: titleOpacity,
             textAlign: 'center',
             maxWidth: '90%',
           }}
         >
           <KineticTypography
             text={title}
-            enterFrame={12}
+            enterFrame={16}
             stagger={3}
             tokenDuration={14}
             variant="rise"
             style={{
-              fontSize: 'clamp(24px, 3.2vw, 52px)',
+              fontSize: 'clamp(32px, 4vw, 64px)',
               fontWeight: 700,
               color: WHITE,
               textAlign: 'center',
@@ -618,29 +854,27 @@ const FinalScene: React.FC<Top5CountdownProps & { durationInFrames: number }> = 
           />
         </div>
 
-        {/* Description */}
         {desc && (
           <div
             style={{
-              opacity: useFadeIn({ from: 20, duration: 14 }),
-              transform: `translateY(${useSpringSlideUp({ from: 20, distance: 14, damping: 16, stiffness: 110 })}px)`,
+              opacity: descOpacity,
               fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
-              fontSize: 'clamp(13px, 1vw, 16px)',
+              fontSize: 'clamp(14px, 1.2vw, 20px)',
               fontWeight: 500,
-              color: 'rgba(255,255,255,0.65)',
+              color: 'rgba(255,255,255,0.75)',
               textAlign: 'center',
               maxWidth: 600,
+              lineHeight: 1.5,
             }}
           >
             {desc}
           </div>
         )}
 
-        {/* Image */}
         <div
           style={{
-            opacity: useFadeIn({ from: 16, duration: 14 }),
-            transform: `scale(${interpolate(frame, [16, 32], [0.97, 1], { extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic) })})`,
+            opacity: imageReveal,
+            transform: `scale(${imageScale})`,
             maxWidth: Math.min(500, layout.maxImageWidth),
             width: '100%',
             borderRadius: 12,
@@ -651,45 +885,89 @@ const FinalScene: React.FC<Top5CountdownProps & { durationInFrames: number }> = 
           <SplitImageReveal
             src={imageUrl}
             alt={title}
-            enterFrame={16}
-            duration={18}
+            enterFrame={12}
+            duration={20}
             accentColor={GOLD}
             borderRadius={12}
           />
         </div>
+      </AbsoluteFill>
 
-        {/* Statistic */}
-        {statValue > 0 && (
-          <div
-            style={{
-              opacity: useFadeIn({ from: 22, duration: 12 }),
-              textAlign: 'center',
-            }}
-          >
-            <NumberCounter
-              value={statValue}
-              delay={22}
-              color={GOLD}
-              size={Math.min(48, 1920 * 0.025)}
-              suffix=""
-            />
-            <div
-              style={{
-                fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
-                fontSize: 'clamp(11px, 0.8vw, 13px)',
-                fontWeight: 600,
-                color: 'rgba(255,255,255,0.6)',
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                marginTop: 4,
-              }}
-            >
-              {label}
-            </div>
-          </div>
-        )}
+      <LightSweep enterFrame={14} duration={28} angle={-14} intensity={0.25} color="#FFFFFF" />
+    </AbsoluteFill>
+  );
+};
 
-        {/* Accent line */}
+const FinalScene: React.FC<Top5CountdownProps & { durationInFrames: number }> = ({
+  listTitle,
+  headline,
+  durationInFrames,
+}) => {
+  const opacity = useSceneOpacity(durationInFrames);
+  const frame = useCurrentFrame();
+  const layout = useResponsiveLayout();
+
+  const title = listTitle ?? headline ?? 'TOP 5 TECH INNOVATIONS';
+
+  const bgScale = interpolate(frame, [0, 20], [1.03, 1], {
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
+
+  const lineWidth = interpolate(frame, [8, 24], [0, 140], {
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
+
+  return (
+    <AbsoluteFill style={{ opacity, background: DARK }}>
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: `radial-gradient(circle at 50% 45%, ${GOLD}12 0%, transparent 55%)`,
+          transform: `scale(${bgScale})`,
+        }}
+      />
+
+      <AbsoluteFill
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 'clamp(12px, 2vh, 20px)',
+          padding: `0 ${layout.paddingX}px`,
+        }}
+      >
+        <div
+          style={{
+            opacity: useFadeIn({ from: 0, duration: 14 }),
+            fontFamily: '"Arial Black", "Helvetica Neue", Arial, sans-serif',
+            fontSize: 'clamp(20px, 2.5vw, 40px)',
+            fontWeight: 900,
+            color: GOLD,
+            letterSpacing: '0.12em',
+            textAlign: 'center',
+          }}
+        >
+          THANK YOU FOR WATCHING
+        </div>
+
+        <div
+          style={{
+            opacity: useFadeIn({ from: 8, duration: 14 }),
+            fontFamily: 'Georgia, "Times New Roman", Times, serif',
+            fontSize: 'clamp(24px, 3vw, 48px)',
+            fontWeight: 400,
+            color: WHITE,
+            textAlign: 'center',
+            textShadow: '0 4px 24px rgba(0,0,0,0.6)',
+          }}
+        >
+          {title}
+        </div>
+
         <div
           style={{
             width: `${lineWidth}px`,
@@ -701,60 +979,31 @@ const FinalScene: React.FC<Top5CountdownProps & { durationInFrames: number }> = 
         />
       </AbsoluteFill>
 
-      <LightSweep enterFrame={18} duration={28} angle={-14} intensity={0.2} color="#FFFFFF" />
+      <LightSweep enterFrame={6} duration={20} angle={-14} intensity={0.2} color="#FFFFFF" />
     </AbsoluteFill>
   );
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Scene registry
-// ─────────────────────────────────────────────────────────────────────────────
-
-const SCENE_COMPONENTS: Partial<
-  Record<string, React.FC<Top5CountdownProps & { durationInFrames: number; rank?: number }>>
-> = {
-  intro: OpeningScene,
-  product: ItemRevealScene,
-  features: ItemRevealScene,
-  headline: ItemRevealScene,
-  cta: FinalScene,
+const SCENE_COMPONENTS: Record<string, React.FC<Top5CountdownProps & { durationInFrames: number }>> = {
+  'scene-intro': OpeningScene,
+  'scene-item-5': Item5Scene,
+  'scene-item-4': Item4Scene,
+  'scene-item-3': Item3Scene,
+  'scene-item-2': Item2Scene,
+  'scene-item-1': Item1Scene,
+  'scene-final': FinalScene,
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Main composition
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Top5Countdown — professional high-retention ranking video.
- *
- * Scene breakdown:
- *  1. Opening (0 - 3s): TOP 5 reveal, title, large rank number, highlight line
- *  2. #5 Reveal (3s - 7s): rank pop, image reveal, title, description, badge
- *  3. #4 Reveal (7s - 11s): rank pop, image reveal, title, description, badge
- *  4. #3 Reveal (11s - 15s): rank pop, image reveal, title, description, badge
- *  5. #2 Reveal (15s - 19s): rank pop, image reveal, title, description, badge
- *  6. #1 Reveal (19s - 23s): #1 reveal, image, title, statistic, accent line
- *  7. Final (23s - 25s): final outro
- *
- * Fixed duration: 25 seconds (750 frames @ 30fps).
- */
 export const Top5Countdown: React.FC<Top5CountdownProps> = (content) => {
   const { durationInFrames } = useVideoConfig();
   const scenes = scaleScenesToDuration(top5CountdownScenes, durationInFrames);
 
   return (
     <AbsoluteFill style={{ backgroundColor: '#000' }}>
-      {scenes.map((scene, index) => {
-        const SceneComponent = SCENE_COMPONENTS[scene.type];
+      {scenes.map((scene) => {
+        const SceneComponent = SCENE_COMPONENTS[scene.id];
 
         if (!SceneComponent) return null;
-
-        let rank: number | undefined;
-        if (scene.id === 'scene-item-5') rank = 5;
-        else if (scene.id === 'scene-item-4') rank = 4;
-        else if (scene.id === 'scene-item-3') rank = 3;
-        else if (scene.id === 'scene-item-2') rank = 2;
-        else if (scene.id === 'scene-item-1') rank = 1;
 
         return (
           <Sequence
@@ -762,7 +1011,7 @@ export const Top5Countdown: React.FC<Top5CountdownProps> = (content) => {
             from={scene.startFrame}
             durationInFrames={scene.durationInFrames}
           >
-            <SceneComponent {...content} durationInFrames={scene.durationInFrames} rank={rank} />
+            <SceneComponent {...content} durationInFrames={scene.durationInFrames} />
           </Sequence>
         );
       })}

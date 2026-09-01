@@ -77,7 +77,7 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     supportedAspectRatios: ['16:9', '1:1', '9:16'],
     defaultAspectRatio: '16:9',
     fps: 30,
-    durationInFrames: 750, // Fixed: 25s @ 30fps
+    durationInFrames: 900, // Fixed: 30s @ 30fps
     featured: true,
     defaultProps: top5CountdownDefaultContent,
   },

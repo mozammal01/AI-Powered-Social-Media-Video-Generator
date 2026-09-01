@@ -152,6 +152,29 @@ export interface VideoContent {
   image?: string;
   /** Ticker text for news templates. */
   tickerText?: string;
+  /** List title for countdown templates. */
+  listTitle?: string;
+  /** Per-item fields for Top 5/Top 10 countdown templates. */
+  item1Title?: string;
+  item1Description?: string;
+  item1Image?: string;
+  item1AccentText?: string;
+  item2Title?: string;
+  item2Description?: string;
+  item2Image?: string;
+  item2AccentText?: string;
+  item3Title?: string;
+  item3Description?: string;
+  item3Image?: string;
+  item3AccentText?: string;
+  item4Title?: string;
+  item4Description?: string;
+  item4Image?: string;
+  item4AccentText?: string;
+  item5Title?: string;
+  item5Description?: string;
+  item5Image?: string;
+  item5AccentText?: string;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

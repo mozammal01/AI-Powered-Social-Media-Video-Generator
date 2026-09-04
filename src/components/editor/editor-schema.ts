@@ -85,6 +85,7 @@ export const editorFormSchema = z.object({
   itemTitle: z.string().max(120, "Item title must be 120 characters or fewer"),
   image: z.string().optional(),
   statisticLabel: z.string().max(120, "Label must be 120 characters or fewer"),
+  year: z.string().max(10, "Year must be 10 characters or fewer"),
   accentText: z.string().max(60, "Accent text must be 60 characters or fewer"),
   bodyText: z.string().max(200, "Body text must be 200 characters or fewer"),
 });
@@ -104,6 +105,7 @@ export const FIXED_DURATION_TEMPLATES = [
   'top-5-countdown',
   'cinematic-documentary',
   'cinematic-product-showcase',
+  'cinematic-movie-trailer',
 ] as const;
 
 export const ASPECT_OPTIONS = [
@@ -147,6 +149,7 @@ export const defaultEditorValues: EditorFormValues = {
   itemTitle: "",
   image: "",
   statisticLabel: "",
+  year: "",
   accentText: "",
   bodyText: demoVideoContent.bodyText ?? "",
 };

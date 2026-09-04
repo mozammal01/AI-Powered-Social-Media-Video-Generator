@@ -76,6 +76,10 @@ export const videoContentSchema = z.object({
   item5Description: z.string().optional(),
   item5Image: z.string().optional(),
   item5AccentText: z.string().optional(),
+  /** Optional movie trailer fields. Existing templates safely ignore these. */
+  description: z.string().optional(),
+  statisticLabel: z.string().optional(),
+  year: z.string().optional(),
 });
 
 /** Input props type for every template composition. */

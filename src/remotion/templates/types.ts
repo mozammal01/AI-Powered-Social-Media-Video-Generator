@@ -13,7 +13,8 @@ export type TemplateId =
   | 'top-5-countdown'
   | 'cinematic-product-showcase'
   | 'data-statistics-explainer'
-  | 'breaking-news-intro';
+  | 'breaking-news-intro'
+  | 'cinematic-movie-trailer';
 
 /**
  * Serializable template metadata — everything the app needs to know about a

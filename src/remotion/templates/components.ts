@@ -11,6 +11,7 @@ import { LuxuryCommercial } from './LuxuryCommercial/LuxuryCommercial';
 import { CinematicProductShowcase } from './CinematicProductShowcase';
 import { DataStatisticsExplainer } from './DataStatisticsExplainer';
 import { BreakingNewsIntro } from './BreakingNewsIntro';
+import { CinematicMovieTrailer } from './CinematicMovieTrailer';
 
 /**
  * Maps template IDs to their Remotion composition components.
@@ -36,6 +37,7 @@ export const templateComponents: Record<
   'luxury-commercial': LuxuryCommercial,
   'cinematic-product-showcase': CinematicProductShowcase,
   'data-statistics-explainer': DataStatisticsExplainer,
+  'cinematic-movie-trailer': CinematicMovieTrailer,
 };
 
 /** Returns the Remotion composition component for a registered template ID. */

@@ -103,6 +103,27 @@ export function toVideoContent(
         item1AccentText: '#1',
       };
     }
+    case 'cinematic-movie-trailer': {
+      return {
+        ...content,
+        headline: values.headline.trim() || 'THE FUTURE IS NOW',
+        title: values.headline.trim() || 'THE FUTURE IS NOW',
+        subtitle: values.subtitle.trim() || 'A NEW ERA BEGINS',
+        category: values.category.trim() || 'ORIGINAL SERIES',
+        description: values.description.trim() || undefined,
+        bodyText: values.description.trim() || 'Technology is changing the way we imagine tomorrow.',
+        product: {
+          ...content.product,
+          name: values.productName.trim() || 'THE FUTURE IS NOW',
+          description: values.description.trim() || undefined,
+          imageUrl: values.productImageUrl || undefined,
+        },
+        image: values.image || values.productImageUrl || undefined,
+        statistic: typeof values.statistic === 'number' && Number.isFinite(values.statistic) ? values.statistic : undefined,
+        statisticLabel: values.statisticLabel.trim() || undefined,
+        year: values.year.trim() || undefined,
+      };
+    }
     case 'top-10-countdown': {
       const rankValue = typeof values.rank === 'number' && Number.isFinite(values.rank) ? values.rank : 10;
       void rankValue;

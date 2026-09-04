@@ -13,6 +13,7 @@ import { luxuryCommercialDefaultContent } from './LuxuryCommercial/defaults';
 import { cinematicProductShowcaseDefaultContent } from './CinematicProductShowcase/defaults';
 import { dataStatisticsExplainerDefaultContent } from './DataStatisticsExplainer/defaults';
 import { breakingNewsIntroDefaultContent } from './BreakingNewsIntro/defaults';
+import { cinematicMovieTrailerDefaultContent } from './CinematicMovieTrailer/defaults';
 
 /**
  * Template Registry
@@ -188,6 +189,22 @@ export const templateRegistry: Record<TemplateId, TemplateMetadata> = {
     durationInFrames: 300, // Fixed: 10s @ 30fps
     featured: false,
     defaultProps: dataStatisticsExplainerDefaultContent,
+  },
+
+  'cinematic-movie-trailer': {
+    id: 'cinematic-movie-trailer',
+    name: 'Cinematic Movie Trailer',
+    description:
+      'Premium 30-second cinematic trailer with dramatic title reveals, parallax visuals, kinetic typography, and a climactic finale — built for movies, documentaries, and major announcements.',
+    category: 'intro',
+    tags: ['cinematic', 'trailer', 'movie', 'dramatic', 'premium', 'youtube'],
+    thumbnailUrl: '/templates/cinematic-movie-trailer.svg',
+    supportedAspectRatios: ['16:9', '1:1', '9:16'],
+    defaultAspectRatio: '16:9',
+    fps: 30,
+    durationInFrames: 900, // Fixed: 30s @ 30fps
+    featured: true,
+    defaultProps: cinematicMovieTrailerDefaultContent,
   },
 };
 

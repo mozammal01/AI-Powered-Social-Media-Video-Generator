@@ -6,6 +6,7 @@ import { MolecularArtComposition } from "./molecular-simulation/MolecularArtComp
 import { videoContentSchema } from "./remotion/schema";
 import { getTemplateDimensions, templateList } from "./remotion/templates";
 import { getTemplateComponent } from "./remotion/templates/components";
+import TextIntro from "./TextIntro";
 
 // Each <Composition> is an entry in the sidebar!
 
@@ -35,6 +36,15 @@ export const RemotionRoot: React.FC = () => {
       })}
 
       {/* ── Standalone demo compositions ── */}
+      <Composition
+        id="TextIntro"
+        component={TextIntro}
+        durationInFrames={150}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+
       <Composition
         id="MolecularArt"
         component={MolecularArtComposition}
